@@ -578,7 +578,12 @@ export function LanguageSelector({ light = false, compact = false }) {
           }
         }}
       >
-        <span>{compact ? languages[selectedIndex]?.shortLabel : languages[selectedIndex]?.label}</span>
+        {compact ? (
+          <>
+            <span className="language-label-full">{languages[selectedIndex]?.label}</span>
+            <span className="language-label-short">{languages[selectedIndex]?.shortLabel}</span>
+          </>
+        ) : languages[selectedIndex]?.label}
         <ChevronDown size={compact ? 12 : 14} aria-hidden="true" />
       </button>
       {isOpen && (
@@ -597,7 +602,12 @@ export function LanguageSelector({ light = false, compact = false }) {
                 triggerRef.current?.focus();
               }}
             >
-              {compact ? shortLabel : label}
+              {compact ? (
+                <>
+                  <span className="language-label-full">{label}</span>
+                  <span className="language-label-short">{shortLabel}</span>
+                </>
+              ) : label}
             </button>
           ))}
         </div>

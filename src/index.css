@@ -405,13 +405,15 @@ img {
 }
 
 .language-selector-compact .language-select {
-  max-width: 72px;
-  min-width: 58px;
-  padding: 7px 8px 7px 10px;
+  max-width: 174px;
+  padding: 7px 10px;
   font-size: 13px;
   line-height: 1;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
+}
+
+.language-label-short {
+  display: none;
 }
 
 .language-select svg {
@@ -464,11 +466,10 @@ img {
 }
 
 .language-selector-compact .language-option {
-  min-width: 56px;
+  min-width: 128px;
   padding: 7px 8px;
   font-size: 13px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
 
 .language-option:hover,
@@ -2078,9 +2079,8 @@ html:lang(ja) {
   }
 
   .language-selector-compact .language-select {
-    max-width: 58px;
-    min-width: 52px;
-    padding: 5px 6px 5px 8px;
+    max-width: 174px;
+    padding: 5px 8px;
     font-size: 12px;
   }
 
@@ -2090,7 +2090,7 @@ html:lang(ja) {
   }
 
   .language-selector-compact .language-option {
-    min-width: 50px;
+    min-width: 128px;
     padding: 6px 8px;
     font-size: 12px;
   }
@@ -2165,6 +2165,25 @@ html:lang(ja) {
 }
 
 @media (max-width: 640px) {
+  .language-selector-compact .language-select {
+    max-width: 58px;
+    min-width: 52px;
+    padding: 5px 6px 5px 8px;
+  }
+
+  .language-selector-compact .language-label-full {
+    display: none;
+  }
+
+  .language-selector-compact .language-label-short {
+    display: inline;
+    text-transform: uppercase;
+  }
+
+  .language-selector-compact .language-option {
+    min-width: 50px;
+  }
+
   .figma-header-frame {
     height: 340px;
   }
