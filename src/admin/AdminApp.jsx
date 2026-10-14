@@ -1,0 +1,1001 @@
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { LanguageProvider } from '../i18n.jsx';
+import { CmsProvider, parseExtra } from '../cms/CmsContext';
+import { fieldMeta } from '../cms/defaults';
+import { Header } from '../components/Header';
+import { Hero } from '../components/Hero';
+import { BattlefieldSection } from '../components/BattlefieldSection';
+import { TheTurn } from '../components/TheTurn';
+import { ArticlesSection } from '../components/ArticlesSection';
+import { CaddiesNoteSection } from '../components/CaddiesNoteSection';
+import { WhereToBuyModal } from '../components/WhereToBuyModal';
+import { ScorecardNine } from '../components/ScorecardNine';
+import { AuthorPage } from '../components/AuthorPage';
+import { ContactPage } from '../components/ContactPage';
+import { BookPage } from '../components/BookPage';
+import { EighteenHolesPage } from '../components/EighteenHolesPage';
+import { SpeakingPage } from '../components/SpeakingPage';
+import { ArticlesPage } from '../components/ArticlesPage';
+import './admin.css';
+
+const PATTERN_DEFAULTS = {
+  pattern_size: '79',
+  pattern_offset_x: '40',
+  pattern_offset_y: '45',
+  pattern_opacity: '38',
+};
+
+const NAV = [
+  { id: 'dashboard', label: 'Dashboard' },
+  { id: 'platforms', label: 'Platforms' },
+  { id: 'holes', label: '18 Holes' },
+  { id: 'brand', label: 'Brand & Logos' },
+  { id: 'home', label: 'Home' },
+  { id: 'book', label: 'The Book' },
+  { id: 'eighteen', label: '18 Holes Page' },
+  { id: 'speaking', label: 'Speaking & Retreats' },
+  { id: 'author', label: 'Author' },
+  { id: 'articles', label: 'Articles' },
+  { id: 'contact', label: 'Contact' },
+  { id: 'submissions', label: 'Inbox' },
+];
+
+async function api(path, options = {}) {
+  const res = await fetch(path, {
+    credentials: 'include',
+    headers: options.body instanceof FormData ? undefined : { 'Content-Type': 'application/json' },
+    ...options,
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+function Preview({ content, children, mode = 'site' }) {
+  const shellRef = useRef(null);
+  const innerRef = useRef(null);
+  const [scale, setScale] = useState(0.5);
+  const [innerHeight, setInnerHeight] = useState(720);
+
+  useLayoutEffect(() => {
+    const shell = shellRef.current;
+    const inner = innerRef.current;
+    if (!shell || !inner) return;
+    const update = () => {
+      setScale(Math.min(1, (shell.clientWidth || 900) / 1280));
+      setInnerHeight(inner.scrollHeight || 720);
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(shell);
+    observer.observe(inner);
+    return () => observer.disconnect();
+  }, [content, children, mode]);
+
+  const visualHeight = Math.round(innerHeight * scale);
+
+  return (
+    <div className="cms-preview-block">
+      <div className="cms-preview-label">How it looks on the site</div>
+      <div ref={shellRef} className={`cms-preview-clip ${mode === 'modal' ? 'is-modal' : ''}`}>
+        <div className="cms-preview-sizer" style={{ height: visualHeight }}>
+          <div
+            ref={innerRef}
+            className="cms-preview-inner golf-gita-app"
+            inert
+            aria-hidden="true"
+            style={{ width: 1280, transform: `scale(${scale})` }}
+          >
+            <LanguageProvider>
+              <CmsProvider override={content}>{children}</CmsProvider>
+            </LanguageProvider>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function parsePayload(payload) {
+  try {
+    const value = JSON.parse(payload);
+    if (value && typeof value === 'object') return value;
+  } catch {
+    /* use raw */
+  }
+  return { message: payload };
+}
+
+function prettyLabel(key) {
+  return String(key)
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\b\w/g, (letter) => letter.toUpperCase())
+    .trim();
+}
+
+const INBOX_TYPES = {
+  newsletter: 'Newsletter',
+  contact: 'Contact form',
+  speaking: 'Speaking enquiry',
+  sample: 'Sample request',
+  enquire: 'Session enquiry',
+};
+
+function ImageField({ label, value, onChange }) {
+  const [busy, setBusy] = useState(false);
+  const upload = async (file) => {
+    if (!file) return;
+    setBusy(true);
+    try {
+      const body = new FormData();
+      body.append('file', file);
+      const data = await api('/api/admin/upload', { method: 'POST', body });
+      onChange(data.url);
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <div className="cms-field">
+      <label>{label}</label>
+      {value ? <img src={value} alt="" className="cms-thumb" /> : null}
+      <input value={value || ''} onChange={(e) => onChange(e.target.value)} placeholder="Image URL or upload" />
+      <input type="file" accept="image/*" onChange={(e) => upload(e.target.files?.[0])} />
+      {busy ? <span className="cms-muted">Uploading…</span> : null}
+    </div>
+  );
+}
+
+function RangeField({ label, value, min, max, step = 1, unit = '', onChange }) {
+  return (
+    <div className="cms-field cms-range">
+      <label>
+        <span>{label}</span>
+        <span className="cms-range-value">
+          <input
+            type="number"
+            min={min}
+            max={max}
+            step={step}
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+          />
+          {unit}
+        </span>
+      </label>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    </div>
+  );
+}
+
+function Fields({ meta, values, onChange }) {
+  return meta.map((field) => (
+    field.type === 'image' ? (
+      <ImageField
+        key={field.key}
+        label={field.label}
+        value={values[field.key] || ''}
+        onChange={(value) => onChange({ ...values, [field.key]: value })}
+      />
+    ) : (
+      <div className="cms-field" key={field.key}>
+        <label>{field.label}</label>
+        {field.type === 'textarea' ? (
+          <textarea
+            value={values[field.key] || ''}
+            onChange={(e) => onChange({ ...values, [field.key]: e.target.value })}
+          />
+        ) : (
+          <input
+            value={values[field.key] || ''}
+            onChange={(e) => onChange({ ...values, [field.key]: e.target.value })}
+          />
+        )}
+      </div>
+    )
+  ));
+}
+
+function BarList({ rows, labelKey, valueKey = 'count' }) {
+  const max = Math.max(1, ...rows.map((row) => Number(row[valueKey] || 0)));
+  return rows.map((row) => (
+    <div className="cms-bar-row" key={row[labelKey] || row.day}>
+      <span>{row[labelKey] || row.day}</span>
+      <div className="cms-bar"><span style={{ width: `${(Number(row[valueKey]) / max) * 100}%` }} /></div>
+      <b>{row[valueKey]}</b>
+    </div>
+  ));
+}
+
+function Dashboard({ analytics, setDays }) {
+  if (!analytics) return <p>Loading analytics…</p>;
+  return (
+    <>
+      <h1>Traffic & platform clicks</h1>
+      <p className="cms-lead">
+        Live tracking from the public site: page views, unique sessions, Where to Buy popup opens, and clicks on Amazon, Flipkart, Kindle (and any platforms you add).
+      </p>
+      <div className="cms-tabs">
+        {[7, 14, 30].map((day) => (
+          <button key={day} className={analytics.days === day ? 'active' : ''} onClick={() => setDays(day)}>
+            Last {day} days
+          </button>
+        ))}
+      </div>
+      <div className="cms-stats">
+        <div className="cms-stat"><b>{analytics.totals.views}</b><span>Page views</span></div>
+        <div className="cms-stat"><b>{analytics.totals.visitors}</b><span>Unique visitors</span></div>
+        <div className="cms-stat"><b>{analytics.totals.buy_opens}</b><span>Where to Buy opens</span></div>
+        <div className="cms-stat"><b>{analytics.totals.platform_clicks}</b><span>Platform clicks</span></div>
+      </div>
+      <div className="cms-grid-2">
+        <div className="cms-panel">
+          <h3>Views by page</h3>
+          <BarList rows={analytics.viewsByPage} labelKey="page" />
+        </div>
+        <div className="cms-panel">
+          <h3>Clicks by platform</h3>
+          <BarList rows={analytics.platformClicks} labelKey="platform_name" />
+          <h3 style={{ marginTop: 24 }}>Click source</h3>
+          <BarList rows={analytics.clicksBySource} labelKey="source" />
+        </div>
+      </div>
+      <div className="cms-grid-2" style={{ marginTop: 18 }}>
+        <div className="cms-panel">
+          <h3>Daily traffic</h3>
+          <BarList rows={analytics.viewsByDay} labelKey="day" />
+        </div>
+        <div className="cms-panel">
+          <h3>Recent platform clicks</h3>
+          <table className="cms-table">
+            <thead><tr><th>Platform</th><th>Source</th><th>Page</th><th>When</th></tr></thead>
+            <tbody>
+              {analytics.recentClicks.map((row, i) => (
+                <tr key={i}><td>{row.platform_name}</td><td>{row.source}</td><td>{row.page}</td><td>{row.created_at.slice(0, 16).replace('T', ' ')}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export function AdminApp() {
+  const [authed, setAuthed] = useState(false);
+  const [checking, setChecking] = useState(true);
+  const [username, setUsername] = useState('admin');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [page, setPage] = useState('dashboard');
+  const [content, setContent] = useState(null);
+  const [draft, setDraft] = useState(null);
+  const [analytics, setAnalytics] = useState(null);
+  const [days, setDays] = useState(30);
+  const [submissions, setSubmissions] = useState([]);
+  const [homeTab, setHomeTab] = useState('hero');
+  const [speakingTab, setSpeakingTab] = useState('copy');
+  const [openHole, setOpenHole] = useState(1);
+  const [inboxFilter, setInboxFilter] = useState('all');
+  const [saved, setSaved] = useState('');
+
+  useEffect(() => {
+    api('/api/admin/me')
+      .then(() => setAuthed(true))
+      .catch(() => setAuthed(false))
+      .finally(() => setChecking(false));
+  }, []);
+
+  useEffect(() => {
+    if (!authed) return;
+    api('/api/content').then((data) => {
+      setContent(data);
+      setDraft(structuredClone(data));
+    });
+  }, [authed]);
+
+  useEffect(() => {
+    if (!authed || page !== 'dashboard') return;
+    api(`/api/admin/analytics?days=${days}`).then(setAnalytics).catch(() => {});
+  }, [authed, page, days]);
+
+  useEffect(() => {
+    if (!authed || page !== 'submissions') return;
+    api('/api/admin/submissions').then(setSubmissions).catch(() => {});
+  }, [authed, page]);
+
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [page, homeTab, speakingTab]);
+
+  const saveNotice = () => {
+    setSaved('Saved');
+    setTimeout(() => setSaved(''), 1800);
+  };
+
+  const persist = async (path, body) => {
+    const data = await api(path, { method: 'PUT', body: JSON.stringify(body) });
+    setContent(data);
+    setDraft(structuredClone(data));
+    saveNotice();
+  };
+
+  if (checking) return <div className="cms-login"><p style={{ color: '#fff' }}>Loading CMS…</p></div>;
+
+  if (!authed) {
+    return (
+      <div className="cms-login">
+        <form
+          className="cms-login-card"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            setError('');
+            const form = new FormData(e.currentTarget);
+            try {
+              await api('/api/admin/login', {
+                method: 'POST',
+                body: JSON.stringify({
+                  username: form.get('username'),
+                  password: form.get('password'),
+                }),
+              });
+              setAuthed(true);
+            } catch (err) {
+              setError(err.message);
+            }
+          }}
+        >
+          <h1>Golf Gita CMS</h1>
+          <p>Sign in to manage content, images, icons, and traffic.</p>
+          {error ? <p className="cms-error">{error}</p> : null}
+          <div className="cms-field"><label>Username</label><input name="username" autoComplete="username" defaultValue={username} onChange={(e) => setUsername(e.target.value)} /></div>
+          <div className="cms-field"><label>Password</label><input name="password" type="password" autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} /></div>
+          <p className="cms-hint">Default login: admin / GolfGita@2026</p>
+          <button className="cms-btn" type="submit">Enter dashboard</button>
+        </form>
+      </div>
+    );
+  }
+
+  if (!draft) return <div className="cms-main">Loading content…</div>;
+
+  const previewContent = draft;
+
+  return (
+    <div className="cms-root">
+      <div className="cms-shell">
+        <aside className="cms-sidebar">
+          <div className="cms-brand">Golf Gita CMS</div>
+          {NAV.map((item) => (
+            <button
+              key={item.id}
+              className={`cms-nav-btn ${page === item.id ? 'active' : ''}`}
+              onClick={() => {
+                window.scrollTo(0, 0);
+                setPage(item.id);
+              }}
+            >
+              {item.label}
+            </button>
+          ))}
+          <button
+            className="cms-logout"
+            onClick={async () => {
+              await api('/api/admin/logout', { method: 'POST' });
+              setAuthed(false);
+            }}
+          >
+            Log out
+          </button>
+        </aside>
+        <main className="cms-main">
+          {saved ? <p className="cms-muted">{saved}</p> : null}
+
+          {page === 'dashboard' && <Dashboard analytics={analytics} setDays={setDays} />}
+
+          {page === 'platforms' && (
+            <>
+              <h1>Buy platforms</h1>
+              <p className="cms-lead">Edited once here, then used in the Where to Buy popup and the footer “Available on” icons. Clicks are tracked per platform.</p>
+              <div className="cms-stack">
+                <div>
+                  {draft.platforms.map((item, index) => (
+                    <div className="cms-item" key={item.slug || index}>
+                      <div className="cms-item-head">
+                        <strong>{item.name || 'New platform'}</strong>
+                        <button className="cms-btn danger" onClick={() => setDraft({ ...draft, platforms: draft.platforms.filter((_, i) => i !== index) })}>Remove</button>
+                      </div>
+                      <div className="cms-field"><label>Name</label><input value={item.name} onChange={(e) => {
+                        const platforms = [...draft.platforms]; platforms[index] = { ...item, name: e.target.value }; setDraft({ ...draft, platforms });
+                      }} /></div>
+                      <div className="cms-field"><label>Slug</label><input value={item.slug} onChange={(e) => {
+                        const platforms = [...draft.platforms]; platforms[index] = { ...item, slug: e.target.value }; setDraft({ ...draft, platforms });
+                      }} /></div>
+                      <div className="cms-field"><label>Formats</label><input value={item.formats} onChange={(e) => {
+                        const platforms = [...draft.platforms]; platforms[index] = { ...item, formats: e.target.value }; setDraft({ ...draft, platforms });
+                      }} /></div>
+                      <div className="cms-field"><label>URL</label><input value={item.url} onChange={(e) => {
+                        const platforms = [...draft.platforms]; platforms[index] = { ...item, url: e.target.value }; setDraft({ ...draft, platforms });
+                      }} /></div>
+                      <ImageField label="Icon" value={item.icon} onChange={(icon) => {
+                        const platforms = [...draft.platforms]; platforms[index] = { ...item, icon }; setDraft({ ...draft, platforms });
+                      }} />
+                      <label><input type="checkbox" checked={Boolean(item.is_active)} onChange={(e) => {
+                        const platforms = [...draft.platforms]; platforms[index] = { ...item, is_active: e.target.checked ? 1 : 0 }; setDraft({ ...draft, platforms });
+                      }} /> Active</label>
+                    </div>
+                  ))}
+                  <div className="cms-actions">
+                    <button className="cms-btn secondary" onClick={() => setDraft({
+                      ...draft,
+                      platforms: [...draft.platforms, { slug: `platform-${Date.now()}`, name: '', formats: '', icon: '', url: '', is_active: 1 }],
+                    })}>Add platform</button>
+                    <button className="cms-btn" onClick={() => persist('/api/admin/platforms', draft.platforms)}>Save platforms</button>
+                  </div>
+                </div>
+                <Preview content={previewContent} mode="modal">
+                  <WhereToBuyModal isOpen onClose={() => {}} page="admin-preview" />
+                </Preview>
+              </div>
+            </>
+          )}
+
+          {page === 'holes' && (
+            <>
+              <h1>18 Holes / Chapters</h1>
+              <p className="cms-lead">One record per hole. The same data fills the home scorecards, the Book chapters overview, and the 18 Holes page. Edit once, it updates everywhere.</p>
+              <div className="cms-stack">
+                <div className="cms-hole-list">
+                  {draft.holes.map((hole, index) => {
+                    const open = openHole === hole.hole;
+                    const updateHole = (patch) => {
+                      const holes = [...draft.holes];
+                      holes[index] = { ...hole, ...patch };
+                      setDraft({ ...draft, holes });
+                    };
+                    return (
+                      <div className={`cms-hole-card ${open ? 'is-open' : ''}`} key={hole.hole}>
+                        <button type="button" className="cms-hole-toggle" onClick={() => setOpenHole(open ? 0 : hole.hole)}>
+                          <span className="cms-hole-num">{String(hole.hole).padStart(2, '0')}</span>
+                          <span className="cms-hole-title">{hole.title}</span>
+                          <span className="cms-hole-meta">Par {hole.par} · {hole.distance}</span>
+                        </button>
+                        {open && (
+                          <div className="cms-hole-fields">
+                            <div className="cms-field cms-span-2">
+                              <label>Title</label>
+                              <input value={hole.title} onChange={(e) => updateHole({ title: e.target.value })} />
+                            </div>
+                            <div className="cms-field">
+                              <label>Subtitle</label>
+                              <input value={hole.subtitle} onChange={(e) => updateHole({ subtitle: e.target.value })} />
+                            </div>
+                            <div className="cms-field">
+                              <label>Par</label>
+                              <input value={hole.par} onChange={(e) => updateHole({ par: e.target.value })} />
+                            </div>
+                            <div className="cms-field">
+                              <label>Distance</label>
+                              <input value={hole.distance} onChange={(e) => updateHole({ distance: e.target.value })} />
+                            </div>
+                            <div className="cms-field">
+                              <label>Numeral</label>
+                              <input value={hole.numeral} onChange={(e) => updateHole({ numeral: e.target.value })} />
+                            </div>
+                            <div className="cms-field">
+                              <label>Sanskrit</label>
+                              <input value={hole.sanskrit} onChange={(e) => updateHole({ sanskrit: e.target.value })} />
+                            </div>
+                            <div className="cms-field">
+                              <label>Devanagari</label>
+                              <input value={hole.devanagari} onChange={(e) => updateHole({ devanagari: e.target.value })} />
+                            </div>
+                            <div className="cms-field cms-span-all">
+                              <label>Description</label>
+                              <textarea value={hole.description} onChange={(e) => updateHole({ description: e.target.value })} />
+                            </div>
+                            <div className="cms-span-all">
+                              <ImageField label="Image" value={hole.image} onChange={(image) => updateHole({ image })} />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                  <button className="cms-btn" onClick={() => persist('/api/admin/holes', draft.holes)}>Save all holes</button>
+                </div>
+                <Preview content={previewContent}>
+                  <ScorecardNine
+                    key={openHole || 'front'}
+                    title={openHole > 9 ? 'BACK NINE' : 'FRONT NINE'}
+                    holes={previewContent.holes.filter((h) => (openHole > 9 ? h.hole > 9 : h.hole <= 9))}
+                    defaultActive={openHole > 9 ? Math.max(0, openHole - 10) : Math.max(0, (openHole || 1) - 1)}
+                  />
+                </Preview>
+              </div>
+            </>
+          )}
+
+          {page === 'brand' && (
+            <>
+              <h1>Brand, logos & global copy</h1>
+              <p className="cms-lead">Logos, book cover, Sanskrit watermark, copyright, and the header Buy button. These appear across header, hero, newsletter, and footer.</p>
+              <div className="cms-stack">
+                <div className="cms-form">
+                  <Fields meta={fieldMeta.settings} values={draft.settings} onChange={(settings) => setDraft({ ...draft, settings })} />
+                  <button className="cms-btn" onClick={() => persist('/api/admin/settings', draft.settings)}>Save brand</button>
+                </div>
+                <Preview content={previewContent}>
+                  <div className="hero-master-container">
+                    <Header onBuyClick={() => {}} activePage="home" onNavigate={() => {}} theme="dark" />
+                    <Hero onBuyClick={() => {}} onSampleClick={() => {}} />
+                  </div>
+                </Preview>
+              </div>
+            </>
+          )}
+
+          {page === 'home' && (
+            <>
+              <h1>Home page</h1>
+              <p className="cms-lead">Section copy and images. The Turn is shared with the 18 Holes page. Platforms and holes are edited in their own screens so you never enter them twice.</p>
+              <div className="cms-tabs">
+                {['hero', 'battlefield', 'home_ui', 'the_turn', 'newsletter', 'buy_modal', 'sample_modal'].map((tab) => (
+                  <button key={tab} className={homeTab === tab ? 'active' : ''} onClick={() => setHomeTab(tab)}>{tab.replaceAll('_', ' ')}</button>
+                ))}
+              </div>
+              <div className="cms-stack">
+                <div className="cms-form">
+                  {homeTab === 'hero' && (
+                    <>
+                      <Fields meta={fieldMeta.hero} values={draft.sections.hero} onChange={(hero) => setDraft({ ...draft, sections: { ...draft.sections, hero } })} />
+                      <h3>Marquee phrases</h3>
+                      {(draft.lists.marquee || []).map((item, index) => (
+                        <div className="cms-field" key={item.id || index}>
+                          <input value={item.title} onChange={(e) => {
+                            const marquee = [...draft.lists.marquee]; marquee[index] = { ...item, title: e.target.value };
+                            setDraft({ ...draft, lists: { ...draft.lists, marquee } });
+                          }} />
+                        </div>
+                      ))}
+                      <button className="cms-btn secondary" onClick={() => setDraft({
+                        ...draft,
+                        lists: { ...draft.lists, marquee: [...draft.lists.marquee, { title: '' }] },
+                      })}>Add phrase</button>
+                    </>
+                  )}
+                  {homeTab !== 'hero' && (
+                    <Fields
+                      meta={fieldMeta[homeTab]}
+                      values={draft.sections[homeTab]}
+                      onChange={(value) => setDraft({ ...draft, sections: { ...draft.sections, [homeTab]: value } })}
+                    />
+                  )}
+                  <div className="cms-actions">
+                    <button className="cms-btn" onClick={async () => {
+                      await persist(`/api/admin/sections/${homeTab === 'hero' ? 'hero' : homeTab}`, draft.sections[homeTab === 'hero' ? 'hero' : homeTab]);
+                      if (homeTab === 'hero') await persist('/api/admin/lists/marquee', draft.lists.marquee);
+                    }}>Save section</button>
+                  </div>
+                </div>
+                {homeTab === 'hero' && <Preview content={previewContent}><Hero onBuyClick={() => {}} onSampleClick={() => {}} /></Preview>}
+                {homeTab === 'battlefield' && <Preview content={previewContent}><BattlefieldSection /></Preview>}
+                {homeTab === 'the_turn' && <Preview content={previewContent}><TheTurn /></Preview>}
+                {homeTab === 'home_ui' && <Preview content={previewContent}><ArticlesSection onArticleClick={() => {}} onNavigate={() => {}} /></Preview>}
+                {homeTab === 'newsletter' && <Preview content={previewContent}><CaddiesNoteSection /></Preview>}
+                {homeTab === 'buy_modal' && <Preview content={previewContent} mode="modal"><WhereToBuyModal isOpen onClose={() => {}} /></Preview>}
+                {homeTab === 'sample_modal' && (
+                  <div className="cms-panel">
+                    <h3>{draft.sections.sample_modal.title}</h3>
+                    <p>{draft.sections.sample_modal.body}</p>
+                    <button className="cms-btn">{draft.sections.sample_modal.cta}</button>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+
+          {page === 'book' && (
+            <>
+              <h1>The Book</h1>
+              <p className="cms-lead">Book description, gallery, formats, audience list, and FAQs. Chapter cards come from the shared 18 Holes records.</p>
+              <div className="cms-stack">
+                <div>
+                  <div className="cms-form">
+                    <Fields meta={fieldMeta.book} values={draft.sections.book} onChange={(book) => setDraft({ ...draft, sections: { ...draft.sections, book } })} />
+                    <button className="cms-btn" onClick={() => persist('/api/admin/sections/book', draft.sections.book)}>Save book copy</button>
+                  </div>
+                  <h3>Gallery</h3>
+                  {(draft.gallery || []).map((item, index) => (
+                    <ImageField key={item.id || index} label={`Image ${index + 1}`} value={item.image} onChange={(image) => {
+                      const gallery = [...draft.gallery]; gallery[index] = { ...item, image }; setDraft({ ...draft, gallery });
+                    }} />
+                  ))}
+                  <button className="cms-btn secondary" onClick={() => persist('/api/admin/gallery', draft.gallery)}>Save gallery</button>
+                  <h3>Who is this for?</h3>
+                  {(draft.lists.who_for || []).map((item, index) => (
+                    <div className="cms-field" key={item.id || index}>
+                      <input value={item.title} onChange={(e) => {
+                        const who_for = [...draft.lists.who_for]; who_for[index] = { ...item, title: e.target.value };
+                        setDraft({ ...draft, lists: { ...draft.lists, who_for } });
+                      }} />
+                    </div>
+                  ))}
+                  <button className="cms-btn secondary" onClick={() => persist('/api/admin/lists/who_for', draft.lists.who_for)}>Save audience list</button>
+                  <h3>FAQs</h3>
+                  {draft.faqs.map((faq, index) => (
+                    <div className="cms-item" key={faq.id || index}>
+                      <div className="cms-field"><label>Question</label><input value={faq.question} onChange={(e) => {
+                        const faqs = [...draft.faqs]; faqs[index] = { ...faq, question: e.target.value }; setDraft({ ...draft, faqs });
+                      }} /></div>
+                      <div className="cms-field"><label>Answer</label><textarea value={faq.answer} onChange={(e) => {
+                        const faqs = [...draft.faqs]; faqs[index] = { ...faq, answer: e.target.value }; setDraft({ ...draft, faqs });
+                      }} /></div>
+                    </div>
+                  ))}
+                  <button className="cms-btn" onClick={() => persist('/api/admin/faqs', draft.faqs)}>Save FAQs</button>
+                </div>
+                <Preview content={previewContent}>
+                  <BookPage onBuyClick={() => {}} onSampleClick={() => {}} />
+                </Preview>
+              </div>
+            </>
+          )}
+
+          {page === 'eighteen' && (
+            <>
+              <h1>18 Holes page intro</h1>
+              <p className="cms-lead">Only the page hero is unique here. Hole cards and The Turn are reused from the shared Holes and Home → The Turn editors.</p>
+              <div className="cms-stack">
+                <div className="cms-form">
+                  <Fields meta={fieldMeta.eighteen} values={draft.sections.eighteen} onChange={(eighteen) => setDraft({ ...draft, sections: { ...draft.sections, eighteen } })} />
+                  <button className="cms-btn" onClick={() => persist('/api/admin/sections/eighteen', draft.sections.eighteen)}>Save</button>
+                </div>
+                <Preview content={previewContent}>
+                  <EighteenHolesPage onBuyClick={() => {}} onNavigate={() => {}} />
+                </Preview>
+              </div>
+            </>
+          )}
+
+          {page === 'speaking' && (
+            <>
+              <h1>Speaking & retreats</h1>
+              <p className="cms-lead">Page copy, audience cards (with icons), retreat steps, floral pattern, and meta. The home speaking teaser is edited under Home.</p>
+              <div className="cms-tabs">
+                {['copy', 'pattern', 'audiences', 'steps', 'meta'].map((tab) => (
+                  <button key={tab} className={speakingTab === tab ? 'active' : ''} onClick={() => setSpeakingTab(tab)}>{tab}</button>
+                ))}
+              </div>
+              {speakingTab === 'copy' && (
+                <div className="cms-form">
+                  <Fields meta={fieldMeta.speaking_page} values={draft.sections.speaking_page} onChange={(speaking_page) => setDraft({ ...draft, sections: { ...draft.sections, speaking_page } })} />
+                  <button className="cms-btn" onClick={() => persist('/api/admin/sections/speaking_page', draft.sections.speaking_page)}>Save copy</button>
+                </div>
+              )}
+              {speakingTab === 'pattern' && (() => {
+                const speaking = { ...PATTERN_DEFAULTS, ...(draft.sections.speaking_page || {}) };
+                const setPattern = (patch) => {
+                  setDraft({
+                    ...draft,
+                    sections: {
+                      ...draft.sections,
+                      speaking_page: { ...(draft.sections.speaking_page || {}), ...patch },
+                    },
+                  });
+                };
+                return (
+                  <div className="cms-stack">
+                    <div className="cms-form">
+                      <p className="cms-muted">Adjust the four-corner floral watermark on the Speaking hero. Changes preview live; save to publish.</p>
+                      <RangeField
+                        label="Pattern size"
+                        unit="%"
+                        min={40}
+                        max={110}
+                        step={0.5}
+                        value={speaking.pattern_size}
+                        onChange={(pattern_size) => setPattern({ pattern_size })}
+                      />
+                      <RangeField
+                        label="Side position"
+                        unit="%"
+                        min={0}
+                        max={70}
+                        step={0.5}
+                        value={speaking.pattern_offset_x}
+                        onChange={(pattern_offset_x) => setPattern({ pattern_offset_x })}
+                      />
+                      <RangeField
+                        label="Top / bottom position"
+                        unit="%"
+                        min={0}
+                        max={70}
+                        step={0.5}
+                        value={speaking.pattern_offset_y}
+                        onChange={(pattern_offset_y) => setPattern({ pattern_offset_y })}
+                      />
+                      <RangeField
+                        label="Pattern strength"
+                        unit="%"
+                        min={5}
+                        max={80}
+                        step={1}
+                        value={speaking.pattern_opacity}
+                        onChange={(pattern_opacity) => setPattern({ pattern_opacity })}
+                      />
+                      <p className="cms-muted">Lower side / top values pull the art onto the page. Higher values hang it further off the corners. Size grows each corner from the edge inward.</p>
+                      <div className="cms-actions">
+                        <button className="cms-btn" type="button" onClick={() => persist('/api/admin/sections/speaking_page', speaking)}>Save pattern</button>
+                        <button
+                          className="cms-btn secondary"
+                          onClick={() => setPattern(PATTERN_DEFAULTS)}
+                          type="button"
+                        >
+                          Reset to design
+                        </button>
+                      </div>
+                    </div>
+                    <Preview content={previewContent}>
+                      <SpeakingPage />
+                    </Preview>
+                  </div>
+                );
+              })()}
+              {speakingTab === 'audiences' && (
+                <>
+                  {draft.lists.speaking_audiences.map((item, index) => {
+                    const extra = parseExtra(item.extra);
+                    return (
+                      <div className="cms-item" key={item.id || index}>
+                        <div className="cms-field"><label>Title</label><input value={item.title} onChange={(e) => {
+                          const speaking_audiences = [...draft.lists.speaking_audiences];
+                          speaking_audiences[index] = { ...item, title: e.target.value };
+                          setDraft({ ...draft, lists: { ...draft.lists, speaking_audiences } });
+                        }} /></div>
+                        <div className="cms-field"><label>Description</label><textarea value={item.description} onChange={(e) => {
+                          const speaking_audiences = [...draft.lists.speaking_audiences];
+                          speaking_audiences[index] = { ...item, description: e.target.value };
+                          setDraft({ ...draft, lists: { ...draft.lists, speaking_audiences } });
+                        }} /></div>
+                        <div className="cms-field"><label>For / audience line</label><input value={extra.target || ''} onChange={(e) => {
+                          const speaking_audiences = [...draft.lists.speaking_audiences];
+                          speaking_audiences[index] = { ...item, extra: JSON.stringify({ ...extra, target: e.target.value }) };
+                          setDraft({ ...draft, lists: { ...draft.lists, speaking_audiences } });
+                        }} /></div>
+                        <ImageField label="Icon" value={item.icon} onChange={(icon) => {
+                          const speaking_audiences = [...draft.lists.speaking_audiences];
+                          speaking_audiences[index] = { ...item, icon };
+                          setDraft({ ...draft, lists: { ...draft.lists, speaking_audiences } });
+                        }} />
+                      </div>
+                    );
+                  })}
+                  <button className="cms-btn" onClick={() => persist('/api/admin/lists/speaking_audiences', draft.lists.speaking_audiences)}>Save audiences</button>
+                </>
+              )}
+              {speakingTab === 'steps' && (
+                <>
+                  {draft.lists.speaking_steps.map((item, index) => {
+                    const extra = parseExtra(item.extra);
+                    return (
+                      <div className="cms-item" key={item.id || index}>
+                        <div className="cms-grid-3">
+                          <div className="cms-field"><label>Numeral</label><input value={extra.numeral || ''} onChange={(e) => {
+                            const speaking_steps = [...draft.lists.speaking_steps];
+                            speaking_steps[index] = { ...item, extra: JSON.stringify({ ...extra, numeral: e.target.value }) };
+                            setDraft({ ...draft, lists: { ...draft.lists, speaking_steps } });
+                          }} /></div>
+                          <div className="cms-field"><label>Sanskrit numeral</label><input value={extra.sanskrit || ''} onChange={(e) => {
+                            const speaking_steps = [...draft.lists.speaking_steps];
+                            speaking_steps[index] = { ...item, extra: JSON.stringify({ ...extra, sanskrit: e.target.value }) };
+                            setDraft({ ...draft, lists: { ...draft.lists, speaking_steps } });
+                          }} /></div>
+                          <div className="cms-field"><label>Title</label><input value={item.title} onChange={(e) => {
+                            const speaking_steps = [...draft.lists.speaking_steps];
+                            speaking_steps[index] = { ...item, title: e.target.value };
+                            setDraft({ ...draft, lists: { ...draft.lists, speaking_steps } });
+                          }} /></div>
+                        </div>
+                        <div className="cms-field"><label>Description</label><textarea value={item.description} onChange={(e) => {
+                          const speaking_steps = [...draft.lists.speaking_steps];
+                          speaking_steps[index] = { ...item, description: e.target.value };
+                          setDraft({ ...draft, lists: { ...draft.lists, speaking_steps } });
+                        }} /></div>
+                      </div>
+                    );
+                  })}
+                  <button className="cms-btn" onClick={() => persist('/api/admin/lists/speaking_steps', draft.lists.speaking_steps)}>Save steps</button>
+                </>
+              )}
+              {speakingTab === 'meta' && (
+                <>
+                  {draft.lists.retreat_meta.map((item, index) => {
+                    const extra = parseExtra(item.extra);
+                    return (
+                      <div className="cms-item" key={item.id || index}>
+                        <div className="cms-field"><label>Label</label><input value={item.title} onChange={(e) => {
+                          const retreat_meta = [...draft.lists.retreat_meta];
+                          retreat_meta[index] = { ...item, title: e.target.value };
+                          setDraft({ ...draft, lists: { ...draft.lists, retreat_meta } });
+                        }} /></div>
+                        <div className="cms-field"><label>Value</label><input value={extra.value || ''} onChange={(e) => {
+                          const retreat_meta = [...draft.lists.retreat_meta];
+                          retreat_meta[index] = { ...item, extra: JSON.stringify({ value: e.target.value }) };
+                          setDraft({ ...draft, lists: { ...draft.lists, retreat_meta } });
+                        }} /></div>
+                      </div>
+                    );
+                  })}
+                  <button className="cms-btn" onClick={() => persist('/api/admin/lists/retreat_meta', draft.lists.retreat_meta)}>Save meta</button>
+                </>
+              )}
+            </>
+          )}
+
+          {page === 'articles' && (
+            <>
+              <h1>Articles</h1>
+              <p className="cms-lead">These cards appear on the home page and on the Articles page in the main navigation.</p>
+              <div className="cms-stack">
+                <div>
+                  {(draft.articles || []).map((item, index) => (
+                    <div className="cms-item" key={item.id || index}>
+                      <div className="cms-item-head">
+                        <strong>{item.title || 'New article'}</strong>
+                        <button className="cms-btn danger" onClick={() => setDraft({
+                          ...draft,
+                          articles: draft.articles.filter((_, i) => i !== index),
+                        })}>Remove</button>
+                      </div>
+                      <div className="cms-field"><label>Title</label><input value={item.title || ''} onChange={(e) => {
+                        const articles = [...draft.articles]; articles[index] = { ...item, title: e.target.value }; setDraft({ ...draft, articles });
+                      }} /></div>
+                      <div className="cms-field"><label>Category</label><input value={item.category || ''} onChange={(e) => {
+                        const articles = [...draft.articles]; articles[index] = { ...item, category: e.target.value }; setDraft({ ...draft, articles });
+                      }} /></div>
+                      <div className="cms-field"><label>Hole tag</label><input value={item.hole_tag || ''} onChange={(e) => {
+                        const articles = [...draft.articles]; articles[index] = { ...item, hole_tag: e.target.value }; setDraft({ ...draft, articles });
+                      }} /></div>
+                      <div className="cms-field"><label>Read time</label><input value={item.read_time || ''} onChange={(e) => {
+                        const articles = [...draft.articles]; articles[index] = { ...item, read_time: e.target.value }; setDraft({ ...draft, articles });
+                      }} /></div>
+                      <div className="cms-field"><label>Summary</label><textarea value={item.description || ''} onChange={(e) => {
+                        const articles = [...draft.articles]; articles[index] = { ...item, description: e.target.value }; setDraft({ ...draft, articles });
+                      }} /></div>
+                      <div className="cms-field"><label>Body</label><textarea value={item.body || ''} onChange={(e) => {
+                        const articles = [...draft.articles]; articles[index] = { ...item, body: e.target.value }; setDraft({ ...draft, articles });
+                      }} /></div>
+                      <ImageField label="Image" value={item.image} onChange={(image) => {
+                        const articles = [...draft.articles]; articles[index] = { ...item, image }; setDraft({ ...draft, articles });
+                      }} />
+                      <label><input type="checkbox" checked={Boolean(item.is_active)} onChange={(e) => {
+                        const articles = [...draft.articles]; articles[index] = { ...item, is_active: e.target.checked ? 1 : 0 }; setDraft({ ...draft, articles });
+                      }} /> Published</label>
+                    </div>
+                  ))}
+                  <div className="cms-actions">
+                    <button className="cms-btn secondary" onClick={() => setDraft({
+                      ...draft,
+                      articles: [...(draft.articles || []), {
+                        title: '', description: '', body: '', image: '', read_time: '4 min', category: '', hole_tag: '', is_active: 1,
+                      }],
+                    })}>Add article</button>
+                    <button className="cms-btn" onClick={() => persist('/api/admin/articles', draft.articles)}>Save articles</button>
+                  </div>
+                </div>
+                <Preview content={previewContent}>
+                  <ArticlesPage onArticleClick={() => {}} />
+                </Preview>
+              </div>
+            </>
+          )}
+
+          {page === 'author' && (
+            <>
+              <h1>Author</h1>
+              <div className="cms-stack">
+                <div className="cms-form">
+                  <Fields meta={fieldMeta.author} values={draft.sections.author} onChange={(author) => setDraft({ ...draft, sections: { ...draft.sections, author } })} />
+                  <div className="cms-actions">
+                    <button className="cms-btn" onClick={() => persist('/api/admin/sections/author', draft.sections.author)}>Save author</button>
+                  </div>
+                </div>
+                <Preview content={previewContent}><AuthorPage onNavigate={() => {}} /></Preview>
+              </div>
+            </>
+          )}
+
+          {page === 'contact' && (
+            <>
+              <h1>Contact</h1>
+              <div className="cms-stack">
+                <div className="cms-form">
+                  <Fields meta={fieldMeta.contact} values={draft.sections.contact} onChange={(contact) => setDraft({ ...draft, sections: { ...draft.sections, contact } })} />
+                  <h3>Social links</h3>
+                  {draft.lists.social.map((item, index) => {
+                    const extra = parseExtra(item.extra);
+                    return (
+                      <div className="cms-item" key={item.id || index}>
+                        <div className="cms-field"><label>Name</label><input value={item.title} onChange={(e) => {
+                          const social = [...draft.lists.social]; social[index] = { ...item, title: e.target.value };
+                          setDraft({ ...draft, lists: { ...draft.lists, social } });
+                        }} /></div>
+                        <div className="cms-field"><label>URL</label><input value={extra.url || ''} onChange={(e) => {
+                          const social = [...draft.lists.social]; social[index] = { ...item, extra: JSON.stringify({ ...extra, url: e.target.value }) };
+                          setDraft({ ...draft, lists: { ...draft.lists, social } });
+                        }} /></div>
+                      </div>
+                    );
+                  })}
+                  <button className="cms-btn" onClick={async () => {
+                    await persist('/api/admin/sections/contact', draft.sections.contact);
+                    await persist('/api/admin/lists/social', draft.lists.social);
+                  }}>Save contact</button>
+                </div>
+                <Preview content={previewContent}><ContactPage onNavigate={() => {}} /></Preview>
+              </div>
+            </>
+          )}
+
+          {page === 'submissions' && (
+            <>
+              <h1>Inbox</h1>
+              <p className="cms-lead">Submitted forms from the public site, grouped so each enquiry is easy to read.</p>
+              <div className="cms-tabs">
+                <button className={inboxFilter === 'all' ? 'active' : ''} onClick={() => setInboxFilter('all')}>All</button>
+                {Object.entries(INBOX_TYPES).map(([id, label]) => (
+                  <button key={id} className={inboxFilter === id ? 'active' : ''} onClick={() => setInboxFilter(id)}>{label}</button>
+                ))}
+              </div>
+              {(() => {
+                const rows = submissions.filter((row) => inboxFilter === 'all' || row.form_type === inboxFilter);
+                if (!rows.length) {
+                  return <div className="cms-empty">No submissions in this view yet.</div>;
+                }
+                return (
+                  <div className="cms-inbox-grid">
+                    {rows.map((row) => {
+                      const data = parsePayload(row.payload);
+                      return (
+                        <article className={`cms-inbox-card type-${row.form_type}`} key={row.id}>
+                          <header className="cms-inbox-head">
+                            <span className={`cms-pill type-${row.form_type}`}>{INBOX_TYPES[row.form_type] || row.form_type}</span>
+                            <time>
+                              {new Date(row.created_at).toLocaleString([], {
+                                dateStyle: 'medium',
+                                timeStyle: 'short',
+                              })}
+                            </time>
+                          </header>
+                          <dl className="cms-inbox-fields">
+                            {Object.entries(data).filter(([, value]) => value !== '' && value != null).map(([key, value]) => (
+                              <div key={key} className="cms-inbox-row">
+                                <dt>{prettyLabel(key)}</dt>
+                                <dd>{String(value)}</dd>
+                              </div>
+                            ))}
+                          </dl>
+                        </article>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
+            </>
+          )}
+        </main>
+      </div>
+    </div>
+  );
+}

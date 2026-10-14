@@ -1,0 +1,456 @@
+## Start Here
+2:  | Golf Gita  ·  Website Content Sheet |  |  |  |  | 
+3:  | Every word on your website, page by page. Each box already has placeholder text. Just type over it with your own. |  |  |  |  | 
+5:  | HOW TO FILL THIS IN |  |  |  |  | 
+6:  | Step 1 | Open a tab at the bottom for each page. Sections run top to bottom in the same order as the page. |  |  |  | 
+7:  | Step 2 | In the yellow column, click a box and type over the existing text. Delete anything you don't want. |  |  |  | 
+8:  | Step 3 | Orange text with [brackets] is a gap. Replace it with your real details (name, year, links). |  |  |  | 
+9:  | Step 4 | Watch Chars against Limit. A red box means the text is too long for the design. |  |  |  | 
+10:  | Step 5 | Set Status to Updated when you've changed a row, or Approved when it's final. Use Notes for questions. |  |  |  | 
+12:  | COLOUR GUIDE |  |  |  |  | 
+13:  | Yellow box | Edit here. This is your text. |  |  |  | 
+14:  | Grey box | Reference only: the original wireframe text or the limit. |  |  |  | 
+15:  | Orange text | Still has [brackets]. Needs your details. |  |  |  | 
+16:  | Red box | Text is longer than the limit. Shorten it. |  |  |  | 
+17:  | Green status | Approved. |  |  |  | 
+18:  | Blue status | Updated. |  |  |  | 
+20:  | EXAMPLE OF A FILLED ROW  (for reference only. Do not edit) |  |  |  |  | 
+21:  | What it is | YOUR TEXT | Chars | Limit | Status | 
+22:  | Headline | Play the round you're in. | 25.0 | 40.0 | Updated | 
+24:  | TABS & PROGRESS |  |  |  |  | 
+25:  | Tab (click to open) | What's on it | Fields | Updated | Approved | % approved
+26:  | Global | Header, menu, retailer buttons, footer, legal links | 33 | 24 | 9 | 0.2727272727
+27:  | Home | Hero, idea, hole carousels, the turn, speaking teaser, articles, newsletter | 49 | 28 | 15 | 0.306122449
+28:  | The Book | Book intro, who it's for, sample card, reader quotes, FAQ | 37 | 10 | 19 | 0.5135135135
+29:  | 18 Holes | Page intro, front/back nine lists, halfway house quote | 10 | 10 | 0 | 0
+30:  | Hole Data | The 18 chapter cards (used on Home, The Book and 18 Holes) | 18 | 0 | 0 | 0
+31:  | Discover Your Round | Quiz screen and 6 questions | 36 | 4 | 0 | 0
+32:  | Speaking | Hero, audiences, retreat phases, enquiry form | 55 | 1 | 0 | 0
+33:  | Author | Bio, pull quote, numbers strip | 10 | 7 | 2 | 0.2
+34:  | Contact | Contact form and social links | 21 | 10 | 11 | 0.5238095238
+35:  | All tabs |  | 269 | 94 | 56 | 0.2081784387
+37:  | NOT IN THE WIREFRAME YET  (we'll need copy for these later) |  |  |  |  | 
+38:  | •  Articles listing page and individual article pages (linked in the menu). |  |  |  |  | 
+39:  | •  Retreats page (linked in the footer only). |  |  |  |  | 
+40:  | •  Preface / free sample file (button 'Read the preface free'). |  |  |  |  | 
+41:  | •  Quiz questions 2 to 6 and the quiz result screen. |  |  |  |  | 
+42:  | •  Privacy Policy, Terms of Service and Cookie Policy pages. |  |  |  |  | 
+43:  | •  Translations. This sheet is English only. Extra language columns can be added. |  |  |  |  | 
+
+## Navigation bar
+1: GLOBAL  ·  Shown on every page |  |  |  |  |  |  |  | 
+2: Menu, footer and buttons that repeat across the whole site. Edit here once. It updates everywhere. |  |  |  |  |  |  |  | 
+3: Yellow cells = type over the text  |  Orange text = still has [brackets], add your real details  |  Red = too long for the layout  |  Set Status when done |  |  |  |  |  |  |  | 
+4: Field ID | What it is | Type | YOUR TEXT  (edit here) | Chars | Limit | Status | Notes / questions | Wireframe text (reference)
+5: 01   HEADER   ·   top bar on every page |  |  |  |  |  |  |  | 
+6: gl.header.site-name-logo-text | Site name / logo text | Text | Golf Gita | 9 | 20.0 | Updated | Increase the font and follow brand font. Add icon next to it | Golf Gita
+7: gl.header.menu-1 | Menu 1 | Nav | The Book | 8 | 20.0 | Updated | Increase font | The Book
+8: gl.header.menu-2 | Menu 2 | Nav | 18 Holes | 8 | 20.0 | Updated | Increase font | 18 Holes
+9: gl.header.menu-3 | Menu 3 | Nav | Discover Your Game | 18 | 25.0 | Updated | Increase font | Discover Your Round
+10: gl.header.menu-4 | Menu 4 | Nav | Events | 6 | 20.0 | Remove | Increase font. Change this page to events where Speaking and retreats come under | Speaking
+11: gl.header.menu-5 | Menu 5 | Nav | Author | 6 | 20.0 | Updated | Increase font | Author
+12: gl.header.menu-6 | Menu 6 | Nav | Articles | 8 | 20.0 | Updated | Increase font | Articles
+13: gl.header.menu-7 | Menu 7 | Nav | Contact | 7 | 20.0 | Updated | Increase font | Contact
+14: gl.header.language-switch-short | Language switch (short) | Label | EN | 2 | 20.0 | Approved |  | EN
+15: 02   FOOTER · WHERE TO BUY   ·   dark strip at the bottom of every page |  |  |  |  |  |  |  | 
+16: gl.footer-where-to-buy.strip-label | Strip label | Label | Available on | 12 | 20.0 | Updated | Increase font | Available on
+17: gl.footer-where-to-buy.retailer-1-name | Retailer 1 name | Button | Amazon India | 12 | 20.0 | Updated | Increase font | Amazon India
+18: gl.footer-where-to-buy.retailer-1-link | Retailer 1 link | Link | [Paste Amazon India link] | 25 |  | Updated | Increase font | [Paste Amazon India link]
+19: gl.footer-where-to-buy.retailer-2-name | Retailer 2 name | Button | Flipkart | 8 | 20.0 | Updated | Increase font | Flipkart
+20: gl.footer-where-to-buy.retailer-2-link | Retailer 2 link | Link | [Paste Flipkart link] | 21 |  | Updated | Increase font | [Paste Flipkart link]
+21: gl.footer-where-to-buy.retailer-3-name | Retailer 3 name | Button | Amazon US | 9 | 20.0 | Updated | Increase font | Amazon US
+22: gl.footer-where-to-buy.retailer-3-link | Retailer 3 link | Link | [Paste Amazon US link] | 22 |  | Updated | Increase font | [Paste Amazon US link]
+23: gl.footer-where-to-buy.retailer-4-name | Retailer 4 name | Button | Kindle | 6 | 20.0 | Updated | Increase font | Kindle
+24: gl.footer-where-to-buy.retailer-4-link | Retailer 4 link | Link | [Paste Kindle link] | 19 |  | Updated | Increase font | [Paste Kindle link]
+25: gl.footer-where-to-buy.retailer-5-name | Retailer 5 name | Button | Bookshop.org | 12 | 20.0 | Updated | Increase font | Bookshop.org
+26: gl.footer-where-to-buy.retailer-5-link | Retailer 5 Link | Link | [Paste Bookshop.org link] | 25 |  | Updated | Increase font. | [Paste Bookshop.org link]
+27: gl.footer-where-to-buy.retailer-6-name | Retailer 6 name | Button | Notion |  |  | Updated |  | 
+28: gl.footer-where-to-buy.retailer-6-link | Retailer 6 link | Link | [Paste Notion link] |  |  | Updated |  | 
+29: 03   FOOTER · LINKS |  |  |  |  |  |  |  | 
+30: gl.footer-links.footer-link-1 | Footer link 1 | Nav | The Book | 8 | 20.0 | Updated |  | The Book
+31: gl.footer-links.footer-link-2 | Footer link 2 | Nav | 18 Holes | 8 | 20.0 | Updated |  | 18 Holes
+32: gl.footer-links.footer-link-3 | Footer link 3 | Nav | Discover Your Game | 18 | 25.0 | Updated | Edit - Discover your game | Discover Your Round
+33: gl.footer-links.footer-link-4 | Footer link 4 | Nav | Speaking | 8 | 20.0 | Remove |  | Speaking
+34: gl.footer-links.footer-link-5 | Footer link 5 | Nav | Retreats | 8 | 20.0 | Updated | Remove Speaking and Retreats as separate footer categories. Create 'EVENTS' page instead and have Speaking and Retreats in there | Retreats
+35: gl.footer-links.footer-link-6 | Footer link 6 | Nav | Author | 6 | 20.0 | Approved |  | Author
+36: gl.footer-links.footer-link-7 | Footer link 7 | Nav | Articles | 8 | 20.0 | Approved |  | Articles
+37: gl.footer-links.footer-link-8 | Footer link 8 | Nav | Contact | 7 | 20.0 | Approved |  | Contact
+38: gl.footer-links.language-selector | Language selector | Label | English | 7 | 20.0 | Approved |  | English
+39: 04   FOOTER · LEGAL |  |  |  |  |  |  |  | 
+40: gl.footer-legal.copyright-line | Copyright line | Text | © 2026 Golf Gita | 16 | 25.0 | Approved |  | © 2026 Golf Gita
+41: gl.footer-legal.legal-link-1 | Legal link 1 | Nav | Privacy Policy | 14 | 20.0 | Approved |  | Privacy Policy
+42: gl.footer-legal.legal-link-2 | Legal link 2 | Nav | Terms of Service | 16 | 25.0 | Approved |  | Terms of Service
+43: gl.footer-legal.legal-link-3 | Legal link 3 | Nav | Cookie Policy | 13 | 20.0 | Approved |  | Cookie Policy
+
+## Home
+1: HOME PAGE |  |  |  |  |  |  |  | 
+2: Sections run top to bottom, exactly as they appear on the page. Header and footer live on the Global tab. |  |  |  |  |  |  |  | 
+3: Yellow cells = type over the text  |  Orange text = still has [brackets], add your real details  |  Red = too long for the layout  |  Set Status when done |  |  |  |  |  |  |  | 
+4: Field ID | What it is | Type | YOUR TEXT  (edit here) | Chars | Limit | Status | Notes / questions | Wireframe text (reference)
+5: 01   HERO   ·   first screen |  |  |  |  |  |  |  | 
+6:  | ℹ  Header and footer are shared by every page. Edit them once on the Global tab. |  |  |  |  |  |  | 
+7: home.hero.scrolling-banner-text | Scrolling banner text | Text | 18 HOLES · 18 CHAPTERS | 22 | 30.0 | Updated | This phrase repeats in a scrolling strip. Make the speed slower | 18 HOLES · 18 CHAPTERS
+8: home.hero.book-cover-image | Book cover image | Image | Book cover, front view (portrait) | 33 |  | Updated | https://drive.google.com/file/d/1WiT_D5on9sBxIpiUrsZT59280Ztr7v1C/view?usp=drive_link | Book cover (on hero)
+9: home.hero.book-cover-alt-text | Book cover alt text | Alt text | Golf Gita book cover: An ancient map for the modern round | 57 | 125.0 | Updated | Describes the image for screen readers and Google. | Golf Gita book cover: An ancient map for the modern round
+10: home.hero.headline | Headline | Heading | The oldest game and the oldest question share the same number. | 62 | 85.0 | To review |  | The oldest game and the oldest question share the same number.
+11: home.hero.intro-text | Intro text | Text | Golf Gita maps each hole on the course to a chapter of the Bhagavad Gita. Not a metaphor. A manual. | 99 | 130.0 | Updated | Increase font | Golf Gita maps each hole on the course to a chapter of the Bhagavad Gita. Not a metaphor. A manual.
+12: home.hero.main-button | Main button | Button | Where to buy | 12 | 20.0 | Approved |  | Where to buy
+13: home.hero.main-button-link | Main button link | Link | [Paste link] | 12 |  | Approved |  | [Paste link]
+14: home.hero.second-button | Second button | Button | Get a sample | 12 | 20.0 | Approved |  | Get a sample
+15: home.hero.second-button-link | Second button link | Link | [Paste link or sample file] | 27 |  | Approved |  | [Paste link or sample file]
+16: 02   THE IDEA   ·   mirror + the big 18 |  |  |  |  |  |  |  | 
+17: home.the-idea.heading | Heading | Heading | Where the fairway meets the Inner Battlefield | 45 | 55.0 | Updated |  | Where the fairway meets the battlefield
+18: home.the-idea.left-text | Left text | Text | Golf is a mirror - patience, ego, the restless mind, reflected back. | 68 | 90.0 | Remove | The word 'mirror' is shown in bold. | Golf is a mirror - patience, ego, the restless mind, reflected back.
+19: home.the-idea.big-number | Big number | Number | 18 | 2 | 20.0 | To review | Add color match to the number caption when it changes | 18
+20: home.the-idea.number-caption | Number caption | Label | Chapters of Bhagavad Gita | 25 | 35.0 | To review | Change color for each caption. Match it to the big number | Chapters of Bhagavad Gita
+21: home.the-idea.right-text | Right text | Text | Golf Gita maps it exactly - 18 holes to 18 chapters | 51 | 115.0 | Remove | The '18' numbers are shown in bold. | Golf Gita maps it exactly - 18 holes to 18 chapters, 18 forces that shape how we play.
+22: 03   FRONT NINE   ·   holes 1 to 9 carousel |  |  |  |  |  |  |  | 
+23:  | ℹ  Hole cards (number, chapter name, subtitle, tagline, Sanskrit) come from the Hole Data tab. Edit them there, not here. |  |  |  |  |  |  | 
+24: home.front-nine.small-label | Small label | Label | The front nine | 14 | 20.0 | Updated | Font is way too small | The front nine
+25: home.front-nine.heading | Heading | Heading | Holes 1 through 9 | 17 | 25.0 | Approved |  | Holes 1 through 9
+26: home.front-nine.scorecard-row-title | Scorecard row: title | Label | Front Nine | 10 | 20.0 | Remove |  | Front Nine
+27: home.front-nine.scorecard-row-hole | Scorecard row: hole | Label | Hole | 4 | 20.0 | Remove |  | Hole
+28: home.front-nine.scorecard-row-distance | Scorecard row: distance | Label | Distance | 8 | 20.0 | Remove |  | Distance
+29: home.front-nine.scorecard-row-par | Scorecard row: par | Label | Par | 3 | 20.0 | Remove |  | Par
+30: home.front-nine.link-to-all-holes | Link to all holes | Button | See all 18 | 10 | 20.0 | To review |  | See all 18
+31: 04   THE TURN   ·   halfway break |  |  |  |  |  |  |  | 
+32: home.the-turn.small-label | Small label | Label | After hole 9 · Before the turn | 30 | 40.0 | Updated | Increase Font | After hole 9 · Before the turn
+33: home.the-turn.heading | Heading | Heading | The Halfway House | 17 | 20.0 | Updated |  | The turn
+34: home.the-turn.photo | Photo | Image | Photo: golf course at the turn (landscape) | 42 |  | To review | Send the image file or paste a Drive link here. | Photo placeholder
+35: home.the-turn.photo-alt-text | Photo alt text | Alt text | Golf course view at the turn between the front and back nine | 60 | 125.0 | To review |  | Golf course view at the turn between the front and back nine
+36: home.the-turn.big-number | Big number | Number | 10 | 2 | 20.0 | Remove |  | 10
+37: home.the-turn.text | Text | Text | Nine forces met you already. What you carry into the back nine is your choice. | 78 | 105.0 | Updated | Font size increase | Nine forces met you already. What you carry into the back nine is your choice.
+38: home.the-turn.link | Link | Button | Continue to the back nine | 25 | 35.0 | Approved |  | Continue to the back nine
+39: 05   BACK NINE   ·   holes 10 to 18 carousel |  |  |  |  |  |  |  | 
+40:  | ℹ  Hole cards (number, chapter name, subtitle, tagline, Sanskrit) come from the Hole Data tab. Edit them there, not here. |  |  |  |  |  |  | 
+41: home.back-nine.small-label | Small label | Label | The Back Nine | 13 | 20.0 | Updated | Font Increase | The back nine
+42: home.back-nine.heading | Heading | Heading | Holes 10 through 18 | 19 | 25.0 | Updated |  | Holes 10 through 18
+43: home.back-nine.scorecard-row-title | Scorecard row: title | Label | Back Nine | 9 | 20.0 | Remove |  | Back Nine
+44: 06   SPEAKING TEASER   ·   photo + enquiry button |  |  |  |  |  |  |  | 
+45: home.speaking-teaser.photo | Photo | Image | Photo: speaker or retreat on course (portrait or square) | 56 |  | Remove | This whole section needs to move to a new Events page. Same sections to be added | Image placeholder (checker pattern)
+46: home.speaking-teaser.photo-alt-text | Photo alt text | Alt text | Golf Gita speaking session on the course | 40 | 125.0 | Remove |  | Golf Gita speaking session on the course
+47: home.speaking-teaser.small-label | Small label | Label | Speaking | 8 | 20.0 | Remove |  | Speaking
+48: home.speaking-teaser.heading | Heading | Heading | Bring the Gita to your club, course, or leadership retreat. | 59 | 80.0 | Remove |  | Bring the Gita to your club, course, or leadership retreat.
+49: home.speaking-teaser.text | Text | Text | Half day and full day sessions for golf clubs, corporate offsites, and wellness retreats. | 89 | 120.0 | Remove |  | Half day and full day sessions for golf clubs, corporate offsites, and wellness retreats.
+50: home.speaking-teaser.button | Button | Button | Enquire about a session | 23 | 30.0 | Remove |  | Enquire about a session
+51: 07   ARTICLES   ·   3 latest articles |  |  |  |  |  |  |  | 
+52: home.articles.small-label | Small label | Label | From the course notes | 21 | 30.0 | Updated | Font increase | From the course notes
+53: home.articles.heading | Heading | Heading | Recent articles | 15 | 20.0 | Approved |  | Recent articles
+54: home.articles.link | Link | Button | All articles → | 14 | 20.0 | Updated | Font Increase | All articles →
+55: home.articles.article-1-image | Article 1 · image | Image | Article 1 image (landscape) | 27 |  | Approved | Send the image file or paste a Drive link here. | Image
+56: home.articles.article-1-category | Article 1 · category | Label | Ego - Hole 1 | 12 | 20.0 | Updated | Article Titles to be changed | Golf mind
+57: home.articles.article-1-hole-tag | Article 1 · hole tag | Label | Hole 6 | 6 | 20.0 | Updated | H6 = Hole 6. | H6
+58: home.articles.article-1-title | Article 1 · title | Heading | The Pre-Shot Routine as Meditation | 34 | 45.0 | Updated | Will give edited title | The Pre-Shot Routine as Meditation
+59: home.articles.article-1-summary | Article 1 · summary | Text | Why the 90 seconds before you swing is the most important practice in golf. | 75 | 100.0 | Updated | Will give edited title | Why the 90 seconds before you swing is the most important practice in golf.
+60: home.articles.article-2-image | Article 2 · image | Image | Article 2 image (landscape) | 27 |  | Approved | Send the image file or paste a Drive link here. | Image
+61: home.articles.article-2-category | Article 2 · category | Label | Gita | 4 | 20.0 | Updated | Will give edited title | Gita
+62: home.articles.article-2-hole-tag | Article 2 · hole tag | Label | Hole 3 | 6 | 20.0 | Updated | H3 = Hole 3. | H3
+63: home.articles.article-2-title | Article 2 · title | Heading | Karma and the Scorecard | 23 | 30.0 | Updated | Will give edited title | Karma and the Scorecard
+64: home.articles.article-2-summary | Article 2 · summary | Text | What the Gita actually means by action without attachment to results. | 69 | 90.0 | Updated | Will give edited title | What the Gita actually means by action without attachment to results.
+65: home.articles.article-3-image | Article 3 · image | Image | Article 3 image (landscape) | 27 |  | Approved | Send the image file or paste a Drive link here. | Image
+66: home.articles.article-3-category | Article 3 · category | Label | Golf mind | 9 | 20.0 | Updated | Will give edited title | Golf mind
+67: home.articles.article-3-hole-tag | Article 3 · hole tag | Label | H1 | 2 | 20.0 | Updated | H1 = Hole 1. Will give edited title | H1
+68: home.articles.article-3-title | Article 3 · title | Heading | The Yips: A Spiritual Diagnosis | 31 | 45.0 | Updated | Will give edited title | The Yips: A Spiritual Diagnosis
+69: home.articles.article-3-summary | Article 3 · summary | Text | Ancient psychology has a precise name for what happens on the first tee. | 72 | 95.0 | Updated | Will give edited title | Ancient psychology has a precise name for what happens on the first tee.
+70: 08   NEWSLETTER   ·   dark box above footer |  |  |  |  |  |  |  | 
+71: home.newsletter.small-label | Small label | Label | Issue No. 1 | 11 | 20.0 | Updated | Font Increase | Issue No. 1
+72: home.newsletter.heading | Heading | Heading | 1-2-1 (With symbol) | 19 | 25.0 | Updated |  | The Caddie's Note
+73: home.newsletter.text | Text | Text | This week: the grip you haven't been ready to loosen. | 53 | 70.0 | Updated | Font Increase | This week: the grip you haven't been ready to loosen.
+74: home.newsletter.email-box-hint | Email box hint | Form | you@email.com | 13 | 20.0 | Approved |  | you@email.com
+75: home.newsletter.button | Button | Button | Subscribe | 9 | 20.0 | Approved |  | Subscribe
+76: home.newsletter.success-message | Success message | Form | Thanks for subscribing. Oue 1-2-1 is on its way | 47 | 85.0 | Approved | Suggested. Not in wireframe. | (not in wireframe)
+77: 09   SEARCH RESULTS (SEO)   ·   how this page looks on Google |  |  |  |  |  |  |  | 
+78: home.search-results-seo.page-title | Page title | SEO title | Golf Gita | 18 Holes, 18 Chapters, One Ancient Map | 50 | 60.0 | Approved | Suggested. Not in wireframe. | (not in wireframe)
+79: home.search-results-seo.page-description | Page description | SEO description | Golf Gita maps each hole on the course to a chapter of the Bhagavad Gita. An ancient map for the modern round. | 110 | 155.0 | Approved | Suggested. Not in wireframe. | (not in wireframe)
+
+## The Book
+1: THE BOOK PAGE |  |  |  |  |  |  |  | 
+2: Everything about the book itself. Sections run top to bottom, as on the page. |  |  |  |  |  |  |  | 
+3: Yellow cells = type over the text  |  Orange text = still has [brackets], add your real details  |  Red = too long for the layout  |  Set Status when done |  |  |  |  |  |  |  | 
+4: Field ID | What it is | Type | YOUR TEXT  (edit here) | Chars | Limit | Status | Notes / questions | Wireframe text (reference)
+5: 01   BOOK INTRO   ·   cover + description |  |  |  |  |  |  |  | 
+6:  | ℹ  Header and footer are shared by every page. Edit them once on the Global tab. |  |  |  |  |  |  | 
+7: book.book-intro.small-label | Small label | Label | The Book | 8 | 20.0 | Updated | Font Increase | The Book
+8: book.book-intro.book-cover-image | Book cover image | Image | Book cover, front view (portrait) | 33 |  | Approved | https://drive.google.com/file/d/1WiT_D5on9sBxIpiUrsZT59280Ztr7v1C/view?usp=drive_link | Cover placeholder
+9: book.book-intro.book-cover-alt-text | Book cover alt text | Alt text | Golf Gita book cover | 20 | 125.0 | To review |  | Golf Gita book cover
+10: book.book-intro.title | Title | Heading | Golf Gita | 9 | 20.0 | Updated | Follow brand font | Golf Gita
+11: book.book-intro.subtitle | Subtitle | Heading | The Eternal Game of Celestial Wisdom. | 37 | 55.0 | Updated |  | 18 Holes. 18 Chapters. One Ancient Map.
+12: book.book-intro.paragraph-1 | Paragraph 1 | Text | Golf Gita blends the art of golf with the wisdom of the Bhagavad Gita, guiding readers through ego, duality and balance towards inner clarity, purposeful action and freedom beyond the scorecard. | 194 | 220.0 | Updated | Font increase - Text edited | Golf gives you 18 holes and four hours to confront yourself. The Bhagavad Gita gives you 18 chapters and a battlefield. The problems are identical. So are the solutions.
+13: book.book-intro.paragraph-2 | Paragraph 2 | Text | Golf Gita is a personal journal and guided exploration of golf’s inner game through the wisdom of the Bhagavad Gita. It is neither a technical golf manual nor a final authority on the Gita. Its 18 holes offer mirrors for ego, fear, desire, balance and awareness, not a fixed sequence of lessons. Read in order or turn to what speaks to you today. The course has numbers. The mind does not. | 389 | 295.0 | Updated | Please increase character limit. Increase and match font size to paragraph 1 | This book does not argue the coincidence. It works through it, hole by hole. Each chapter opens with the teaching most needed at that point in a round, then shows where the Gita said the same thing, two thousand years earlier.
+14: book.book-intro.format-1 | Format 1 | Label | Hardcover | 9 | 20.0 | To review | Font increase | Hardcover
+15: book.book-intro.format-2 | Format 2 | Label | Paperback | 9 | 20.0 | To review | Font increase | Paperback
+16: book.book-intro.format-3 | Format 3 | Label | Kindle | 6 | 20.0 | To review | Font increase | Kindle
+17: book.book-intro.format-4 | Format 4 | Label | ePub | 4 | 20.0 | To review | Font increase | ePub
+18: book.book-intro.main-button | Main button | Button | Where to buy | 12 | 20.0 | Approved |  | Where to buy
+19: book.book-intro.main-button-link | Main button link | Link | [Paste link] | 12 |  | To review |  | [Paste link]
+20: book.book-intro.second-button | Second button | Button | Read the preface free | 21 | 30.0 | Approved |  | Read the preface free
+21: book.book-intro.second-button-link | Second button link | Link | [Paste link or preface file] | 28 |  | To review |  | [Paste link or preface file]
+22: 02   WHO IT'S FOR   ·   4 short points |  |  |  |  |  |  |  | 
+23: book.who-it-s-for.point-1 | Point 1 | Text | Experienced Golfers seeking wisdom beyond the scorecard | 55 | 70.0 | Updated | Font Increase | Golfers who feel there is something more to the game
+24: book.who-it-s-for.point-2 | Point 2 | Text | Golf Coaches guiding both the swing and the mind | 48 | 55.0 | Updated | Font Increase | Anyone who uses sport as a place to think
+25: book.who-it-s-for.point-3 | Point 3 | Text | Those new to golf discovering the game and themselves | 53 | 70.0 | Updated | Font Increase | Readers of the Gita looking for a living application
+26: book.who-it-s-for.point-4 | Point 4 | Text | Leaders exploring balance, awareness and purposeful action | 58 | 75.0 | Updated | Font Increase | Coaches and teachers who work with performance and mind
+27: 03   INSIDE THE BOOK   ·   sample hole card + scorecard |  |  |  |  |  |  |  | 
+28:  | ℹ  Hole cards (number, chapter name, subtitle, tagline, Sanskrit) come from the Hole Data tab. Edit them there, not here. |  |  |  |  |  |  | 
+29: book.inside-the-book.small-label | Small label | Label | Front nine | 10 | 20.0 | Remove |  | Front nine
+30: book.inside-the-book.scorecard-row-hole | Scorecard row: hole | Label | Hole | 4 | 20.0 | Remove |  | Hole
+31: book.inside-the-book.scorecard-row-distance | Scorecard row: distance | Label | Distance | 8 | 20.0 | Remove |  | Distance
+32: book.inside-the-book.scorecard-row-par | Scorecard row: par | Label | Par | 3 | 20.0 | Remove |  | Par
+33: book.inside-the-book.scorecard-explainer | Scorecard explainer | Text | Distance is each chapter's page count. Par follows from it. | 59 | 80.0 | Remove |  | Distance is each chapter's page count. Par follows from it.
+34: book.inside-the-book.card-view-toggle | Card view toggle | Button | Card | 4 | 20.0 | Remove |  | Card
+35: book.inside-the-book.list-view-toggle | List view toggle | Button | List | 4 | 20.0 | Remove |  | List
+36: book.inside-the-book.card-label | Card label | Label | Hole 1 | 6 | 20.0 | Remove | Changes with the selected hole. | Hole 1
+37: 04   READERS SAY   ·   3 quotes |  |  |  |  |  |  |  | 
+38: book.readers-say.small-label | Small label | Label | Readers | 7 | 20.0 | Approved |  | Readers
+39: book.readers-say.quote-1 | Quote 1 | Quote | The hole six chapter changed how I think about the downswing. And about attention. | 82 | 110.0 | Approved |  | The hole six chapter changed how I think about the downswing. And about attention.
+40: book.readers-say.quote-1-who | Quote 1 · who | Label | Club captain, Royal Bombay Golf Club | 36 | 50.0 | Approved |  | Club captain, Royal Bombay Golf Club
+41: book.readers-say.quote-2 | Quote 2 | Quote | I have taught the Gita for twenty years. This is a new door into it. | 68 | 90.0 | Approved |  | I have taught the Gita for twenty years. This is a new door into it.
+42: book.readers-say.quote-2-who | Quote 2 · who | Label | Philosophy lecturer | 19 | 25.0 | Approved |  | Philosophy lecturer
+43: book.readers-say.quote-3 | Quote 3 | Quote | My handicap has not improved. My enjoyment of the game is unrecognisable. | 73 | 95.0 | Approved |  | My handicap has not improved. My enjoyment of the game is unrecognisable.
+44: book.readers-say.quote-3-who | Quote 3 · who | Label | Reader, London | 14 | 20.0 | Approved |  | Reader, London
+45: 05   FAQ   ·   click-to-open questions |  |  |  |  |  |  |  | 
+46: book.faq.small-label | Small label | Label | Ask the Caddie | 14 | 20.0 | Updated |  | FAQ
+47: book.faq.question-1 | Question 1 | Heading | Do I need to know the Bhagavad Gita to read this? | 49 | 65.0 | Approved |  | Do I need to know the Bhagavad Gita to read this?
+48: book.faq.answer-1 | Answer 1 | Text | No. Each chapter introduces the teaching in plain language before showing how it plays out on the course. | 105 | 140.0 | Approved | Sample answer. Answers were not in the wireframe. Replace with yours. | (not in wireframe)
+49: book.faq.question-2 | Question 2 | Heading | Is this a religious book? | 25 | 35.0 | Approved |  | Is this a religious book?
+50: book.faq.answer-2 | Answer 2 | Text | No. The Gita is treated here as a text about the mind, action, and attention. Readers of any belief, or none, will find it useful. | 130 | 170.0 | Approved | Sample answer. Replace with yours. | (not in wireframe)
+51: book.faq.question-3 | Question 3 | Heading | Is it available as an ebook? | 28 | 40.0 | Approved |  | Is it available as an ebook?
+52: book.faq.answer-3 | Answer 3 | Text | Yes. Golf Gita is available on Kindle and as an ePub. See the 'Where to buy' links for options. | 95 | 125.0 | Approved | Sample answer. Replace with yours. | (not in wireframe)
+53: book.faq.question-4 | Question 4 | Heading | Can I bulk order for a club or corporate event? | 47 | 65.0 | Approved |  | Can I bulk order for a club or corporate event?
+54: book.faq.answer-4 | Answer 4 | Text | Yes. Please get in touch through the Contact page and we will help with bulk and corporate orders. | 98 | 130.0 | Approved | Sample answer. Replace with yours. | (not in wireframe)
+55: 06   SEARCH RESULTS (SEO)   ·   how this page looks on Google |  |  |  |  |  |  |  | 
+56: book.search-results-seo.page-title | Page title | SEO title | The Book | Golf Gita | 20 | 60.0 | Approved | Suggested. Not in wireframe. | (not in wireframe)
+57: book.search-results-seo.page-description | Page description | SEO description | Golf gives you 18 holes and four hours to confront yourself. The Gita gives you 18 chapters. Read how they map, hole by hole. | 125 | 155.0 | To review | Suggested. Not in wireframe. | (not in wireframe)
+
+## 18 Holes
+1: 18 HOLES PAGE |  |  |  |  |  |  |  | 
+2: The page listing all 18 chapters. The chapter cards themselves are edited on the Hole Data tab. |  |  |  |  |  |  |  | 
+3: Yellow cells = type over the text  |  Orange text = still has [brackets], add your real details  |  Red = too long for the layout  |  Set Status when done |  |  |  |  |  |  |  | 
+4: Field ID | What it is | Type | YOUR TEXT  (edit here) | Chars | Limit | Status | Notes / questions | Wireframe text (reference)
+5: 01   PAGE HEADER   ·   top of page |  |  |  |  |  |  |  | 
+6:  | ℹ  Header and footer are shared by every page. Edit them once on the Global tab. |  |  |  |  |  |  | 
+7: holes.page-header.small-label | Small label | Label | The course | 10 | 20.0 | Updated | Font Increase | The course
+8: holes.page-header.heading | Heading | Heading | 18 Holes | 8 | 20.0 | Updated | Font Increase | 18 Holes
+9: holes.page-header.intro-text | Intro text | Text | Each hole corresponds to a chapter of the Bhagavad Gita. Each chapter arrives exactly when the game needs it. | 109 | 145.0 | Updated | Font Increase | Each hole corresponds to a chapter of the Bhagavad Gita. Each chapter arrives exactly when the game needs it.
+10: holes.page-header.link-to-book | Link to book | Button | Read the book → | 15 | 20.0 | Updated | Font Increase | Read the book →
+11: 02   FRONT NINE LIST   ·   holes 1 to 9 |  |  |  |  |  |  |  | 
+12:  | ℹ  Hole cards (number, chapter name, subtitle, tagline, Sanskrit) come from the Hole Data tab. Edit them there, not here. |  |  |  |  |  |  | 
+13: holes.front-nine-list.group-heading | Group heading | Heading | Front Nine | 10 | 20.0 | Updated |  | Front nine 1–9
+14: holes.front-nine-list.hole-label-pattern | Hole label pattern | Label | Hole 1 - Ego | 12 | 20.0 | Updated | New Layout with icons to be given. No boxes. 18+1 medallion images will be given | Hole 1
+15: holes.front-nine-list.card-link | Card link | Button | Read chapter → | 14 | 20.0 | Updated | Same link text on every card. | Read chapter →
+16: 03   HALFWAY HOUSE   ·   quote between the nines |  |  |  |  |  |  |  | 
+17: holes.halfway-house.small-label | Small label | Label | Halfway House | 13 | 20.0 | Updated |  | Halfway house
+18: holes.halfway-house.quote | Quote | Quote | After nine days of battle, the Pandavas gather with Krishna to reassess their strategy and prepare for the nine days ahead - The Bhagavad Gita | 142 | 145.0 | Updated |  | At the turn, you know what kind of round this will be. The question is whether you keep playing the same one.
+19: 04   BACK NINE LIST   ·   holes 10 to 18 |  |  |  |  |  |  |  | 
+20:  | ℹ  Hole cards (number, chapter name, subtitle, tagline, Sanskrit) come from the Hole Data tab. Edit them there, not here. |  |  |  |  |  |  | 
+21: holes.back-nine-list.group-heading | Group heading | Heading | Back nine 10–18 | 15 | 20.0 | Updated | Update to how the front 9 will look | Back nine 10–18
+22: 05   SEARCH RESULTS (SEO)   ·   how this page looks on Google |  |  |  |  |  |  |  | 
+23: holes.search-results-seo.page-title | Page title | SEO title | 18 Holes | Golf Gita | 20 | 60.0 | Remove | Suggested. Not in wireframe. | (not in wireframe)
+24: holes.search-results-seo.page-description | Page description | SEO description | Each hole on the course corresponds to a chapter of the Bhagavad Gita. Explore all 18 chapters, from Despair to Liberation. | 123 | 155.0 | Remove | Suggested. Not in wireframe. | (not in wireframe)
+
+## Hole Data
+1: HOLE DATA  ·  the 18 chapter cards |  |  |  |  |  |  |  |  | 
+2: Edit each hole once here. It updates everywhere it appears: Home carousels, The Book sample card, and the 18 Holes page. Distance = the chapter's page count (Par follows from it). Sanskrit spellings were restored from the wireframe. Please double-check them. |  |  |  |  |  |  |  |  | 
+3: Yellow cells = type over the text  |  Orange text = still has [brackets], add your real details  |  Set Status when done |  |  |  |  |  |  |  |  | 
+4: Hole | Par | Distance | (pages) | Chapter name | Subtitle | One-line tagline | Sanskrit | (Devanagari) | Sanskrit | (English letters) | Status | Notes / questions
+5: FRONT NINE  ·  Holes 1 to 9 |  |  |  |  |  |  |  |  | 
+6: 1.0 | 4.0 | [pages] | Despair | Arjuna's Crisis | Every round begins at the edge of self-doubt. | विषाद | Vishada | To review | 
+7: 2.0 | 5.0 | [pages] | Knowledge | Eternal Self | What falls is never what swings the club. | ज्ञान | Jnana | To review | 
+8: 3.0 | 4.0 | [pages] | Action | Selfless Work | Strike. Do not negotiate with the outcome. | कर्म | Karma | To review | 
+9: 4.0 | 4.0 | [pages] | Renunciation | Path of Wisdom | Release the last shot before you take the next. | संन्यास | Sannyasa | To review | Check Sanskrit spelling with author.
+10: 5.0 | 3.0 | [pages] | Restraint | Karma-Sannyas | The quiet swing holds more power than the forced one. | यम | Yama | To review | Check: Gita chapter 5 is Karma-Sannyasa Yoga, but the Sanskrit label in the wireframe is 'Yama'. Confirm which is right.
+11: 6.0 | 4.0 | [pages] | Meditation | Self-Mastery | Stillness before the backswing. Stillness after. | ध्यान | Dhyana | To review | 
+12: 7.0 | 3.0 | [pages] | Wisdom | Knowledge Realized | Understanding the course is not the same as knowing it. | विज्ञान | Vijnana | To review | 
+13: 8.0 | 3.0 | [pages] | The Eternal | Imperishable Brahman | You are playing a game older than your name for it. | अक्षर | Akshara | To review | 
+14: 9.0 | 4.0 | [pages] | Sovereignty | Royal Knowledge | Mastery is hidden in plain sight. | राज विद्या | Raja Vidya | To review | 
+15: BACK NINE  ·  Holes 10 to 18 |  |  |  |  |  |  |  |  | 
+16: 10.0 | 4.0 | [pages] | Manifestation | Divine Glories | Every hole is an expression of something vaster. | विभूति | Vibhuti | To review | 
+17: 11.0 | 4.0 | [pages] | Revelation | Cosmic Form | At some point the game becomes the teacher. | विश्वरूप | Vishwarupa | To review | 
+18: 12.0 | 3.0 | [pages] | Devotion | Path of Love | Play for the love of the game, not its verdict. | भक्ति | Bhakti | To review | 
+19: 13.0 | 5.0 | [pages] | Discernment | Field of Action | Know the course. Know the one who walks it. | क्षेत्र | Kshetra | To review | 
+20: 14.0 | 4.0 | [pages] | Transcendence | The Three Qualities | Dullness, restlessness, clarity: you cycle through all three. | गुण | Guna | To review | Wireframe had no punctuation between the qualities and 'you cycle'. Colon added; change if needed.
+21: 15.0 | 4.0 | [pages] | The Whole | Supreme Self | The best hole you ever played dissolves into the round. | पुरुषोत्तम | Purushottama | To review | 
+22: 16.0 | 3.0 | [pages] | Integrity | Divine Qualities | The card you sign at the end is the player you are. | दैवी | Daivi | To review | 
+23: 17.0 | 4.0 | [pages] | Conviction | Threefold Faith | Doubt in the downswing loses the hole before it is played. | श्रद्धा | Shraddha | To review | 
+24: 18.0 | 5.0 | [pages] | Liberation | Freedom | The final hole is where you put down everything you carried. | मोक्ष | Moksha | To review | 
+26:  |  |  | Front nine par | 34 |  |  |  |  | 
+27:  |  |  | Back nine par | 36 |  |  |  |  | 
+28:  |  |  | Total par | 70 |  |  |  |  | 
+
+## Discover Your Round
+1: DISCOVER YOUR ROUND  ·  Quiz page |  |  |  |  |  |  |  | 
+2: A 6-question quiz. Only question 1 was in the wireframe. Questions 2 to 6 have placeholders for you to fill. |  |  |  |  |  |  |  | 
+3: Yellow cells = type over the text  |  Orange text = still has [brackets], add your real details  |  Red = too long for the layout  |  Set Status when done |  |  |  |  |  |  |  | 
+4:  |  | Quiz questions and options and results will be given. No edits added to this page just yet except Title |  |  |  |  |  | 
+5: Field ID | What it is | Type | YOUR TEXT  (edit here) | Chars | Limit | Status | Notes / questions | Wireframe text (reference)
+6: 01   QUIZ SCREEN   ·   shared by all 6 questions |  |  |  |  |  |  |  | 
+7:  | ℹ  Header and footer are shared by every page. Edit them once on the Global tab. |  |  |  |  |  |  | 
+8: quiz.quiz-screen.small-label | Small label | Label | Discover Your Inner Game | 24 | 25.0 | Updated |  | Discover your round
+9: quiz.quiz-screen.progress-text | Progress text | Label | 1 of 6 | 6 | 20.0 | To review | Changes automatically: 1 of 6, 2 of 6 and so on. | 1 of 6
+10: quiz.quiz-screen.next-button | Next button | Button | Next question | 13 | 20.0 | To review |  | Next question
+11: quiz.quiz-screen.last-question-button | Last question button | Button | See my round | 12 | 20.0 | To review | Suggested. Not in wireframe. | (not in wireframe)
+12: 02   QUESTION 1 |  |  |  |  |  |  |  | 
+13: quiz.question-1.question-1 | Question 1 | Heading | Where does your round usually fall apart? | 41 | 55.0 | To review |  | Where does your round usually fall apart?
+14: quiz.question-1.option-a | Option A | Text | The first tee — I tighten up before I start | 43 | 60.0 | To review |  | The first tee — I tighten up before I start
+15: quiz.question-1.option-b | Option B | Text | The par 5s — I try to do too much | 33 | 45.0 | To review |  | The par 5s — I try to do too much
+16: quiz.question-1.option-c | Option C | Text | After a bad hole — I carry it forward | 37 | 50.0 | To review |  | After a bad hole — I carry it forward
+17: quiz.question-1.option-d | Option D | Text | The back nine — I lose concentration | 36 | 50.0 | To review |  | The back nine — I lose concentration
+18: 03   QUESTION 2 |  |  |  |  |  |  |  | 
+19: quiz.question-2.question-2 | Question 2 | Heading | [Question 2: type your question here] | 37 | 50.0 | To review | Only question 1 was in the wireframe. Replace the [bracketed] text. | (not in wireframe)
+20: quiz.question-2.option-a | Option A | Text | [Answer option A for question 2] | 32 | 45.0 | To review |  | (not in wireframe)
+21: quiz.question-2.option-b | Option B | Text | [Answer option B for question 2] | 32 | 45.0 | To review |  | (not in wireframe)
+22: quiz.question-2.option-c | Option C | Text | [Answer option C for question 2] | 32 | 45.0 | To review |  | (not in wireframe)
+23: quiz.question-2.option-d | Option D | Text | [Answer option D for question 2] | 32 | 45.0 | To review |  | (not in wireframe)
+24: 04   QUESTION 3 |  |  |  |  |  |  |  | 
+25: quiz.question-3.question-3 | Question 3 | Heading | [Question 3: type your question here] | 37 | 50.0 | To review | Only question 1 was in the wireframe. Replace the [bracketed] text. | (not in wireframe)
+26: quiz.question-3.option-a | Option A | Text | [Answer option A for question 3] | 32 | 45.0 | To review |  | (not in wireframe)
+27: quiz.question-3.option-b | Option B | Text | [Answer option B for question 3] | 32 | 45.0 | To review |  | (not in wireframe)
+28: quiz.question-3.option-c | Option C | Text | [Answer option C for question 3] | 32 | 45.0 | To review |  | (not in wireframe)
+29: quiz.question-3.option-d | Option D | Text | [Answer option D for question 3] | 32 | 45.0 | To review |  | (not in wireframe)
+30: 05   QUESTION 4 |  |  |  |  |  |  |  | 
+31: quiz.question-4.question-4 | Question 4 | Heading | [Question 4: type your question here] | 37 | 50.0 | To review | Only question 1 was in the wireframe. Replace the [bracketed] text. | (not in wireframe)
+32: quiz.question-4.option-a | Option A | Text | [Answer option A for question 4] | 32 | 45.0 | To review |  | (not in wireframe)
+33: quiz.question-4.option-b | Option B | Text | [Answer option B for question 4] | 32 | 45.0 | To review |  | (not in wireframe)
+34: quiz.question-4.option-c | Option C | Text | [Answer option C for question 4] | 32 | 45.0 | To review |  | (not in wireframe)
+35: quiz.question-4.option-d | Option D | Text | [Answer option D for question 4] | 32 | 45.0 | Updated | Add a 'Go back option' to each section | (not in wireframe)
+36: 06   QUESTION 5 |  |  |  |  |  |  |  | 
+37: quiz.question-5.question-5 | Question 5 | Heading | [Question 5: type your question here] | 37 | 50.0 | To review | Only question 1 was in the wireframe. Replace the [bracketed] text. | (not in wireframe)
+38: quiz.question-5.option-a | Option A | Text | [Answer option A for question 5] | 32 | 45.0 | To review |  | (not in wireframe)
+39: quiz.question-5.option-b | Option B | Text | [Answer option B for question 5] | 32 | 45.0 | To review |  | (not in wireframe)
+40: quiz.question-5.option-c | Option C | Text | [Answer option C for question 5] | 32 | 45.0 | To review |  | (not in wireframe)
+41: quiz.question-5.option-d | Option D | Text | [Answer option D for question 5] | 32 | 45.0 | Updated | Add a 'Go back option' to each section | (not in wireframe)
+42: 07   QUESTION 6 |  |  |  |  |  |  |  | 
+43: quiz.question-6.question-6 | Question 6 | Heading | [Question 6: type your question here] | 37 | 50.0 | To review | Only question 1 was in the wireframe. Replace the [bracketed] text. | (not in wireframe)
+44: quiz.question-6.option-a | Option A | Text | [Answer option A for question 6] | 32 | 45.0 | To review |  | (not in wireframe)
+45: quiz.question-6.option-b | Option B | Text | [Answer option B for question 6] | 32 | 45.0 | To review |  | (not in wireframe)
+46: quiz.question-6.option-c | Option C | Text | [Answer option C for question 6] | 32 | 45.0 | To review |  | (not in wireframe)
+47: quiz.question-6.option-d | Option D | Text | [Answer option D for question 6] | 32 | 45.0 | Updated | Add a 'Go back option' to each section | (not in wireframe)
+48: 08   SEARCH RESULTS (SEO)   ·   how this page looks on Google |  |  |  |  |  |  |  | 
+49: quiz.search-results-seo.page-title | Page title | SEO title | Discover Your Round | Golf Gita | 31 | 60.0 | To review | Suggested. Not in wireframe. | (not in wireframe)
+50: quiz.search-results-seo.page-description | Page description | SEO description | Answer six questions about your game and discover which part of your round the Gita speaks to. | 94 | 155.0 | To review | Suggested. Not in wireframe. | (not in wireframe)
+
+## Speaking
+1: SPEAKING & RETREATS PAGE |  |  |  |  |  |  |  | 
+2: Keynotes, workshops and the retreat. Sections run top to bottom, as on the page. |  |  |  |  |  |  |  | 
+3: Yellow cells = type over the text  |  Orange text = still has [brackets], add your real details  |  Red = too long for the layout  |  Set Status when done |  |  |  |  |  |  |  | 
+4: Field ID | What it is | Type | YOUR TEXT  (edit here) | Chars | Limit | Status | Notes / questions | Wireframe text (reference)
+5: 01   HERO   ·   top of page |  |  |  |  |  |  |  | 
+6:  | ℹ  Header and footer are shared by every page. Edit them once on the Global tab. |  |  |  |  |  |  | 
+7: speaking.hero.small-label | Small label | Label | Speaking · Retreats | 19 | 25.0 | To review | Overall Font size increase. This section to be done 'Coming Soon | Speaking · Retreats
+8: speaking.hero.headline | Headline | Heading | The inner game, brought to your course. | 39 | 55.0 | To review |  | The inner game, brought to your course.
+9: speaking.hero.intro-text | Intro text | Text | Keynotes, workshops, and immersive retreats built on the Golf Gita's 18-chapter framework. For golf clubs, corporate teams, and anyone who uses the game as a place to think. | 173 | 225.0 | To review |  | Keynotes, workshops, and immersive retreats built on the Golf Gita's 18-chapter framework. For golf clubs, corporate teams, and anyone who uses the game as a place to think.
+10: speaking.hero.main-button | Main button | Button | Enquire about speaking | 22 | 30.0 | To review |  | Enquire about speaking
+11: speaking.hero.second-button | Second button | Button | Explore the retreat | 19 | 25.0 | To review |  | Explore the retreat
+12: 02   AUDIENCES   ·   4 cards |  |  |  |  |  |  |  | 
+13: speaking.audiences.small-label | Small label | Label | Keynotes · Talks · Workshops | 28 | 40.0 | To review |  | Keynotes · Talks · Workshops
+14: speaking.audiences.heading | Heading | Heading | The game within the game — for every audience. | 46 | 60.0 | To review |  | The game within the game — for every audience.
+15: speaking.audiences.card-1-title | Card 1 · title | Heading | Golf Clubs & Associations | 25 | 35.0 | To review |  | Golf Clubs & Associations
+16: speaking.audiences.card-1-text | Card 1 · text | Text | A session that changes how members think about the game they already love. | 74 | 100.0 | To review |  | A session that changes how members think about the game they already love.
+17: speaking.audiences.card-1-who-it-s-for | Card 1 · who it's for | Label | For: Club members, captains, committees | 39 | 55.0 | To review |  | For: Club members, captains, committees
+18: speaking.audiences.card-2-title | Card 2 · title | Heading | Corporate Leadership | 20 | 30.0 | To review |  | Corporate Leadership
+19: speaking.audiences.card-2-text | Card 2 · text | Text | Performance under pressure, decision-making, and the inner game of business. | 76 | 100.0 | To review |  | Performance under pressure, decision-making, and the inner game of business.
+20: speaking.audiences.card-2-who-it-s-for | Card 2 · who it's for | Label | For: Leadership teams, offsites, board retreats | 47 | 65.0 | To review |  | For: Leadership teams, offsites, board retreats
+21: speaking.audiences.card-3-title | Card 3 · title | Heading | Philosophy & Wellness | 21 | 30.0 | To review |  | Philosophy & Wellness
+22: speaking.audiences.card-3-text | Card 3 · text | Text | The Gita as a living text, explored through the lens of sport and practice. | 75 | 100.0 | To review |  | The Gita as a living text, explored through the lens of sport and practice.
+23: speaking.audiences.card-3-who-it-s-for | Card 3 · who it's for | Label | For: Yoga studios, wellness retreats, learning centres | 54 | 75.0 | To review |  | For: Yoga studios, wellness retreats, learning centres
+24: speaking.audiences.card-4-title | Card 4 · title | Heading | Schools & Universities | 22 | 30.0 | To review |  | Schools & Universities
+25: speaking.audiences.card-4-text | Card 4 · text | Text | Ancient wisdom framed for a generation navigating performance and identity. | 75 | 100.0 | To review |  | Ancient wisdom framed for a generation navigating performance and identity.
+26: speaking.audiences.card-4-who-it-s-for | Card 4 · who it's for | Label | For: Students, faculty, sports academies | 40 | 55.0 | To review |  | For: Students, faculty, sports academies
+27: 03   THE RETREAT   ·   3 phases |  |  |  |  |  |  |  | 
+28: speaking.the-retreat.small-label | Small label | Label | The Golf Gita Retreat | 21 | 30.0 | To review |  | The Golf Gita Retreat
+29: speaking.the-retreat.heading | Heading | Heading | A golf retreat for the mind, body and swing | 43 | 55.0 | Updated |  | A round unlike any you have played before.
+30: speaking.the-retreat.intro-text | Intro text | Text | Three structured phases. One ancient map. Played on a real course, with real stakes. | 84 | 110.0 | To review |  | Three structured phases. One ancient map. Played on a real course, with real stakes.
+31: speaking.the-retreat.phase-1-number | Phase 1 · number | Number | 01 | 2 | 20.0 | To review |  | 01
+32: speaking.the-retreat.phase-1-title | Phase 1 · title | Heading | The Classroom | 13 | 20.0 | To review |  | The Classroom
+33: speaking.the-retreat.phase-1-text | Phase 1 · text | Text | The Bhagavad Gita's 18 chapters mapped to the structure of a round. Each teaching placed where it arrives on the course. | 120 | 160.0 | To review |  | The Bhagavad Gita's 18 chapters mapped to the structure of a round. Each teaching placed where it arrives on the course.
+34: speaking.the-retreat.phase-2-number | Phase 2 · number | Number | 02 | 2 | 20.0 | To review |  | 02
+35: speaking.the-retreat.phase-2-title | Phase 2 · title | Heading | The Course | 10 | 20.0 | To review |  | The Course
+36: speaking.the-retreat.phase-2-text | Phase 2 · text | Text | Walk the holes. Apply what was heard. The game becomes the practice, not an illustration of it. | 95 | 125.0 | To review | Spelling corrected from 'practise' (verb) to 'practice' (noun). | Walk the holes. Apply what was heard. The game becomes the practise, not an illustration of it.
+37: speaking.the-retreat.phase-3-number | Phase 3 · number | Number | 03 | 2 | 20.0 | To review |  | 03
+38: speaking.the-retreat.phase-3-title | Phase 3 · title | Heading | The Integration | 15 | 20.0 | To review |  | The Integration
+39: speaking.the-retreat.phase-3-text | Phase 3 · text | Text | Reflection, group conversation, and a personal framework to carry back into the next round and beyond it. | 105 | 140.0 | To review |  | Reflection, group conversation, and a personal framework to carry back into the next round and beyond it.
+40: speaking.the-retreat.detail-1-label | Detail 1 · label | Label | Duration | 8 | 20.0 | To review |  | Duration
+41: speaking.the-retreat.detail-1-value | Detail 1 · value | Text | Tailored to client | 18 | 25.0 | To review |  | Tailored to client
+42: speaking.the-retreat.detail-2-label | Detail 2 · label | Label | Location | 8 | 20.0 | To review |  | Location
+43: speaking.the-retreat.detail-2-value | Detail 2 · value | Text | Worldwide | 9 | 20.0 | To review |  | Worldwide
+44: speaking.the-retreat.detail-3-label | Detail 3 · label | Label | Group size | 10 | 20.0 | To review |  | Group size
+45: speaking.the-retreat.detail-3-value | Detail 3 · value | Text | Intimate | 8 | 20.0 | To review |  | Intimate
+46: 04   ENQUIRY FORM   ·   bottom of page |  |  |  |  |  |  |  | 
+47: speaking.enquiry-form.small-label | Small label | Label | Enquire | 7 | 20.0 | To review |  | Enquire
+48: speaking.enquiry-form.heading | Heading | Heading | Tell us about your event. | 25 | 35.0 | To review |  | Tell us about your event.
+49: speaking.enquiry-form.intro-text | Intro text | Text | We respond within two working days. No obligation, no pitch deck. | 65 | 85.0 | To review |  | We respond within two working days. No obligation, no pitch deck.
+50: speaking.enquiry-form.name-field-label | Name field label | Form | Name | 4 | 20.0 | To review |  | Name
+51: speaking.enquiry-form.email-field-label | Email field label | Form | Email | 5 | 20.0 | To review |  | Email
+52: speaking.enquiry-form.organisation-field-label | Organisation field label | Form | Organisation | 12 | 20.0 | To review |  | Organisation
+53: speaking.enquiry-form.enquiry-type-label | Enquiry type label | Form | Type of enquiry | 15 | 20.0 | To review |  | Type of enquiry
+54: speaking.enquiry-form.enquiry-type-default | Enquiry type default | Form | Select one | 10 | 20.0 | To review |  | Select one
+55: speaking.enquiry-form.enquiry-type-options | Enquiry type options | Form | Golf club or association; Corporate leadership; Philosophy or wellness; School or university; Retreat; Other | 108 |  | To review | Drop-down choices, separated by semicolons. Suggested. Not in wireframe. | (not in wireframe)
+56: speaking.enquiry-form.message-field-label | Message field label | Form | Message | 7 | 20.0 | To review |  | Message
+57: speaking.enquiry-form.message-box-hint | Message box hint | Form | Tell us about the event, your audience, and what you're hoping for. | 67 | 90.0 | To review |  | Tell us about the event, your audience, and what you're hoping for.
+58: speaking.enquiry-form.send-button | Send button | Button | Send enquiry | 12 | 20.0 | To review |  | Send enquiry
+59: speaking.enquiry-form.download-link | Download link | Button | Download speaker one-pager | 26 | 35.0 | To review |  | Download speaker one-pager
+60: speaking.enquiry-form.download-file | Download file | Link | [Attach or paste link to one-pager PDF] | 39 |  | To review |  | [Attach or paste link to one-pager PDF]
+61: speaking.enquiry-form.small-note | Small note | Text | No prices listed. Availability and format are agreed directly. | 62 | 85.0 | To review |  | No prices listed. Availability and format are agreed directly.
+62: speaking.enquiry-form.success-message | Success message | Form | Thank you. We will respond within two working days. | 51 | 70.0 | To review | Suggested. Not in wireframe. | (not in wireframe)
+63: 05   SEARCH RESULTS (SEO)   ·   how this page looks on Google |  |  |  |  |  |  |  | 
+64: speaking.search-results-seo.page-title | Page title | SEO title | Speaking & Retreats | Golf Gita | 31 | 60.0 | To review | Suggested. Not in wireframe. | (not in wireframe)
+65: speaking.search-results-seo.page-description | Page description | SEO description | Keynotes, workshops, and immersive retreats built on Golf Gita's 18-chapter framework, for golf clubs, corporate teams, and wellness groups. | 140 | 155.0 | To review | Suggested. Not in wireframe. | (not in wireframe)
+
+## Author
+1: AUTHOR PAGE |  |  |  |  |  |  |  | 
+2: About the author. Replace every [bracketed] detail with the real information. |  |  |  |  |  |  |  | 
+3: Yellow cells = type over the text  |  Orange text = still has [brackets], add your real details  |  Red = too long for the layout  |  Set Status when done |  |  |  |  |  |  |  | 
+4: Field ID | What it is | Type | YOUR TEXT  (edit here) | Chars | Limit | Status | Notes / questions | Wireframe text (reference)
+5: 01   AUTHOR PROFILE   ·   photo + bio |  |  |  |  |  |  |  | 
+6:  | ℹ  Header and footer are shared by every page. Edit them once on the Global tab. |  |  |  |  |  |  | 
+7: author.author-profile.author-photo | Author photo | Image | Author portrait (portrait orientation) | 38 |  | To review | Send the image file or paste a Drive link here. | Image placeholder (checker pattern)
+8: author.author-profile.author-photo-alt-text | Author photo alt text | Alt text | Nazeer Tajudeen, author of Golf Gita | 36 | 125.0 | Updated |  | [Author name], author of Golf Gita
+9: author.author-profile.name | Name | Heading | Nazeer Tajudeen | 15 | 20.0 | Updated |  | [Author name]
+10: author.author-profile.bio-paragraph-1 | Bio paragraph 1 | Text | Nazeer Tajudeen discovered golf in 2000 and left corporate life in 2005 to coach full-time. His journey from artist to executive to teacher brings creativity and insight to his work. | Raised along the Thailand–Laos border and later in southern India, he grew up among diverse faiths and cultures that quietly shaped his outlook on life. | 335 | 335.0 | Updated |  | [Author name] has been playing golf since [year] and has spent [X] years studying the Bhagavad Gita. Golf Gita emerged from a question asked on a course in Scotland: why does this game feel like a philosophical practice, and why does no one say so out loud?
+11: author.author-profile.bio-paragraph-2 | Bio paragraph 2 | Text | Golf Gita grew from two decades of coaching and his own struggles with the game. Through public mishits, persistence and reflection, he explored how ego, fear, expectations and awareness shape both performance and personal growth. | 230 | 265.0 | Updated |  | The book took three years to write. The first draft mapped the holes in order and found, without planning to, that each chapter arrived at exactly the right moment. That coincidence became the argument.
+12: author.author-profile.bio-paragraph-3 | Bio paragraph 3 | Text | Recognized globally as a Top 50 coach by WGTF and U.S. Kids Golf in 2024, Nazeer teaches golfers aged 5 to 85. He welcomes beginners and helps struggling players regain confidence and joy. | 188 | 190.0 | Updated | Pronoun 'They' is a placeholder. Change if needed. | [Author name] speaks at golf clubs, leadership programmes, and wellness retreats across India, the UK, and Southeast Asia. They live in [city].
+13: author.author-profile.pull-quote | Pull quote | Quote | Golf Gita grew from my own struggles with the game, and the discovery that understanding ourselves matters as much as understanding the swing | 141 | 225.0 | Updated |  | I did not set out to write a spiritual book about golf. I set out to understand why golf felt like a spiritual practice, and found that someone had already written the map.
+14: author.author-profile.button | Button | Button | Enquire about a session | 23 | 30.0 | Approved | Link to Events page - speaking in a subpage | Enquire about a session
+15: 02   NUMBERS STRIP   ·   4 facts under the photo |  |  |  |  |  |  |  | 
+16: author.numbers-strip.fact-1-number | Fact 1 · number | Number | 1 | 1 | 20.0 | Remove |  | 1
+17: author.numbers-strip.fact-1-label | Fact 1 · label | Label | Books written | 13 | 20.0 | Remove |  | Books written
+18: author.numbers-strip.fact-2-number | Fact 2 · number | Number | 20+ | 3 | 20.0 | Remove |  | 20+
+19: author.numbers-strip.fact-2-label | Fact 2 · label | Label | Years playing golf | 18 | 25.0 | Remove |  | Years playing golf
+20: author.numbers-strip.fact-3-number | Fact 3 · number | Number | 12 | 2 | 20.0 | Remove |  | 12
+21: author.numbers-strip.fact-3-label | Fact 3 · label | Label | Countries spoken in | 19 | 25.0 | Remove |  | Countries spoken in
+22: author.numbers-strip.fact-4-number | Fact 4 · number | Number | 14 | 2 | 20.0 | Remove |  | 14
+23: author.numbers-strip.fact-4-label | Fact 4 · label | Label | Handicap | 8 | 20.0 | Remove |  | Handicap
+24: 03   SEARCH RESULTS (SEO)   ·   how this page looks on Google |  |  |  |  |  |  |  | 
+25: author.search-results-seo.page-title | Page title | SEO title | About the Author | Golf Gita | 28 | 60.0 | Approved | Suggested. Not in wireframe. | (not in wireframe)
+26: author.search-results-seo.page-description | Page description | SEO description | From artist to executive to golf coach, Nazeer Tajudeen draws on two decades of teaching and a life shaped by many faiths to explore the game within. | 149 | 155.0 | Updated | Suggested. Not in wireframe. | (not in wireframe)
+
+## Contact
+1: CONTACT PAGE |  |  |  |  |  |  |  | 
+2: General contact form and social links. |  |  |  |  |  |  |  | 
+3: Yellow cells = type over the text  |  Orange text = still has [brackets], add your real details  |  Red = too long for the layout  |  Set Status when done |  |  |  |  |  |  |  | 
+4: Field ID | What it is | Type | YOUR TEXT  (edit here) | Chars | Limit | Status | Notes / questions | Wireframe text (reference)
+5: 01   CONTACT FORM   ·   main content |  |  |  |  |  |  |  | 
+6:  | ℹ  Header and footer are shared by every page. Edit them once on the Global tab. |  |  |  |  |  |  | 
+7: contact.contact-form.heading | Heading | Heading | Get in touch. | 13 | 20.0 | Updated | Font size increase | Get in touch.
+8: contact.contact-form.speaking-note | Speaking note | Text | For speaking and retreat enquiries, the form on the Speaking page will get to the right person faster. This form is for everything else. | 136 | 180.0 | Updated | Speaking page' is a link to the Speaking subpage on events page. Font size increase | For speaking and retreat enquiries, the form on the Speaking page will get to the right person faster. This form is for everything else.
+9: contact.contact-form.name-field-label | Name field label | Form | Name | 4 | 20.0 | Updated | Font size increase | Name
+10: contact.contact-form.email-field-label | Email field label | Form | Email | 5 | 20.0 | Updated | Font size increase | Email
+11: contact.contact-form.subject-field-label | Subject field label | Form | Subject | 7 | 20.0 | Updated | Font size increase | Subject
+12: contact.contact-form.message-field-label | Message field label | Form | Message | 7 | 20.0 | Updated | Font size increase | Message
+13: contact.contact-form.send-button | Send button | Button | Send message | 12 | 20.0 | Updated | Font size increase | Send message
+14: contact.contact-form.success-message | Success message | Form | Thank you. Your message has been sent. | 38 | 50.0 | Approved | Suggested. Not in wireframe. | (not in wireframe)
+15: 02   SOCIAL LINKS   ·   side column |  |  |  |  |  |  |  | 
+16: contact.social-links.small-label | Small label | Label | Also here | 9 | 20.0 | Approved |  | Also here
+17: contact.social-links.instagram-name | Instagram name | Label | Instagram | 9 | 20.0 | Approved |  | Instagram
+18: contact.social-links.instagram-link | Instagram link | Link | [Paste Instagram link] | 22 |  | Approved |  | [Paste Instagram link]
+19: contact.social-links.x-name | X name | Label | X (Twitter) | 11 | 20.0 | Approved |  | X (Twitter)
+20: contact.social-links.x-link | X link | Link | [Paste X link] | 14 |  | Approved |  | [Paste X link]
+21: contact.social-links.linkedin-name | LinkedIn name | Label | LinkedIn | 8 | 20.0 | Approved |  | LinkedIn
+22: contact.social-links.linkedin-link | LinkedIn link | Link | [Paste LinkedIn link] | 21 |  | Approved |  | [Paste LinkedIn link]
+23: contact.social-links.youtube-name | YouTube name | Label | YouTube | 7 | 20.0 | Approved |  | YouTube
+24: contact.social-links.youtube-link | YouTube link | Link | [Paste YouTube link] | 20 |  | Approved |  | [Paste YouTube link]
+25: contact.social-links.whatsapp-name | WhatsApp name | label | WhatsApp |  |  | Updated | Please add to contact page | 
+26: contact.social-links.whatsapp-link | WhatsApp Link | link | [Paste WhatsApp link] |  |  | Updated |  | 
+27: 03   SEARCH RESULTS (SEO)   ·   how this page looks on Google |  |  |  |  |  |  |  | 
+28: contact.search-results-seo.page-title | Page title | SEO title | Contact | Golf Gita | 19 | 60.0 | Approved | Suggested. Not in wireframe. | (not in wireframe)
+29: contact.search-results-seo.page-description | Page description | SEO description | Get in touch with Golf Gita for general questions, press, and more | 66 | 155.0 | Updated | Suggested. Not in wireframe. | (not in wireframe)
