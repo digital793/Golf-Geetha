@@ -123,7 +123,7 @@ export const Header = ({
 
           {/* Actions Right */}
           <div className="navbar-actions">
-            <LanguageSelector light={isEffectiveLight} />
+            <LanguageSelector light={isEffectiveLight} compact />
 
             <button className="purchase-button-nav" onClick={onBuyClick}>
               {t(settings.buy_button_label)}
@@ -173,7 +173,7 @@ export const Header = ({
               );
             })}
             <button
-              className="purchase-button-nav"
+              className="purchase-button-nav mobile-drawer-buy"
               style={{ width: '100%', marginTop: '8px' }}
               onClick={() => {
                 setMobileOpen(false);

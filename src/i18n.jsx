@@ -1,14 +1,14 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 export const languages = [
-  { code: 'en', label: 'English (Primary)', shortLabel: 'English' },
-  { code: 'ta', label: 'Tamil', shortLabel: 'தமிழ்' },
-  { code: 'hi', label: 'Hindi', shortLabel: 'हिन्दी' },
-  { code: 'de', label: 'German', shortLabel: 'Deutsch' },
-  { code: 'fr', label: 'French', shortLabel: 'Français' },
-  { code: 'ko', label: 'Korean', shortLabel: '한국어' },
-  { code: 'ja', label: 'Japanese', shortLabel: '日本語' },
+  { code: 'en', label: 'English (Primary)', shortLabel: 'EN' },
+  { code: 'ta', label: 'Tamil', shortLabel: 'TA' },
+  { code: 'hi', label: 'Hindi', shortLabel: 'HI' },
+  { code: 'de', label: 'German', shortLabel: 'DE' },
+  { code: 'fr', label: 'French', shortLabel: 'FR' },
+  { code: 'ko', label: 'Korean', shortLabel: 'KO' },
+  { code: 'ja', label: 'Japanese', shortLabel: 'JA' },
 ];
 
 const messages = {
@@ -359,6 +359,106 @@ const additionalMessageRows = {
   'Tell us about your event, location, and preferred dates': ['உங்கள் நிகழ்வு, இடம் மற்றும் விரும்பும் தேதிகளைப் பற்றி கூறுங்கள்', 'अपने कार्यक्रम, स्थान और पसंदीदा तारीखों के बारे में बताएँ', 'Erzählen Sie uns von Ihrer Veranstaltung, dem Ort und Ihren Wunschterminen', 'Parlez-nous de votre événement, du lieu et des dates souhaitées', '행사, 장소 및 희망 날짜를 알려주세요', 'イベント、場所、ご希望の日程をお知らせください'],
   'I DID NOT SET OUT TO WRITE A SPIRITUAL BOOK ABOUT GOLF. I SET OUT TO UNDERSTAND WHY GOLF FELT LIKE A SPIRITUAL PRACTICE, AND FOUND THAT SOMEONE HAD ALREADY WRITTEN THE MAP.': ['கோல்ஃப் பற்றி ஆன்மீகப் புத்தகம் எழுத நான் தொடங்கவில்லை. கோல்ஃப் ஏன் ஆன்மீகப் பயிற்சிபோல் உணரப்படுகிறது என்பதைப் புரிந்துகொள்ளத் தொடங்கினேன்; அந்த வழிகாட்டியை ஏற்கெனவே ஒருவர் எழுதியிருப்பதைக் கண்டேன்.', 'मैंने गोल्फ़ पर आध्यात्मिक पुस्तक लिखने का लक्ष्य नहीं रखा था। मैं यह समझना चाहता था कि गोल्फ़ आध्यात्मिक अभ्यास जैसा क्यों लगता है-और पाया कि उसका मार्ग किसी ने पहले ही लिख दिया था।', 'Ich wollte kein spirituelles Buch über Golf schreiben. Ich wollte verstehen, warum sich Golf wie eine spirituelle Praxis anfühlt - und fand heraus, dass jemand den Weg bereits beschrieben hatte.', 'Je ne voulais pas écrire un livre spirituel sur le golf. Je voulais comprendre pourquoi le golf ressemble à une pratique spirituelle et j’ai découvert que quelqu’un en avait déjà tracé la voie.', '골프에 관한 영적인 책을 쓰려던 것이 아닙니다. 골프가 왜 영적 수행처럼 느껴지는지 이해하려 했고, 누군가 이미 그 길을 기록해 두었다는 것을 발견했습니다.', 'ゴルフについてのスピリチュアルな本を書くつもりはありませんでした。ゴルフがなぜ精神的な実践のように感じられるのかを理解しようとし、その道筋がすでに書かれていたことに気づいたのです。'],
   'Tell us about the event, your audience, and what you’re hoping for.': ['நிகழ்வு, பார்வையாளர்கள் மற்றும் உங்கள் எதிர்பார்ப்புகளைப் பற்றி கூறுங்கள்.', 'कार्यक्रम, दर्शकों और अपनी अपेक्षाओं के बारे में बताएँ।', 'Erzählen Sie uns von der Veranstaltung, Ihrem Publikum und Ihren Erwartungen.', 'Parlez-nous de l’événement, de votre public et de vos attentes.', '행사, 청중 및 기대하시는 점을 알려주세요.', 'イベント、参加者、ご希望についてお聞かせください。'],
+  'DESPAIR': ['விரக்தி', 'निराशा', 'VERZWEIFLUNG', 'DÉSESPOIR', '절망', '絶望'],
+  'KNOWLEDGE': ['அறிவு', 'ज्ञान', 'WISSEN', 'CONNAISSANCE', '지식', '知識'],
+  'ACTION': ['செயல்', 'कर्म', 'HANDLUNG', 'ACTION', '행동', '行為'],
+  'RENUNCIATION': ['துறவு', 'संन्यास', 'ENTSAGUNG', 'RENONCEMENT', '포기', '放棄'],
+  'RESTRAINT': ['கட்டுப்பாடு', 'संयम', 'BEHERRSCHUNG', 'MAÎTRISE', '절제', '自制'],
+  'MEDITATION': ['தியானம்', 'ध्यान', 'MEDITATION', 'MÉDITATION', '명상', '瞑想'],
+  'WISDOM': ['ஞானம்', 'प्रज्ञा', 'WEISHEIT', 'SAGESSE', '지혜', '智慧'],
+  'THE ETERNAL': ['நித்தியம்', 'शाश्वत', 'DAS EWIGE', 'L’ÉTERNEL', '영원', '永遠'],
+  'SOVEREIGNTY': ['ஆட்சி அறிவு', 'राज विद्या', 'HOHEIT', 'SOUVERAINETÉ', '주권', '主権'],
+  'MANIFESTATION': ['வெளிப்பாடு', 'विभूति', 'OFFENBARUNG DER FÜLLE', 'MANIFESTATION', '현현', '顕現'],
+  'REVELATION': ['திருவுருவம்', 'विश्वरूप', 'OFFENBARUNG', 'RÉVÉLATION', '계시', '啓示'],
+  'DEVOTION': ['பக்தி', 'भक्ति', 'HINGABE', 'DÉVOTION', '헌신', '帰依'],
+  'DISCERNMENT': ['பாகுபாடு', 'विवेक', 'UNTERSCHEIDUNG', 'DISCERNEMENT', '분별', '識別'],
+  'TRANSCENDENCE': ['கடத்தல்', 'अतिक्रमण', 'TRANSZENDENZ', 'TRANSCENDANCE', '초월', '超越'],
+  'THE WHOLE': ['முழுமை', 'पूर्ण', 'DAS GANZE', 'LE TOUT', '전체', '全体'],
+  'INTEGRITY': ['நேர்மை', 'सत्यनिष्ठा', 'INTEGRITÄT', 'INTÉGRITÉ', '정직', '誠実'],
+  'CONVICTION': ['நம்பிக்கை', 'श्रद्धा', 'ÜBERZEUGUNG', 'CONVICTION', '신념', '信念'],
+  'LIBERATION': ['விடுதலை', 'मोक्ष', 'BEFREIUNG', 'LIBÉRATION', '해방', '解脱'],
+  'Eternal Self': ['நித்திய ஆன்மா', 'शाश्वत आत्मा', 'Das ewige Selbst', 'Le soi éternel', '영원한 자아', '永遠の自己'],
+  'Selfless Work': ['சுயநலமற்ற செயல்', 'निष्काम कर्म', 'Selbstlose Arbeit', 'Le travail désintéressé', '이타적 행위', '無私の行為'],
+  'Path of Wisdom': ['ஞானப் பாதை', 'ज्ञान का मार्ग', 'Pfad der Weisheit', 'Voie de la sagesse', '지혜의 길', '智慧の道'],
+  'Karma-Sannyas': ['கர்ம-சந்நியாசம்', 'कर्म-संन्यास', 'Karma-Sannyasa', 'Karma-sannyasa', '카르마-산냐사', 'カルマ・サンニャーサ'],
+  'Self-Mastery': ['தன்வசப்படுத்துதல்', 'आत्म-निपुणता', 'Selbstbeherrschung', 'Maîtrise de soi', '자기 수련', '自己修練'],
+  'Knowledge Realized': ['உணரப்பட்ட அறிவு', 'अनुभूत ज्ञान', 'Erkanntes Wissen', 'Savoir réalisé', '체득된 지식', '体得された知'],
+  'Imperishable Brahman': ['அழிவற்ற பிரம்மம்', 'अविनाशी ब्रह्म', 'Das unvergängliche Brahman', 'Le Brahman impérissable', '불멸의 브라흐만', '不滅のブラフマン'],
+  'Royal Knowledge': ['அரச அறிவு', 'राज विद्या', 'Königliches Wissen', 'Savoir royal', '왕의 지식', '王の知識'],
+  'Divine Glories': ['தெய்வீகச் சிறப்புகள்', 'दिव्य विभूतियाँ', 'Göttliche Herrlichkeiten', 'Gloires divines', '신성한 영광', '神聖な栄光'],
+  'Cosmic Form': ['பிரபஞ்ச உருவம்', 'विश्वरूप', 'Kosmische Gestalt', 'Forme cosmique', '우주적 형상', '宇宙の姿'],
+  'Path of Love': ['அன்புப் பாதை', 'प्रेम का मार्ग', 'Pfad der Liebe', 'Voie de l’amour', '사랑의 길', '愛の道'],
+  'Field of Action': ['செயல் களம்', 'कर्म क्षेत्र', 'Feld des Handelns', 'Champ d’action', '행위의 장', '行為の場'],
+  'The Three Qualities': ['மூன்று குணங்கள்', 'तीन गुण', 'Die drei Eigenschaften', 'Les trois qualités', '세 가지 성질', '三つの性質'],
+  'Supreme Self': ['உயர்ந்த ஆன்மா', 'परम आत्मा', 'Das höchste Selbst', 'Le soi suprême', '지고의 자아', '至高の自己'],
+  'Divine Qualities': ['தெய்வீகக் குணங்கள்', 'दैवी गुण', 'Göttliche Qualitäten', 'Qualités divines', '신성한 성품', '神聖な性質'],
+  'Threefold Faith': ['மூவகை நம்பிக்கை', 'त्रिविध श्रद्धा', 'Dreifacher Glaube', 'Foi triple', '세 가지 믿음', '三つの信仰'],
+  'Freedom': ['விடுதலை', 'मुक्ति', 'Freiheit', 'Liberté', '자유', '自由'],
+  'Every round begins at the edge of self-doubt.': ['ஒவ்வொரு சுற்றும் தன்னம்பிக்கை இல்லாத விளிம்பிலேயே தொடங்குகிறது.', 'हर राउंड आत्म-संदेह के किनारे से शुरू होता है।', 'Jede Runde beginnt am Rand des Selbstzweifels.', 'Chaque partie commence au bord du doute de soi.', '모든 라운드는 자기 의심의 가장자리에서 시작됩니다.', 'どのラウンドも自己不信の縁から始まります。'],
+  'What falls is never what swings the club.': ['விழுவது ஒருபோதும் குச்சியை அசைப்பது அல்ல.', 'गिरता वही नहीं जो क्लब घुमाता है।', 'Was fällt, ist nie das, was den Schläger schwingt.', 'Ce qui tombe n’est jamais ce qui balance le club.', '쓰러지는 것은 클럽을 휘두르는 것이 아닙니다.', '倒れるものは、クラブを振るものではありません。'],
+  'Strike. Do not negotiate with the outcome.': ['அடியுங்கள். முடிவுடன் பேரம் பேசாதீர்கள்.', 'मारो। परिणाम से सौदा मत करो।', 'Schlagen Sie. Verhandeln Sie nicht mit dem Ergebnis.', 'Frappez. Ne négociez pas avec le résultat.', '치십시오. 결과와 흥정하지 마십시오.', '打て。結果と交渉するな。'],
+  'Release the last shot before you take the next.': ['அடுத்த அடிக்கு முன் கடைசி அடியை விடுங்கள்.', 'अगला शॉट लेने से पहले पिछला छोड़ दें।', 'Lassen Sie den letzten Schlag los, bevor Sie den nächsten spielen.', 'Lâchez le dernier coup avant de jouer le suivant.', '다음 샷 전에 마지막 샷을 놓으십시오.', '次のショットの前に、今の一打を手放せ。'],
+  'The quiet swing holds more power than the forced one.': ['அமைதியான சுவிங், வலிந்து செய்யும் சுவிங்கைவிட அதிக சக்தி கொண்டது.', 'शांत स्विंग मजबूर स्विंग से अधिक शक्ति रखता है।', 'Der ruhige Schwung hat mehr Kraft als der erzwungene.', 'Le swing calme a plus de puissance que le swing forcé.', '고요한 스윙이 억지 스윙보다 더 큰 힘을 가집니다.', '静かなスイングは、無理なスイングより力を持つ。'],
+  'Stillness before the backswing. Stillness after.': ['பேக்ஸ்விங்கிற்கு முன் அமைதி. பின்னும் அமைதி.', 'बैकस्विंग से पहले शांति। बाद में भी शांति।', 'Stille vor dem Rückschwung. Stille danach.', 'Le calme avant le backswing. Le calme après.', '백스윙 전의 고요. 그 후의 고요.', 'バックスイングの前の静けさ。その後の静けさ。'],
+  'Understanding the course is not the same as knowing it.': ['மைதானத்தைப் புரிந்துகொள்வது, அதை அறிந்திருப்பதற்குச் சமமல்ல.', 'कोर्स को समझना उसे जानने के बराबर नहीं है।', 'Den Platz zu verstehen ist nicht dasselbe, wie ihn zu kennen.', 'Comprendre le parcours n’est pas le connaître.', '코스를 이해하는 것과 아는 것은 다릅니다.', 'コースを理解することと、それを知ることは同じではない。'],
+  'You are playing a game older than your name for it.': ['நீங்கள் இதற்கு வைத்த பெயரைவிடப் பழமையான விளையாட்டை விளையாடுகிறீர்கள்.', 'आप उस खेल को खेल रहे हैं जो आपके दिए नाम से भी पुराना है।', 'Sie spielen ein Spiel, das älter ist als Ihr Name dafür.', 'Vous jouez un jeu plus ancien que le nom que vous lui donnez.', '당신이 붙인 이름보다 오래된 경기를 하고 있습니다.', 'あなたが付けた名前より古いゲームをプレーしている。'],
+  'Mastery is hidden in plain sight.': ['தேர்ச்சி வெளிப்படையாகவே மறைந்துள்ளது.', 'निपुणता साफ दिखते हुए भी छिपी है।', 'Meisterschaft ist offen sichtbar verborgen.', 'La maîtrise est cachée à la vue de tous.', '숙련은 눈에 보이는 곳에 숨겨져 있습니다.', '熟達は、目の前に隠されている。'],
+  'Every hole is an expression of something vaster.': ['ஒவ்வொரு குழியும் இன்னும் பெரிய ஒன்றின் வெளிப்பாடு.', 'हर होल किसी और विशाल चीज़ की अभिव्यक्ति है।', 'Jedes Loch ist Ausdruck von etwas Größerem.', 'Chaque trou exprime quelque chose de plus vaste.', '모든 홀은 더 큰 무언가의 표현입니다.', 'すべてのホールは、より大きなものの現れである。'],
+  'At some point the game becomes the teacher.': ['ஒரு கட்டத்தில் விளையாட்டே ஆசிரியராகிறது.', 'किसी बिंदु पर खेल स्वयं शिक्षक बन जाता है।', 'Irgendwann wird das Spiel zum Lehrer.', 'À un moment, le jeu devient le maître.', '어느 순간 경기가 스승이 됩니다.', 'やがてゲームそのものが師になる。'],
+  'Play for the love of the game, not its verdict.': ['விளையாட்டின் தீர்ப்பிற்காக அல்ல, அன்பிற்காக விளையாடுங்கள்.', 'फैसले के लिए नहीं, खेल के प्रेम के लिए खेलें।', 'Spielen Sie aus Liebe zum Spiel, nicht wegen seines Urteils.', 'Jouez par amour du jeu, non pour son verdict.', '판정이 아니라 경기에 대한 사랑으로 치십시오.', '判定のためではなく、ゲームへの愛でプレーせよ。'],
+  'Know the course. Know the one who walks it.': ['மைதானத்தை அறியுங்கள். அதில் நடப்பவரை அறியுங்கள்.', 'कोर्स को जानो। उस पर चलने वाले को जानो।', 'Kennen Sie den Platz. Kennen Sie den, der ihn geht.', 'Connaissez le parcours. Connaissez celui qui le marche.', '코스를 알십시오. 그 위를 걷는 이를 알십시오.', 'コースを知れ。それを歩く者を知れ。'],
+  'Dullness, restlessness, clarity: you cycle through all three.': ['மந்தம், அமைதியின்மை, தெளிவு: மூன்றிலும் சுழல்கிறீர்கள்.', 'जड़ता, चंचलता, स्पष्टता: आप तीनों से गुजरते हैं।', 'Trägheit, Unruhe, Klarheit: Sie durchlaufen alle drei.', 'Lenteur, agitation, clarté : vous traversez les trois.', '둔함, 안절부절, 명료함: 세 가지를 모두 순환합니다.', '惰性、落ち着きのなさ、明澄。あなたはその三つを巡る。'],
+  'The best hole you ever played dissolves into the round.': ['நீங்கள் விளையாடிய சிறந்த குழி, சுற்றில் கரைந்துவிடுகிறது.', 'आपका सबसे अच्छा होल पूरे राउंड में घुल जाता है।', 'Ihr bestes Loch löst sich in der Runde auf.', 'Votre meilleur trou se fond dans la partie.', '당신이 친 최고의 홀은 라운드 속으로 녹아듭니다.', '最高のホールはラウンドの中に溶けていく。'],
+  'The card you sign at the end is the player you are.': ['இறுதியில் நீங்கள் கையொப்பமிடும் அட்டை, நீங்கள் யார் என்பதைக் காட்டுகிறது.', 'अंत में जिस कार्ड पर आप हस्ताक्षर करते हैं, वही आपका खिलाड़ी है।', 'Die Karte, die Sie am Ende unterschreiben, ist der Spieler, der Sie sind.', 'La carte que vous signez à la fin est le joueur que vous êtes.', '마지막에 서명하는 카드가 바로 당신이라는 선수입니다.', '最後にサインするカードが、あなたという選手である。'],
+  'Doubt in the downswing loses the hole before it is played.': ['டவுன்ஸ்விங்கில் எழும் சந்தேகம், விளையாடுவதற்கு முன்பே குழியை இழக்கிறது.', 'डाउनस्विंग में संदेह होल को खेलने से पहले ही हरा देता है।', 'Zweifel im Abschwung verlieren das Loch, bevor es gespielt ist.', 'Le doute dans le downswing perd le trou avant qu’il soit joué.', '다운스윙의 의심은 치기도 전에 홀을 잃게 합니다.', 'ダウンスイングの疑いは、打つ前にホールを失わせる。'],
+  'The final hole is where you put down everything you carried.': ['கடைசிக் குழியில் நீங்கள் சுமந்த அனைத்தையும் இறக்கி வைக்கிறீர்கள்.', 'आखिरी होल वह जगह है जहाँ आप जो कुछ ढो रहे थे उसे उतार देते हैं।', 'Am letzten Loch legen Sie alles ab, was Sie getragen haben.', 'Le dernier trou est l’endroit où vous déposez tout ce que vous portiez.', '마지막 홀은 당신이 짊어진 모든 것을 내려놓는 곳입니다.', '最後のホールは、背負ってきたすべてを置く場所である。'],
+  'The course': ['மைதானம்', 'कोर्स', 'Der Platz', 'Le parcours', '코스', 'コース'],
+  'Read the book →': ['புத்தகத்தைப் படியுங்கள் →', 'पुस्तक पढ़ें →', 'Buch lesen →', 'Lire le livre →', '책 읽기 →', '本を読む →'],
+  'Front Nine': ['முதல் ஒன்பது', 'फ्रंट नाइन', 'Vordere Neun', 'Premier neuf', '전반 9홀', 'フロントナイン'],
+  'The front nine': ['முதல் ஒன்பது', 'फ्रंट नाइन', 'Die vordere Neun', 'Le premier neuf', '전반 9홀', 'フロントナイン'],
+  'The Back Nine': ['பின்புற ஒன்பது', 'बैक नाइन', 'Die hintere Neun', 'Le dernier neuf', '후반 9홀', 'バックナイン'],
+  'Back nine 10–18': ['பின்புற ஒன்பது 10–18', 'बैक नाइन 10–18', 'Hintere Neun 10–18', 'Retour 10–18', '후반 9홀 10–18', 'バックナイン 10–18'],
+  'Halfway House': ['ஹாஃப்வே ஹவுஸ்', 'हाफवे हाउस', 'Halfway House', 'Halfway House', '하프웨이 하우스', 'ハーフウェイハウス'],
+  'The Halfway House': ['ஹாஃப்வே ஹவுஸ்', 'हाफवे हाउस', 'Das Halfway House', 'The Halfway House', '하프웨이 하우스', 'ハーフウェイハウス'],
+  'After nine days of battle, the Pandavas gather with Krishna to reassess their strategy and prepare for the nine days ahead - The Bhagavad Gita': ['ஒன்பது நாள் போருக்குப் பிறகு, பாண்டவர்கள் கிருஷ்ணருடன் கூடி முன்வரும் ஒன்பது நாட்களுக்கான வழியை மீண்டும் ஆயத்தமாக்குகிறார்கள் - பகவத் கீதை', 'नौ दिनों के युद्ध के बाद पांडव कृष्ण के साथ बैठकर आगे के नौ दिनों की रणनीति तय करते हैं - भगवद्गीता', 'Nach neun Kampftagen versammeln sich die Pandavas mit Krishna, um die nächsten neun Tage vorzubereiten – Die Bhagavad Gita', 'Après neuf jours de bataille, les Pandavas se réunissent avec Krishna pour préparer les neuf jours à venir – La Bhagavad-Gita', '아홉 날의 전투 후, 판다바들은 크리슈나와 함께 앞으로의 아홉 날을 준비합니다 - 바가바드 기타', '九日の戦いの後、パーンダヴァはクリシュナとともに残る九日の備えを整える — バガヴァッド・ギーター'],
+  'The Eternal Game of Celestial Wisdom.': ['விண்ணுலக ஞானத்தின் நித்திய விளையாட்டு.', 'दिव्य ज्ञान का शाश्वत खेल।', 'Das ewige Spiel himmlischer Weisheit.', 'Le jeu éternel de la sagesse céleste.', '천상의 지혜가 깃든 영원한 경기.', '天上の智慧の永遠のゲーム。'],
+  'Golf Gita blends the art of golf with the wisdom of the Bhagavad Gita, guiding readers through ego, duality and balance towards inner clarity, purposeful action and freedom beyond the scorecard.': ['கோல்ஃப் கீதா கோல்ஃப் கலையையும் பகவத் கீதை ஞானத்தையும் இணைத்து, அகந்தை, இருமை, சமநிலை வழியாக உள் தெளிவு, நோக்கமுள்ள செயல் மற்றும் ஸ்கோர்கார்ட்டுக்கு அப்பாற்பட்ட விடுதலைக்கு வாசகரை அழைத்துச் செல்கிறது.', 'गोल्फ़ गीता गोल्फ़ की कला को भगवद्गीता के ज्ञान से जोड़ती है और अहंकार, द्वैत और संतुलन के मार्ग से पाठक को आंतरिक स्पष्टता, सार्थक कर्म और स्कोरकार्ड से परे स्वतंत्रता तक ले जाती है।', 'Golf Gita verbindet die Kunst des Golfs mit der Weisheit der Bhagavad Gita und führt Leser durch Ego, Dualität und Balance zu innerer Klarheit, bewusstem Handeln und Freiheit jenseits der Scorekarte.', 'Golf Gita unit l’art du golf à la sagesse de la Bhagavad-Gita et guide le lecteur, à travers l’ego, la dualité et l’équilibre, vers la clarté intérieure, l’action juste et une liberté au-delà de la carte de score.', '골프 기타는 골프의 예술과 바가바드 기타의 지혜를 잇고, 자아·이원성·균형을 지나 내면의 명료함, 뜻 있는 행위, 스코어카드 너머의 자유로 이끕니다.', 'ゴルフ・ギーターはゴルフの技とバガヴァッド・ギーターの智慧を結び、自我・二元・均衡を通して内なる明澄、意図ある行為、スコアカードを超えた自由へと導きます。'],
+  'Golf Gita is a personal journal and guided exploration of golf’s inner game through the wisdom of the Bhagavad Gita. It is neither a technical golf manual nor a final authority on the Gita. Its 18 holes offer mirrors for ego, fear, desire, balance and awareness, not a fixed sequence of lessons. Read in order or turn to what speaks to you today. The course has numbers. The mind does not.': ['கோல்ஃப் கீதா, பகவத் கீதை ஞானம் வழியாக கோல்ஃபின் உள் ஆட்டத்தை ஆராயும் தனிப்பட்ட பயணம். இது தொழில்நுட்ப கையேடும் அல்ல; கீதையின் இறுதி அதிகாரமும் அல்ல. 18 குழிகள் அகந்தை, பயம், ஆசை, சமநிலை, விழிப்புணர்வுக்கான கண்ணாடிகள். வரிசையில் படியுங்கள் அல்லது இன்று உங்களைத் தொடுவதைத் தேர்ந்தெடுங்கள். மைதானத்திற்கு எண்கள் உண்டு. மனத்திற்கு இல்லை.', 'गोल्फ़ गीता भगवद्गीता के ज्ञान से गोल्फ़ के भीतरी खेल की व्यक्तिगत यात्रा है। यह तकनीकी मैनुअल नहीं, गीता का अंतिम प्रमाण भी नहीं। 18 होल अहंकार, भय, इच्छा, संतुलन और जागरूकता के दर्पण हैं। क्रम से पढ़ें या जो आज पुकारे उसे खोलें। कोर्स की संख्याएँ हैं। मन की नहीं।', 'Golf Gita ist eine persönliche Erkundung des inneren Spiels durch die Weisheit der Bhagavad Gita. Weder technisches Handbuch noch letzte Autorität zur Gita. Die 18 Löcher sind Spiegel für Ego, Angst, Verlangen, Balance und Achtsamkeit. Lesen Sie der Reihe nach oder öffnen Sie, was Sie heute anspricht. Der Platz hat Zahlen. Der Geist nicht.', 'Golf Gita est une exploration personnelle du jeu intérieur à travers la sagesse de la Bhagavad-Gita. Ni manuel technique ni autorité finale. Ses 18 trous sont des miroirs pour l’ego, la peur, le désir, l’équilibre et la présence. Lisez dans l’ordre, ou ouvrez ce qui vous parle aujourd’hui. Le parcours a des numéros. L’esprit n’en a pas.', '골프 기타는 바가바드 기타의 지혜로 골프의 내면 경기를 탐구하는 개인 여정입니다. 기술 교본도, 기타의 최종 권위도 아닙니다. 18홀은 자아, 두려움, 욕망, 균형, 알아차림의 거울입니다. 순서대로 읽거나 오늘 마음에 닿는 장을 여십시오. 코스에는 번호가 있습니다. 마음에는 없습니다.', 'ゴルフ・ギーターは、バガヴァッド・ギーターの智慧を通してゴルフの内なるゲームを探る個人の旅です。技術書でもギーターの最終権威でもありません。18ホールは自我・恐れ・欲望・均衡・気づきの鏡です。順に読むもよし、今日心に響く章を開くもよし。コースには番号がある。心にはない。'],
+  'Who is this for?': ['யாருக்கு?', 'यह किसके लिए है?', 'Für wen ist das?', 'Pour qui ?', '누구를 위한 책인가요?', '誰のための本？'],
+  'Ask the Caddie': ['கேடியிடம் கேளுங்கள்', 'कैडी से पूछें', 'Den Caddie fragen', 'Demandez au caddie', '캐디에게 묻기', 'キャディに聞く'],
+  'Read the preface free': ['முன்னுரையை இலவசமாகப் படியுங்கள்', 'प्रस्तावना निःशुल्क पढ़ें', 'Vorwort kostenlos lesen', 'Lire la préface gratuitement', '서문을 무료로 읽기', '序文を無料で読む'],
+  'Experienced Golfers seeking wisdom beyond the scorecard': ['ஸ்கோர்கார்ட்டுக்கு அப்பாற்பட்ட ஞானத்தைத் தேடும் அனுபவமிக்க கோல்ஃப் வீரர்கள்', 'स्कोरकार्ड से परे ज्ञान चाहने वाले अनुभवी गोल्फ़र', 'Erfahrene Golfer, die Weisheit jenseits der Scorekarte suchen', 'Golfeurs expérimentés en quête d’une sagesse au-delà de la carte', '스코어카드 너머의 지혜를 찾는 경험 많은 골퍼', 'スコアカードを超えた智慧を求める経験豊富なゴルファー'],
+  'Golf Coaches guiding both the swing and the mind': ['சுவிங்கையும் மனதையும் வழிநடத்தும் கோல்ஃப் பயிற்சியாளர்கள்', 'स्विंग और मन दोनों को मार्ग दिखाने वाले गोल्फ़ कोच', 'Golftrainer, die Schwung und Geist führen', 'Entraîneurs qui guident le swing et l’esprit', '스윙과 마음을 함께 이끄는 골프 코치', 'スイングと心の両方を導くコーチ'],
+  'Those new to golf discovering the game and themselves': ['விளையாட்டையும் தங்களையும் கண்டறியும் புதிய வீரர்கள்', 'गोल्फ़ में नए लोग जो खेल और स्वयं को खोज रहे हैं', 'Einsteiger, die Spiel und Selbst entdecken', 'Les débutants qui découvrent le jeu et eux-mêmes', '경기와 자신을 발견하는 골프 입문자', 'ゲームと自分自身を発見する初心者'],
+  'Leaders exploring balance, awareness and purposeful action': ['சமநிலை, விழிப்புணர்வு, நோக்கமுள்ள செயலை ஆராயும் தலைவர்கள்', 'संतुलन, जागरूकता और सार्थक कर्म खोजने वाले नेता', 'Führungskräfte, die Balance, Achtsamkeit und sinnvolles Handeln suchen', 'Dirigeants en quête d’équilibre, de présence et d’action juste', '균형, 알아차림, 뜻 있는 행위를 탐구하는 리더', '均衡・気づき・意図ある行為を探るリーダー'],
+  'Nazeer Tajudeen discovered golf in 2000 and left corporate life in 2005 to coach full-time. His journey from artist to executive to teacher brings creativity and insight to his work. Raised along the Thailand–Laos border and later in southern India, he grew up among diverse faiths and cultures that quietly shaped his outlook on life.': ['நசீர் தாஜுதீன் 2000-ல் கோல்ஃப்பைக் கண்டறிந்து, 2005-ல் நிறுவன வாழ்க்கையை விட்டு முழுநேரப் பயிற்சியாளரானார். கலைஞரிலிருந்து நிர்வாகி, ஆசிரியர் வரையிலான பயணம் அவரது பணிக்குப் படைப்பாற்றலையும் நுண்ணறிவையும் தருகிறது. தாய்லாந்து–லாவோஸ் எல்லையிலும் பின்னர் தென்னிந்தியாவிலும் வளர்ந்த அவர், பல நம்பிக்கைகளுக்கும் பண்பாடுகளுக்கும் இடையே வாழ்ந்தார்.', 'नज़ीर ताजुद्दीन ने 2000 में गोल्फ़ जाना और 2005 में कॉर्पोरेट जीवन छोड़कर पूर्णकालिक कोच बने। कलाकार से कार्यकारी और शिक्षक तक की यात्रा उनके काम में रचनात्मकता लाती है। थाईलैंड–लाओस सीमा और बाद में दक्षिण भारत में पले-बढ़े, विविध आस्थाओं ने उनके दृष्टिकोण को आकार दिया।', 'Nazeer Tajudeen entdeckte Golf 2000 und verließ 2005 das Unternehmensleben, um Vollzeit zu coachen. Der Weg vom Künstler über die Führungskraft zum Lehrer prägt seine Arbeit. Aufgewachsen an der Grenze Thailand–Laos und später in Südindien, formten vielfältige Kulturen seinen Blick aufs Leben.', 'Nazeer Tajudeen a découvert le golf en 2000 et quitté le monde de l’entreprise en 2005 pour enseigner à plein temps. Son parcours d’artiste à dirigeant puis enseignant nourrit son travail. Élevé à la frontière Thaïlande–Laos puis en Inde du Sud, il a grandi parmi des foi et cultures diverses.', '나지르 타주딘은 2000년 골프를 만났고 2005년 회사를 떠나 전업 코치가 되었습니다. 예술가에서 임원, 교사로 이어진 여정이 그의 작업에 창의와 통찰을 줍니다. 태국–라오스 국경과 남인도에서 자라며 여러 신앙과 문화 속에서 세계관을 키웠습니다.', 'ナジー�・タジュディーンは2000年にゴルフと出会い、2005年に会社を辞めて専任コーチになりました。芸術家から経営者、教師へという歩みが仕事に創造と洞察をもたらします。タイ・ラオス国境、のち南インドで育ち、多様な信仰と文化が人生観を静かに形づくりました。'],
+  'Golf Gita grew from two decades of coaching and his own struggles with the game. Through public mishits, persistence and reflection, he explored how ego, fear, expectations and awareness shape both performance and personal growth.': ['இருபதாண்டுப் பயிற்சியும் விளையாட்டில் அவரது போராட்டங்களுமே கோல்ஃப் கீதாவை வளர்த்தன. பகிரங்கத் தவறுகள், விடாமுயற்சி, சிந்தனை வழியாக அகந்தை, பயம், எதிர்பார்ப்பு, விழிப்புணர்வு ஆகியவை செயல்திறனையும் வளர்ச்சியையும் எப்படி வடிவமைக்கின்றன என்பதை அவர் ஆராய்ந்தார்.', 'दो दशकों की कोचिंग और खेल के साथ उनके संघर्ष से गोल्फ़ गीता का जन्म हुआ। सार्वजनिक गलतियों, दृढ़ता और चिंतन से उन्होंने देखा कि अहंकार, भय, अपेक्षाएँ और जागरूकता प्रदर्शन और विकास को कैसे गढ़ते हैं।', 'Golf Gita wuchs aus zwei Jahrzehnten Coaching und seinem eigenen Ringen mit dem Spiel. Über Fehlschläge, Ausdauer und Reflexion erforschte er, wie Ego, Angst, Erwartungen und Achtsamkeit Leistung und Wachstum formen.', 'Golf Gita est née de vingt ans d’enseignement et de ses propres luttes avec le jeu. À travers les erreurs publiques, la persévérance et la réflexion, il a exploré comment l’ego, la peur, les attentes et la présence façonnent la performance et la croissance.', '골프 기타는 20년의 코칭과 그 자신의 경기 고민에서 자랐습니다. 공개된 실수, 끈기, 성찰을 통해 자아, 두려움, 기대, 알아차림이 수행과 성장을 어떻게 만드는지 탐구했습니다.', 'ゴルフ・ギーターは二十年のコーチングと、ゲームとの自身の葛藤から育ちました。公開のミス、粘り、内省を通して、自我・恐れ・期待・気づきが成果と成長をどう形づくるかを探りました。'],
+  'Recognized globally as a Top 50 coach by WGTF and U.S. Kids Golf in 2024, Nazeer teaches golfers aged 5 to 85. He welcomes beginners and helps struggling players regain confidence and joy.': ['2024-ல் WGTF மற்றும் U.S. Kids Golf ஆல் உலக அளவில் Top 50 பயிற்சியாளராக அங்கீகரிக்கப்பட்ட நசீர், 5 முதல் 85 வயது வரை கற்பிக்கிறார். புதியவர்களை வரவேற்று, சிரமப்படும் வீரர்களுக்கு நம்பிக்கையையும் மகிழ்ச்சியையும் மீட்டுத் தருகிறார்.', '2024 में WGTF और U.S. Kids Golf द्वारा विश्व स्तर पर टॉप 50 कोच माने गए नज़ीर 5 से 85 वर्ष तक के खिलाड़ियों को पढ़ाते हैं। वे शुरुआती लोगों का स्वागत करते हैं और संघर्षरत खिलाड़ियों का विश्वास लौटाते हैं।', '2024 von WGTF und U.S. Kids Golf als Top-50-Trainer ausgezeichnet, unterrichtet Nazeer Golfer von 5 bis 85. Er begrüßt Anfänger und hilft Spielern, Freude und Vertrauen zurückzugewinnen.', 'Reconnu en 2024 parmi les 50 meilleurs coachs par la WGTF et U.S. Kids Golf, Nazeer enseigne aux golfeurs de 5 à 85 ans. Il accueille les débutants et aide les joueurs en difficulté à retrouver confiance et joie.', '2024년 WGTF와 U.S. Kids Golf가 세계 Top 50 코치로 인정한 나지르는 5세부터 85세까지 가르칩니다. 초보를 환영하고, 힘든 선수들이 자신감과 기쁨을 되찾도록 돕습니다.', '2024年にWGTFとU.S. Kids Golfから世界トップ50コーチに認められたナジー�は、5歳から85歳まで教えます。初心者を迎え、苦しむ選手が自信と喜びを取り戻すのを助けます。'],
+  'Golf Gita grew from my own struggles with the game, and the discovery that understanding ourselves matters as much as understanding the swing': ['கோல்ஃப் கீதா என் போராட்டங்களிலிருந்தும், சுவிங்கைப் புரிந்துகொள்வதுபோல நம்மைப் புரிந்துகொள்வதும் முக்கியம் என்ற கண்டுபிடிப்பிலிருந்தும் வளர்ந்தது', 'गोल्फ़ गीता मेरे अपने संघर्षों से जन्मी, और इस खोज से कि स्विंग को समझना जितना ज़रूरी है, खुद को समझना उतना ही ज़रूरी है', 'Golf Gita wuchs aus meinem eigenen Ringen und der Einsicht, dass uns zu verstehen ebenso wichtig ist wie den Schwung zu verstehen', 'Golf Gita est née de mes propres luttes, et de la découverte que se comprendre compte autant que comprendre le swing', '골프 기타는 나 자신의 고민과, 스윙을 아는 만큼 우리 자신을 아는 일도 중요하다는 발견에서 자랐습니다', 'ゴルフ・ギーターは私自身の葛藤と、スイングを知ることと同じく自分を知ることが大切だという発見から育ちました'],
+  'Speaking · Retreats': ['உரைகள் · முகாம்கள்', 'व्याख्यान · रिट्रीट', 'Vorträge · Retreats', 'Conférences · Retraites', '강연 · 리트릿', '講演 · リトリート'],
+  'A golf retreat for the mind, body and swing': ['மனம், உடல், சுவிங்கிற்கான கோல்ஃப் முகாம்', 'मन, शरीर और स्विंग के लिए गोल्फ़ रिट्रीट', 'Ein Golf-Retreat für Geist, Körper und Schwung', 'Une retraite de golf pour l’esprit, le corps et le swing', '마음, 몸, 스윙을 위한 골프 리트릿', '心・身体・スイングのためのゴルフ・リトリート'],
+  'Send enquiry': ['விசாரணையை அனுப்பு', 'पूछताछ भेजें', 'Anfrage senden', 'Envoyer la demande', '문의 보내기', '問い合わせを送る'],
+  'Select one': ['ஒன்றைத் தேர்ந்தெடுக்கவும்', 'एक चुनें', 'Bitte wählen', 'Choisir', '하나 선택', '選択してください'],
+  'Organisation': ['நிறுவனம்', 'संगठन', 'Organisation', 'Organisation', '단체', '組織'],
+  'Golf club or association': ['கோல்ஃப் கிளப் அல்லது சங்கம்', 'गोल्फ़ क्लब या संघ', 'Golfclub oder Verband', 'Club ou association de golf', '골프 클럽 또는 협회', 'ゴルフクラブまたは協会'],
+  'Corporate leadership': ['நிறுவனத் தலைமைத்துவம்', 'कॉर्पोरेट नेतृत्व', 'Unternehmensführung', 'Leadership en entreprise', '기업 리더십', '企業リーダーシップ'],
+  'Philosophy or wellness': ['தத்துவம் அல்லது நலவாழ்வு', 'दर्शन या वेलनेस', 'Philosophie oder Wellness', 'Philosophie ou bien-être', '철학 또는 웰니스', '哲学またはウェルネス'],
+  'School or university': ['பள்ளி அல்லது பல்கலைக்கழகம்', 'स्कूल या विश्वविद्यालय', 'Schule oder Universität', 'École ou université', '학교 또는 대학', '学校または大学'],
+  'Retreat': ['முகாம்', 'रिट्रीट', 'Retreat', 'Retraite', '리트릿', 'リトリート'],
+  'Other': ['பிற', 'अन्य', 'Sonstiges', 'Autre', '기타', 'その他'],
+  'Thank you. We will respond within two working days.': ['நன்றி. இரண்டு வேலை நாட்களுக்குள் பதிலளிப்போம்.', 'धन्यवाद। हम दो कार्यदिवसों में जवाब देंगे।', 'Danke. Wir antworten innerhalb von zwei Werktagen.', 'Merci. Nous répondrons sous deux jours ouvrés.', '감사합니다. 영업일 기준 이틀 내에 답변드립니다.', 'ありがとうございます。2営業日以内にご返信します。'],
+  'Where the fairway meets the Inner Battlefield': ['ஃபேர்வேயும் உள் போர்க்களமும் சந்திக்கும் இடம்', 'जहाँ फेयरवे भीतरी रणभूमि से मिलता है', 'Wo Fairway und inneres Schlachtfeld sich treffen', 'Là où le fairway rencontre le champ de bataille intérieur', '페어웨이와 내면의 전장이 만나는 곳', 'フェアウェイと内なる戦場が交わる場所'],
+  'Chapters of Bhagavad Gita': ['பகவத் கீதையின் அத்தியாயங்கள்', 'भगवद्गीता के अध्याय', 'Kapitel der Bhagavad Gita', 'Chapitres de la Bhagavad-Gita', '바가바드 기타의 장', 'バガヴァッド・ギーターの章'],
+  'From the course notes': ['மைதானக் குறிப்புகளிலிருந்து', 'कोर्स नोट्स से', 'Aus den Platznotizen', 'Notes de parcours', '코스 노트에서', 'コースノートより'],
+  'All articles →': ['அனைத்துக் கட்டுரைகளும் →', 'सभी लेख →', 'Alle Artikel →', 'Tous les articles →', '모든 아티클 →', 'すべての記事 →'],
+  'Why the 90 seconds before you swing is the most important practice in golf.': ['நீங்கள் அடிப்பதற்கு முந்தைய 90 வினாடிகள் ஏன் கோல்ஃபின் மிக முக்கியமான பயிற்சி.', 'स्विंग से पहले के 90 सेकंड गोल्फ़ का सबसे महत्वपूर्ण अभ्यास क्यों हैं।', 'Warum die 90 Sekunden vor dem Schlag die wichtigste Übung im Golf sind.', 'Pourquoi les 90 secondes avant le swing sont la pratique la plus importante au golf.', '스윙 전 90초가 골프에서 가장 중요한 연습인 이유.', 'スイング前の90秒がゴルフで最も大切な練習である理由。'],
+  'Get in touch.': ['தொடர்பு கொள்ளுங்கள்.', 'संपर्क करें।', 'Nehmen Sie Kontakt auf.', 'Contactez-nous.', '문의하세요.', 'ご連絡ください。'],
+  'Send message': ['செய்தியை அனுப்பு', 'संदेश भेजें', 'Nachricht senden', 'Envoyer le message', '메시지 보내기', 'メッセージを送る'],
+  '18 CHAPTERS': ['18 அத்தியாயங்கள்', '18 अध्याय', '18 KAPITEL', '18 CHAPITRES', '18장', '18章'],
+  'No. Each chapter introduces the teaching in plain language before showing how it plays out on the course.': ['இல்லை. ஒவ்வொரு அத்தியாயமும் போதனையை எளிய மொழியில் அறிமுகப்படுத்தி, அது மைதானத்தில் எப்படி விளையாடுகிறது என்பதைக் காட்டுகிறது.', 'नहीं। हर अध्याय सीख को सरल भाषा में समझाता है, फिर दिखाता है कि वह कोर्स पर कैसे चलती है।', 'Nein. Jedes Kapitel stellt die Lehre schlicht vor und zeigt dann, wie sie auf dem Platz wirkt.', 'Non. Chaque chapitre présente l’enseignement simplement, puis montre comment il se joue sur le parcours.', '아닙니다. 각 장은 가르침을 쉬운 말로 소개한 뒤, 코스에서 어떻게 나타나는지 보여줍니다.', 'いいえ。各章は教えを平易に紹介し、それがコースでどう働くかを示します。'],
+  'No. The Gita is treated here as a text about the mind, action, and attention. Readers of any belief, or none, will find it useful.': ['இல்லை. இங்கு கீதை மனம், செயல், கவனம் பற்றிய நூலாக அணுகப்படுகிறது. எந்த நம்பிக்கையினரும் பயன்பெறலாம்.', 'नहीं। यहाँ गीता मन, कर्म और ध्यान का ग्रंथ है। किसी भी विश्वास के पाठक इसे उपयोगी पाएँगे।', 'Nein. Die Gita wird hier als Text über Geist, Handeln und Aufmerksamkeit gelesen. Für Leser jeden Glaubens.', 'Non. La Gita est ici un texte sur l’esprit, l’action et l’attention. Utile quel que soit le croyance.', '아닙니다. 여기서 기타는 마음, 행위, 주의에 관한 텍스트입니다. 어떤 믿음의 독자에게도 도움이 됩니다.', 'いいえ。ここではギーターを心・行為・注意についての書として扱います。信条を問わず役立ちます。'],
+  "Yes. Golf Gita is available on Kindle and as an ePub. See the 'Where to buy' links for options.": ['ஆம். கோல்ஃப் கீதா Kindle மற்றும் ePub-ல் கிடைக்கிறது. வாங்கும் இணைப்புகளைப் பாருங்கள்.', 'हाँ। गोल्फ़ गीता Kindle और ePub पर उपलब्ध है। खरीद लिंक देखें।', 'Ja. Golf Gita gibt es als Kindle und ePub. Siehe die Kauf-Links.', 'Oui. Golf Gita est disponible en Kindle et ePub. Voir les liens d’achat.', '네. 골프 기타는 Kindle과 ePub으로 구매할 수 있습니다.', 'はい。ゴルフ・ギーターはKindleとePubで入手できます。'],
+  'Yes. Please get in touch through the Contact page and we will help with bulk and corporate orders.': ['ஆம். தொடர்புப் பக்கம் வழியாக எழுதுங்கள்; மொத்த மற்றும் நிறுவன ஆர்டர்களுக்கு உதவுவோம்.', 'हाँ। संपर्क पृष्ठ से लिखें; हम थोक और कॉर्पोरेट ऑर्डर में मदद करेंगे।', 'Ja. Schreiben Sie uns über die Kontaktseite; wir helfen bei Sammel- und Firmenbestellungen.', 'Oui. Contactez-nous via la page Contact pour les commandes groupées et d’entreprise.', '네. 문의 페이지로 연락 주시면 대량·기업 주문을 도와드립니다.', 'はい。お問い合わせページからご連絡ください。まとめ買い・法人注文を支援します。'],
 };
 
 for (const [source, translations] of Object.entries(additionalMessageRows)) {
@@ -407,22 +507,101 @@ export function useTranslation() {
   return context;
 }
 
-export function LanguageSelector({ light = false }) {
+export function LanguageSelector({ light = false, compact = false }) {
   const { language, setLanguage, t } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
+  const selectorRef = useRef(null);
+  const triggerRef = useRef(null);
+  const optionRefs = useRef([]);
+  const selectedIndex = languages.findIndex(({ code }) => code === language);
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+
+    const handlePointerDown = (event) => {
+      if (!selectorRef.current?.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+        triggerRef.current?.focus();
+      }
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    optionRefs.current[selectedIndex]?.focus();
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, selectedIndex]);
+
+  const focusOption = (index) => {
+    optionRefs.current[index]?.focus();
+  };
+
+  const handleMenuKeyDown = (event) => {
+    const focusedIndex = optionRefs.current.findIndex((option) => option === document.activeElement);
+    const currentIndex = focusedIndex >= 0 ? focusedIndex : selectedIndex;
+    let nextIndex = currentIndex;
+    if (event.key === 'ArrowDown') nextIndex = (currentIndex + 1) % languages.length;
+    else if (event.key === 'ArrowUp') nextIndex = (currentIndex - 1 + languages.length) % languages.length;
+    else if (event.key === 'Home') nextIndex = 0;
+    else if (event.key === 'End') nextIndex = languages.length - 1;
+    else return;
+
+    event.preventDefault();
+    focusOption(nextIndex);
+  };
+
   return (
-    <label className={`language-selector ${light ? 'language-selector-light' : ''}`}>
+    <div
+      ref={selectorRef}
+      className={`language-selector ${light ? 'language-selector-light' : ''} ${compact ? 'language-selector-compact' : ''} ${isOpen ? 'language-selector-open' : ''}`}
+    >
       <span className="visually-hidden">{t('Select language')}</span>
-      <select
+      <button
+        ref={triggerRef}
+        type="button"
         className="language-select"
-        value={language}
-        onChange={(event) => setLanguage(event.target.value)}
         aria-label={t('Select language')}
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        onClick={() => setIsOpen((open) => !open)}
+        onKeyDown={(event) => {
+          if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+            event.preventDefault();
+            setIsOpen(true);
+          }
+        }}
       >
-        {languages.map(({ code, label }) => (
-          <option key={code} value={code}>{label}</option>
-        ))}
-      </select>
-      <ChevronDown size={14} aria-hidden="true" />
-    </label>
+        <span>{compact ? languages[selectedIndex]?.shortLabel : languages[selectedIndex]?.label}</span>
+        <ChevronDown size={compact ? 12 : 14} aria-hidden="true" />
+      </button>
+      {isOpen && (
+        <div className="language-menu" role="menu" onKeyDown={handleMenuKeyDown}>
+          {languages.map(({ code, label, shortLabel }, index) => (
+            <button
+              key={code}
+              ref={(element) => { optionRefs.current[index] = element; }}
+              type="button"
+              className="language-option"
+              role="menuitemradio"
+              aria-checked={language === code}
+              onClick={() => {
+                setLanguage(code);
+                setIsOpen(false);
+                triggerRef.current?.focus();
+              }}
+            >
+              {compact ? shortLabel : label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
