@@ -469,11 +469,50 @@ for (const [source, translations] of Object.entries(additionalMessageRows)) {
 
 const LanguageContext = createContext(null);
 
+export const LS_LANG_KEY = 'gg_enabled_languages';
+
+export function getEnabledLanguages() {
+  try {
+    const raw = window.localStorage.getItem(LS_LANG_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch { /* quiet */ }
+  return ['en']; // English is default
+}
+
 export function LanguageProvider({ children }) {
+  const [enabledList, setEnabledList] = useState(getEnabledLanguages);
+
   const [language, setLanguage] = useState(() => {
+    const enabled = getEnabledLanguages();
     const savedLanguage = window.localStorage.getItem('golf-gita-language');
-    return languages.some(({ code }) => code === savedLanguage) ? savedLanguage : 'en';
+    // Only allow saved language if it is currently enabled by admin!
+    if (savedLanguage && enabled.includes(savedLanguage) && languages.some(({ code }) => code === savedLanguage)) {
+      return savedLanguage;
+    }
+    return 'en';
   });
+
+  // Keep in sync with admin language changes
+  useEffect(() => {
+    const syncEnabled = () => {
+      const currentEnabled = getEnabledLanguages();
+      setEnabledList(currentEnabled);
+      if (!currentEnabled.includes(language)) {
+        setLanguage('en');
+        window.localStorage.setItem('golf-gita-language', 'en');
+      }
+    };
+    syncEnabled();
+    window.addEventListener('storage', syncEnabled);
+    window.addEventListener('gg-languages-updated', syncEnabled);
+    return () => {
+      window.removeEventListener('storage', syncEnabled);
+      window.removeEventListener('gg-languages-updated', syncEnabled);
+    };
+  }, [language]);
 
   useEffect(() => {
     window.localStorage.setItem('golf-gita-language', language);
@@ -493,8 +532,9 @@ export function LanguageProvider({ children }) {
   const value = useMemo(() => ({
     language,
     setLanguage,
+    enabledList,
     t: (source) => messages[source]?.[language] ?? source,
-  }), [language]);
+  }), [language, enabledList]);
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 }
@@ -513,7 +553,19 @@ export function LanguageSelector({ light = false, compact = false }) {
   const selectorRef = useRef(null);
   const triggerRef = useRef(null);
   const optionRefs = useRef([]);
-  const selectedIndex = languages.findIndex(({ code }) => code === language);
+
+  const enabledCodes = getEnabledLanguages();
+  const visibleLanguages = useMemo(() => {
+    const filtered = languages.filter((l) => enabledCodes.includes(l.code));
+    return filtered.length > 0 ? filtered : [languages[0]];
+  }, [enabledCodes]);
+
+  // If only 1 language (English) is enabled in admin, do not render switcher
+  if (visibleLanguages.length <= 1) {
+    return null;
+  }
+
+  const selectedIndex = Math.max(0, visibleLanguages.findIndex(({ code }) => code === language));
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -547,10 +599,10 @@ export function LanguageSelector({ light = false, compact = false }) {
     const focusedIndex = optionRefs.current.findIndex((option) => option === document.activeElement);
     const currentIndex = focusedIndex >= 0 ? focusedIndex : selectedIndex;
     let nextIndex = currentIndex;
-    if (event.key === 'ArrowDown') nextIndex = (currentIndex + 1) % languages.length;
-    else if (event.key === 'ArrowUp') nextIndex = (currentIndex - 1 + languages.length) % languages.length;
+    if (event.key === 'ArrowDown') nextIndex = (currentIndex + 1) % visibleLanguages.length;
+    else if (event.key === 'ArrowUp') nextIndex = (currentIndex - 1 + visibleLanguages.length) % visibleLanguages.length;
     else if (event.key === 'Home') nextIndex = 0;
-    else if (event.key === 'End') nextIndex = languages.length - 1;
+    else if (event.key === 'End') nextIndex = visibleLanguages.length - 1;
     else return;
 
     event.preventDefault();
@@ -580,15 +632,15 @@ export function LanguageSelector({ light = false, compact = false }) {
       >
         {compact ? (
           <>
-            <span className="language-label-full">{languages[selectedIndex]?.label}</span>
-            <span className="language-label-short">{languages[selectedIndex]?.shortLabel}</span>
+            <span className="language-label-full">{visibleLanguages[selectedIndex]?.label}</span>
+            <span className="language-label-short">{visibleLanguages[selectedIndex]?.shortLabel}</span>
           </>
-        ) : languages[selectedIndex]?.label}
+        ) : visibleLanguages[selectedIndex]?.label}
         <ChevronDown size={compact ? 12 : 14} aria-hidden="true" />
       </button>
       {isOpen && (
         <div className="language-menu" role="menu" onKeyDown={handleMenuKeyDown}>
-          {languages.map(({ code, label, shortLabel }, index) => (
+          {visibleLanguages.map(({ code, label, shortLabel }, index) => (
             <button
               key={code}
               ref={(element) => { optionRefs.current[index] = element; }}

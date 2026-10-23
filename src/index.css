@@ -605,12 +605,22 @@ html:lang(ja) {
 /* Floating wisdom words — full overlay on the dark hero background */
 .hero-word-stage {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 496px;
   z-index: 12;
   overflow: hidden;
   pointer-events: none;
 }
 
+/* Document-flow spacer keeping 92px height in normal flow so content starts below 496px dark banner */
+.hero-flow-spacer {
+  height: 92px;
+  width: 100%;
+  display: block;
+  pointer-events: none;
+}
 
 /* Hero Section Wrapper (Static position so floating book anchors to .hero-master-container) */
 .hero-section-wrapper {
@@ -648,10 +658,10 @@ html:lang(ja) {
   filter: drop-shadow(0 28px 42px rgba(0, 0, 0, 0.55));
 }
 
-/* White Hero Content Area (Below Marquee, starts at 496px with padding-top 245px so text starts at ~747px) */
+/* White Hero Content Area (Below Marquee, starts at 496px with padding-top 255px so text starts cleanly below book) */
 .hero-bottom-content-area {
   background: #FFFFFF;
-  padding-top: 245px;
+  padding-top: 255px;
   padding-bottom: 80px;
   padding-left: 20px;
   padding-right: 20px;
@@ -2118,7 +2128,7 @@ html:lang(ja) {
   }
 
   .hero-bottom-content-area {
-    padding-top: 200px;
+    padding-top: 215px;
   }
 }
 
@@ -2158,7 +2168,7 @@ html:lang(ja) {
 
 
   .hero-bottom-content-area {
-    padding-top: 165px;
+    padding-top: 175px;
   }
 
   .hero-buttons-container {

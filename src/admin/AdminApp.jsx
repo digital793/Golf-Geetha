@@ -39,7 +39,7 @@ const NAV = [
   { id: 'contact', label: 'Contact' },
   { id: 'submissions', label: 'Inbox' },
   { id: 'chat_users', label: 'Chatbot Users' },
-  { id: 'languages', label: '🌐 Languages' },
+  { id: 'languages', label: 'Languages' },
 ];
 
 async function api(path, options = {}) {
@@ -683,7 +683,17 @@ export function AdminApp() {
                               <textarea value={hole.description} onChange={(e) => updateHole({ description: e.target.value })} />
                             </div>
                             <div className="cms-span-all">
-                              <ImageField label="Image" value={hole.image} onChange={(image) => updateHole({ image })} />
+                              <ImageField
+                                label="Hole Image"
+                                spec={{
+                                  dimensions: '800 × 800 px (1:1 square) or 800 × 600 px (4:3)',
+                                  formats: 'PNG, JPG or WebP',
+                                  dpi: 72,
+                                  notes: 'Hole emblem/artwork displayed in scorecard and 18 Holes chapter modal.'
+                                }}
+                                value={hole.image}
+                                onChange={(image) => updateHole({ image })}
+                              />
                             </div>
                           </div>
                         )}
@@ -815,7 +825,13 @@ export function AdminApp() {
                         )}
                       </div>
                       <ImageField
-                        label=""
+                        label="Gallery Image"
+                        spec={{
+                          dimensions: '1200 × 800 px (3:2 landscape) or 1000 × 1000 px (square)',
+                          formats: 'JPG or WebP',
+                          dpi: 72,
+                          notes: 'High-res book gallery image displayed on The Book page.'
+                        }}
                         value={item.image}
                         onChange={(image) => {
                           const gallery = [...draft.gallery];
@@ -995,11 +1011,21 @@ export function AdminApp() {
                           speaking_audiences[index] = { ...item, extra: JSON.stringify({ ...extra, target: e.target.value }) };
                           setDraft({ ...draft, lists: { ...draft.lists, speaking_audiences } });
                         }} /></div>
-                        <ImageField label="Icon" value={item.icon} onChange={(icon) => {
-                          const speaking_audiences = [...draft.lists.speaking_audiences];
-                          speaking_audiences[index] = { ...item, icon };
-                          setDraft({ ...draft, lists: { ...draft.lists, speaking_audiences } });
-                        }} />
+                        <ImageField
+                          label="Icon"
+                          spec={{
+                            dimensions: '100 × 100 px (square)',
+                            formats: 'PNG or SVG with transparent background',
+                            dpi: 72,
+                            notes: 'Audience pillar icon/symbol with transparent background.'
+                          }}
+                          value={item.icon}
+                          onChange={(icon) => {
+                            const speaking_audiences = [...draft.lists.speaking_audiences];
+                            speaking_audiences[index] = { ...item, icon };
+                            setDraft({ ...draft, lists: { ...draft.lists, speaking_audiences } });
+                          }}
+                        />
                       </div>
                     );
                   })}
@@ -1098,9 +1124,21 @@ export function AdminApp() {
                       <div className="cms-field"><label>Body</label><textarea value={item.body || ''} onChange={(e) => {
                         const articles = [...draft.articles]; articles[index] = { ...item, body: e.target.value }; setDraft({ ...draft, articles });
                       }} /></div>
-                      <ImageField label="Image" value={item.image} onChange={(image) => {
-                        const articles = [...draft.articles]; articles[index] = { ...item, image }; setDraft({ ...draft, articles });
-                      }} />
+                      <ImageField
+                        label="Article Image"
+                        spec={{
+                          dimensions: '1200 × 630 px (1.9:1 landscape) or 800 × 600 px (4:3)',
+                          formats: 'JPG or WebP',
+                          dpi: 72,
+                          notes: 'Article cover thumbnail and reading banner.'
+                        }}
+                        value={item.image}
+                        onChange={(image) => {
+                          const articles = [...draft.articles];
+                          articles[index] = { ...item, image };
+                          setDraft({ ...draft, articles });
+                        }}
+                      />
                       <label><input type="checkbox" checked={Boolean(item.is_active)} onChange={(e) => {
                         const articles = [...draft.articles]; articles[index] = { ...item, is_active: e.target.checked ? 1 : 0 }; setDraft({ ...draft, articles });
                       }} /> Published</label>
@@ -1365,16 +1403,17 @@ export function AdminApp() {
 
 // ─── Language catalogue ───────────────────────────────────────────────────────
 const LANGUAGE_CATALOGUE = [
-  { code: 'en', name: 'English', native: 'English', flag: '🇬🇧' },
-  { code: 'hi', name: 'Hindi', native: 'हिन्दी', flag: '🇮🇳' },
-  { code: 'ko', name: 'Korean', native: '한국어', flag: '🇰🇷' },
-  { code: 'ja', name: 'Japanese', native: '日本語', flag: '🇯🇵' },
-  { code: 'es', name: 'Spanish', native: 'Español', flag: '🇪🇸' },
-  { code: 'fr', name: 'French', native: 'Français', flag: '🇫🇷' },
-  { code: 'de', name: 'German', native: 'Deutsch', flag: '🇩🇪' },
-  { code: 'zh', name: 'Chinese (Simplified)', native: '中文', flag: '🇨🇳' },
-  { code: 'ar', name: 'Arabic', native: 'العربية', flag: '🇸🇦' },
-  { code: 'pt', name: 'Portuguese', native: 'Português', flag: '🇵🇹' },
+  { code: 'en', name: 'English', native: 'English' },
+  { code: 'hi', name: 'Hindi', native: 'हिन्दी' },
+  { code: 'ta', name: 'Tamil', native: 'தமிழ்' },
+  { code: 'ko', name: 'Korean', native: '한국어' },
+  { code: 'ja', name: 'Japanese', native: '日本語' },
+  { code: 'es', name: 'Spanish', native: 'Español' },
+  { code: 'fr', name: 'French', native: 'Français' },
+  { code: 'de', name: 'German', native: 'Deutsch' },
+  { code: 'zh', name: 'Chinese (Simplified)', native: '中文' },
+  { code: 'ar', name: 'Arabic', native: 'العربية' },
+  { code: 'pt', name: 'Portuguese', native: 'Português' },
 ];
 
 const LS_LANG_KEY = 'gg_enabled_languages';
@@ -1408,6 +1447,8 @@ function LanguageSettings() {
     saveEnabledLangs(final);
     setEnabled(final);
     setSaved(true);
+    window.dispatchEvent(new Event('storage'));
+    window.dispatchEvent(new CustomEvent('gg-languages-updated'));
     setTimeout(() => setSaved(false), 2000);
   };
 
@@ -1417,13 +1458,13 @@ function LanguageSettings() {
       <p className="cms-lead">
         Enable the languages that should be available on the public site.
         <strong> English is always enabled</strong> and cannot be turned off.
-        Only enabled languages will appear in the language switcher.
-        Translations still need to be added to the i18n files for each enabled language.
+        When only English is enabled, the site remains in pure English with the switcher hidden.
+        When you enable additional languages, the language switcher will automatically appear for visitors.
       </p>
 
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
         gap: '12px',
         marginTop: '20px',
       }}>
@@ -1437,31 +1478,50 @@ function LanguageSettings() {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '14px',
-                padding: '14px 16px',
-                borderRadius: '10px',
-                border: isEnabled ? '2px solid #53256e' : '2px solid #e0d9f0',
-                background: isEnabled ? 'rgba(83,37,110,0.07)' : '#fafafa',
+                justifyContent: 'space-between',
+                padding: '14px 18px',
+                borderRadius: '8px',
+                border: isEnabled ? '2px solid #53256e' : '1px solid #e2d9eb',
+                background: isEnabled ? 'rgba(83, 37, 110, 0.06)' : '#ffffff',
                 cursor: isEnglish ? 'default' : 'pointer',
                 transition: 'all 0.18s ease',
-                opacity: isEnglish ? 0.85 : 1,
                 userSelect: 'none',
               }}
             >
-              <span style={{ fontSize: '28px', lineHeight: 1 }}>{lang.flag}</span>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 600, fontSize: '14px', color: '#1a1a1a' }}>{lang.name}</div>
-                <div style={{ fontSize: '12px', color: '#7b5ea7' }}>{lang.native}</div>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <strong style={{ fontSize: '15px', color: '#39194c' }}>{lang.name}</strong>
+                  <span style={{
+                    fontSize: '11px',
+                    textTransform: 'uppercase',
+                    color: '#7b5ea7',
+                    background: '#f4edf9',
+                    padding: '1px 6px',
+                    borderRadius: '4px',
+                    fontWeight: 600,
+                  }}>
+                    {lang.code}
+                  </span>
+                </div>
+                <div style={{ fontSize: '13px', color: '#666', marginTop: '3px' }}>{lang.native}</div>
                 {isEnglish && <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>Always on</div>}
               </div>
+
               <div style={{
-                width: '20px', height: '20px', borderRadius: '50%',
-                background: isEnabled ? '#53256e' : '#ddd',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                width: '22px',
+                height: '22px',
+                borderRadius: '50%',
+                background: isEnabled ? '#53256e' : '#e0e0e0',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 flexShrink: 0,
+                color: '#fff',
+                fontSize: '12px',
+                fontWeight: 'bold',
                 transition: 'background 0.18s ease',
               }}>
-                {isEnabled && <span style={{ color: '#fff', fontSize: '12px', lineHeight: 1 }}>✓</span>}
+                {isEnabled && '✓'}
               </div>
             </div>
           );
@@ -1475,14 +1535,18 @@ function LanguageSettings() {
         borderRadius: '8px',
         border: '1px solid rgba(83,37,110,0.15)',
       }}>
-        <strong style={{ display: 'block', marginBottom: '6px', color: '#53256e' }}>Currently enabled</strong>
+        <strong style={{ display: 'block', marginBottom: '8px', color: '#53256e' }}>Currently enabled</strong>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
           {LANGUAGE_CATALOGUE.filter((l) => enabled.includes(l.code)).map((l) => (
             <span key={l.code} style={{
-              padding: '4px 12px', borderRadius: '999px',
-              background: '#53256e', color: '#fff', fontSize: '13px',
+              padding: '4px 12px',
+              borderRadius: '999px',
+              background: '#53256e',
+              color: '#fff',
+              fontSize: '13px',
+              fontWeight: 500,
             }}>
-              {l.flag} {l.name} <span style={{ opacity: 0.7 }}>({l.code})</span>
+              {l.name} <span style={{ opacity: 0.75, fontSize: '12px' }}>({l.code})</span>
             </span>
           ))}
         </div>
@@ -1490,7 +1554,7 @@ function LanguageSettings() {
 
       <div className="cms-actions" style={{ marginTop: '24px' }}>
         <button className="cms-btn" onClick={handleSave}>Save language settings</button>
-        {saved && <span className="cms-muted" style={{ color: 'green' }}>✓ Saved</span>}
+        {saved && <span className="cms-muted" style={{ color: 'green', marginLeft: '12px' }}>✓ Saved</span>}
       </div>
 
       <div style={{
@@ -1503,7 +1567,7 @@ function LanguageSettings() {
         <strong style={{ color: '#795548' }}>Note:</strong>
         <p style={{ margin: '6px 0 0', fontSize: '13px', color: '#5d4037', lineHeight: 1.6 }}>
           Enabling a language here makes it <em>selectable</em> in the site's language switcher.
-          Actual translations must be manually added inside <code>src/i18n.jsx</code> for each language code.
+          Actual translations are defined in <code>src/i18n.jsx</code> for each language code.
           Languages without translations will fall back to English text.
         </p>
       </div>
