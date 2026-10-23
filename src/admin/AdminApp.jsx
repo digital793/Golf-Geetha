@@ -47,6 +47,10 @@ async function api(path, options = {}) {
     headers: options.body instanceof FormData ? undefined : { 'Content-Type': 'application/json' },
     ...options,
   });
+  const contentType = res.headers.get('content-type') || '';
+  if (!contentType.includes('application/json')) {
+    throw new Error('API offline or returned non-JSON');
+  }
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || 'Request failed');
   return data;
@@ -354,8 +358,12 @@ export function AdminApp() {
     if (!authed) return;
     api('/api/content')
       .then((data) => {
-        setContent(data);
-        setDraft(structuredClone(data));
+        if (data && typeof data === 'object' && data.sections) {
+          setContent(data);
+          setDraft(structuredClone(data));
+        } else {
+          throw new Error('Invalid content payload');
+        }
       })
       .catch(() => {
         const fallback = buildDefaultContent();
@@ -367,7 +375,13 @@ export function AdminApp() {
   useEffect(() => {
     if (!authed || page !== 'dashboard') return;
     api(`/api/admin/analytics?days=${days}`)
-      .then(setAnalytics)
+      .then((data) => {
+        if (data && data.totals) {
+          setAnalytics(data);
+        } else {
+          throw new Error('Invalid analytics payload');
+        }
+      })
       .catch(() => {
         setAnalytics({
           days,
@@ -385,13 +399,15 @@ export function AdminApp() {
 
   useEffect(() => {
     if (!authed || page !== 'submissions') return;
-    api('/api/admin/submissions').then(setSubmissions).catch(() => {});
+    api('/api/admin/submissions')
+      .then((data) => setSubmissions(Array.isArray(data) ? data : []))
+      .catch(() => setSubmissions([]));
   }, [authed, page]);
 
   useEffect(() => {
     if (!authed || page !== 'chat_users') return;
     api('/api/admin/chat-profiles')
-      .then(setChatUsers)
+      .then((data) => setChatUsers(Array.isArray(data) ? data : []))
       .catch(() => {
         try {
           const raw = window.localStorage.getItem('gg_bot_profile_cache');
@@ -399,14 +415,18 @@ export function AdminApp() {
             const parsed = JSON.parse(raw);
             setChatUsers([{
               local_id: 'local-session',
-              profile: parsed.profile,
+              profile: parsed.profile || {},
               topics: parsed.topics || [],
               privacy_accepted: parsed.privacyAccepted,
               created_at: new Date().toISOString(),
               updated_at: new Date().toISOString(),
             }]);
+          } else {
+            setChatUsers([]);
           }
-        } catch { /* quiet */ }
+        } catch {
+          setChatUsers([]);
+        }
       });
   }, [authed, page]);
 
@@ -628,7 +648,7 @@ export function AdminApp() {
                   <ScorecardNine
                     key={openHole || 'front'}
                     title={openHole > 9 ? 'BACK NINE' : 'FRONT NINE'}
-                    holes={previewContent.holes.filter((h) => (openHole > 9 ? h.hole > 9 : h.hole <= 9))}
+                    holes={(previewContent?.holes || []).filter((h) => (openHole > 9 ? h.hole > 9 : h.hole <= 9))}
                     defaultActive={openHole > 9 ? Math.max(0, openHole - 10) : Math.max(0, (openHole || 1) - 1)}
                   />
                 </Preview>
@@ -1113,7 +1133,7 @@ export function AdminApp() {
                 ))}
               </div>
               {(() => {
-                const rows = submissions.filter((row) => inboxFilter === 'all' || row.form_type === inboxFilter);
+                const rows = (Array.isArray(submissions) ? submissions : []).filter((row) => inboxFilter === 'all' || row.form_type === inboxFilter);
                 if (!rows.length) {
                   return <div className="cms-empty">No submissions in this view yet.</div>;
                 }
@@ -1149,23 +1169,25 @@ export function AdminApp() {
             </>
           )}
 
-          {page === 'chat_users' && (
-            <>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                <h1 style={{ margin: 0 }}>Chatbot Users</h1>
-                <span className="cms-pill" style={{ background: '#39194c', color: '#ffd89a', fontWeight: 'bold' }}>
-                  {chatUsers.length} {chatUsers.length === 1 ? 'Stored User' : 'Stored Users'}
-                </span>
-              </div>
-              <p className="cms-lead">
-                Persistent visitor profiles stored in the SQLite database to recall users across conversations. Visitors can end their session manually from the chat bot, or admins can delete records below.
-              </p>
+          {page === 'chat_users' && (() => {
+            const list = Array.isArray(chatUsers) ? chatUsers : [];
+            return (
+              <>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <h1 style={{ margin: 0 }}>Chatbot Users</h1>
+                  <span className="cms-pill" style={{ background: '#39194c', color: '#ffd89a', fontWeight: 'bold' }}>
+                    {list.length} {list.length === 1 ? 'Stored User' : 'Stored Users'}
+                  </span>
+                </div>
+                <p className="cms-lead">
+                  Persistent visitor profiles stored in the SQLite database to recall users across conversations. Visitors can end their session manually from the chat bot, or admins can delete records below.
+                </p>
 
-              {!chatUsers.length ? (
-                <div className="cms-empty">No chatbot user profiles stored in the database yet.</div>
-              ) : (
-                <div className="cms-inbox-grid">
-                  {chatUsers.map((item) => {
+                {!list.length ? (
+                  <div className="cms-empty">No chatbot user profiles stored in the database yet.</div>
+                ) : (
+                  <div className="cms-inbox-grid">
+                    {list.map((item) => {
                     const prof = item.profile || {};
                     const topics = item.topics || [];
                     const displayName = prof.name || 'Anonymous Reader';
