@@ -602,16 +602,64 @@ html:lang(ja) {
   color: #F7F0E6;
 }
 
-/* Floating wisdom words — full overlay on the dark hero background */
+/* 3D stage: vanishing point is the centre (Hero — Text Into Depth) */
 .hero-word-stage {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 496px;
-  z-index: 12;
-  overflow: hidden;
+  perspective: 700px;
+  perspective-origin: 50% 50%;
+  transform-style: preserve-3d;
   pointer-events: none;
+  overflow: hidden;
+  z-index: 12;
+}
+
+.hero-depth-flyer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  font-family: var(--font-cormorant), 'Cinzel', serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: clamp(24px, 3.8vw, 56px);
+  color: #ffd89a;
+  text-shadow: 0 0 24px rgba(255, 216, 154, 0.45);
+  opacity: 0;
+  will-change: transform, opacity, filter;
+  transform-origin: 50% 50%;
+  animation: heroFlyIntoDepth var(--dur, 4s) cubic-bezier(0.4, 0, 0.6, 1) forwards;
+}
+
+@keyframes heroFlyIntoDepth {
+  0% {
+    transform: translate(var(--x), var(--y)) scale(1.5);
+    opacity: 0;
+    filter: blur(8px);
+  }
+  15% {
+    transform: translate(var(--x), var(--y)) scale(1);
+    opacity: 0.85;
+    filter: blur(0);
+  }
+  60% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(var(--x), var(--y)) scale(0.03);
+    opacity: 0;
+    filter: blur(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-depth-flyer {
+    animation-duration: 0.01s;
+  }
 }
 
 /* Document-flow spacer keeping 92px height in normal flow so content starts below 496px dark banner */

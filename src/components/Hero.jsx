@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTranslation } from '../i18n';
 import { useCms } from '../cms/CmsContext';
 
-// All the wisdom words that can float randomly in the black hero bg
+// Words that fly into depth across the textured hero background
 const WISDOM_WORDS = [
   'INNER BATTLE', 'EGO', 'DUALITY', 'AWARENESS', 'FOCUS',
   'STILLNESS', 'PURPOSE', 'PRESENT', 'BALANCE', 'CLARITY',
@@ -11,135 +11,110 @@ const WISDOM_WORDS = [
   'THE ETERNAL', 'RESTRAINT', 'MEDITATION', 'KNOWLEDGE', 'LIBERATION',
 ];
 
-function randomBetween(a, b) {
-  return a + Math.random() * (b - a);
-}
+// Start positions (px offset from the centre, as a fraction of the stage)
+// x: -1 = far left, 1 = far right | y: -1 = top, 1 = bottom
+// Selected to frame the floating book without obstructing it
+const SLOTS = [
+  [-0.75, -0.45], [0, -0.70],   [0.75, -0.45],
+  [-0.80, 0],                   [0.80, 0],
+  [-0.75, 0.45],                [0.75, 0.45],
+  [-0.50, -0.30], [0.50, -0.30],
+  [-0.52, 0.32],  [0.52, 0.32],
+  [-0.32, -0.68], [0.32, -0.68],
+];
 
-function FloatingWord({ word, onDone }) {
-  const [phase, setPhase] = useState('initial'); // initial → visible → zoomout
-  // Position words in left, right, or upper dark hero banner, avoiding the central book
-  const pos = useRef(null);
-  if (!pos.current) {
-    const zone = Math.random();
-    let x, y;
-    if (zone < 0.42) {
-      // Left side of book
-      x = randomBetween(3, 30);
-      y = randomBetween(22, 80);
-    } else if (zone < 0.84) {
-      // Right side of book
-      x = randomBetween(68, 92);
-      y = randomBetween(22, 80);
-    } else {
-      // Upper band
-      x = randomBetween(12, 82);
-      y = randomBetween(18, 34);
-    }
-    pos.current = {
-      x,
-      y,
-      size: randomBetween(22, 54),
-    };
-  }
+function DepthStage({ t }) {
+  const stageRef = useRef(null);
 
   useEffect(() => {
-    // 1. Appear normally: fade in at normal scale = 1
-    const tEnter = setTimeout(() => setPhase('visible'), 40);
-    // 2. Stay legible at scale 1, then disappear with Zoom Out (shrink to distance while fading)
-    const tZoomOut = setTimeout(() => setPhase('zoomout'), 1800);
-    // 3. Remove once fully vanished
-    const tEnd = setTimeout(() => onDone(), 2700);
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    let wi = 0;
+    const active = [];
+    let isMounted = true;
+
+    function spawn() {
+      if (!isMounted || !stage) return;
+      const el = document.createElement('span');
+      el.className = 'hero-depth-flyer';
+      const rawWord = WISDOM_WORDS[wi++ % WISDOM_WORDS.length];
+      el.textContent = t ? (t(rawWord) || rawWord) : rawWord;
+
+      const w = stage.clientWidth || window.innerWidth;
+      const h = stage.clientHeight || 496;
+      el.style.setProperty('--x', '0px');
+      el.style.setProperty('--y', '0px');
+      stage.appendChild(el);
+      const bw = el.offsetWidth || 140;
+      const bh = el.offsetHeight || 38;
+      const cw = bw * 1.3; // extra clearance for the initial 1.5 scale
+      const ch = bh * 1.3;
+
+      // Try slots in random order, take first that does not overlap a visible word
+      const order = SLOTS.map((_, i) => i).sort(() => Math.random() - 0.5);
+      let spot = null;
+      for (const i of order) {
+        const px = w / 2 + SLOTS[i][0] * w * 0.5;
+        const py = h / 2 + SLOTS[i][1] * h * 0.5;
+        const hit = active.some(
+          (a) =>
+            Math.abs(a.x - px) < (a.w + cw) / 2 + 24 &&
+            Math.abs(a.y - py) < (a.h + ch) / 2 + 16,
+        );
+        if (!hit) {
+          spot = { x: px, y: py, w: cw, h: ch };
+          break;
+        }
+      }
+
+      if (!spot) {
+        el.remove();
+        wi--;
+        return; // No free spot right now
+      }
+
+      active.push(spot);
+      const x = spot.x;
+      const y = spot.y;
+      const dur = parseFloat((3.5 + Math.random() * 1.5).toFixed(2));
+      el.style.setProperty('--dur', `${dur}s`);
+
+      // Center the text on its anchor point
+      el.style.setProperty('--x', `${Math.round(x - bw / 2)}px`);
+      el.style.setProperty('--y', `${Math.round(y - bh / 2)}px`);
+
+      // Free slot once word has shrunk into distance
+      setTimeout(() => {
+        const k = active.indexOf(spot);
+        if (k > -1) active.splice(k, 1);
+      }, dur * 750);
+
+      el.addEventListener('animationend', () => el.remove());
+    }
+
+    spawn();
+    const interval = setInterval(spawn, 750);
+
     return () => {
-      clearTimeout(tEnter);
-      clearTimeout(tZoomOut);
-      clearTimeout(tEnd);
+      isMounted = false;
+      clearInterval(interval);
+      if (stage) stage.innerHTML = '';
     };
-  }, [onDone]);
+  }, [t]);
 
-  // Normal appear: starts at opacity 0, scale 1 -> transitions to opacity 1, scale 1
-  // Zoom out disappear: shrinks to scale 0.25 while fading to opacity 0
-  let opacity = 0;
-  let scale = 1;
-
-  if (phase === 'initial') {
-    opacity = 0;
-    scale = 1; // Start at normal scale
-  } else if (phase === 'visible') {
-    opacity = 0.28; // Subtle ambient watermark in dark hero
-    scale = 1; // Stay at normal scale
-  } else if (phase === 'zoomout') {
-    opacity = 0; // Fade out
-    scale = 0.25; // Zoom out away into distance
-  }
-
-  const transitionDuration = phase === 'zoomout' ? '850ms' : '550ms';
-  const transitionEase = phase === 'zoomout'
-    ? 'cubic-bezier(0.4, 0, 0.2, 1)'
-    : 'cubic-bezier(0.16, 1, 0.3, 1)';
-
-  return (
-    <span
-      style={{
-        position: 'absolute',
-        left: `${pos.current.x}%`,
-        top: `${pos.current.y}%`,
-        fontSize: `${pos.current.size}px`,
-        fontFamily: "'Cinzel', 'Cormorant Garamond', serif",
-        fontWeight: 600,
-        textTransform: 'uppercase',
-        letterSpacing: '0.12em',
-        color: '#ffd89a',
-        lineHeight: 1,
-        whiteSpace: 'nowrap',
-        pointerEvents: 'none',
-        userSelect: 'none',
-        transform: `translate(-50%, -50%) scale(${scale})`,
-        opacity,
-        filter: phase === 'zoomout' ? 'blur(2px)' : 'none',
-        transition: `opacity ${transitionDuration} ${transitionEase}, transform ${transitionDuration} ${transitionEase}, filter ${transitionDuration} ease`,
-        willChange: 'opacity, transform',
-      }}
-    >
-      {word}
-    </span>
-  );
+  return <div className="hero-word-stage" ref={stageRef} aria-hidden="true" />;
 }
 
 export const Hero = ({ onBuyClick, onSampleClick }) => {
   const { t } = useTranslation();
   const { settings, sections } = useCms();
   const hero = sections.hero || {};
-  const [floaters, setFloaters] = useState([]);
-  const nextId = useRef(0);
-
-  // Spawn a new floating word every 700ms in the dark hero background
-  useEffect(() => {
-    const spawnWord = () => {
-      const word = WISDOM_WORDS[Math.floor(Math.random() * WISDOM_WORDS.length)];
-      const id = nextId.current++;
-      setFloaters((prev) => [...prev.slice(-10), { id, word }]);
-    };
-    spawnWord();
-    const interval = setInterval(spawnWord, 750);
-    return () => clearInterval(interval);
-  }, []);
-
-  const removeFloater = (id) => {
-    setFloaters((prev) => prev.filter((f) => f.id !== id));
-  };
 
   return (
     <div className="hero-section-wrapper" id="book">
-      {/* ── Floating ambient wisdom words across the 496px dark hero zone ── */}
-      <div className="hero-word-stage" aria-hidden="true">
-        {floaters.map((f) => (
-          <FloatingWord
-            key={f.id}
-            word={t(f.word) || f.word}
-            onDone={() => removeFloater(f.id)}
-          />
-        ))}
-      </div>
+      {/* ── 3D Text Into Depth Stage: words fly into depth with center vanishing point ── */}
+      <DepthStage t={t} />
 
       {/* ── Document-flow spacer (92px): preserves natural flow so white content begins cleanly below the 496px dark top banner ── */}
       <div className="hero-flow-spacer" aria-hidden="true" />
