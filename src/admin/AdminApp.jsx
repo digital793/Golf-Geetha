@@ -1307,7 +1307,8 @@ export function AdminApp() {
                 </div>
               )}
             </>
-          )}
+          );
+        })()}
         </main>
       </div>
     </div>

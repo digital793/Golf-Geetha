@@ -166,10 +166,12 @@ export function ChatBot({ onNavigate, onBuyClick }) {
       }
       const res = await fetch('/api/bot/knowledge', { headers });
       if (res.status === 304) return;
-      if (res.ok) {
+      if (res.ok && (res.headers.get('content-type') || '').includes('application/json')) {
         const bundle = await res.json();
-        setKnowledge(bundle.data);
-        setKnowledgeEtag(bundle.etag || '');
+        if (bundle && bundle.data) {
+          setKnowledge(bundle.data);
+          setKnowledgeEtag(bundle.etag || '');
+        }
       }
     } catch {
       // Quiet fallback
@@ -197,9 +199,9 @@ export function ChatBot({ onNavigate, onBuyClick }) {
     try {
       const localId = getLocalId();
       const res = await fetch(`/api/bot/profile/${localId}`);
-      if (res.ok) {
+      if (res.ok && (res.headers.get('content-type') || '').includes('application/json')) {
         const data = await res.json();
-        if (data.found && data.privacyAccepted) {
+        if (data && data.found && data.privacyAccepted) {
           cached = {
             profile: data.profile,
             topics: data.topics || [],
@@ -398,7 +400,7 @@ export function ChatBot({ onNavigate, onBuyClick }) {
         }),
       });
 
-      if (res.ok) {
+      if (res.ok && (res.headers.get('content-type') || '').includes('application/json')) {
         const data = await res.json();
         setTimeout(() => {
           setIsAiTyping(false);
@@ -474,7 +476,7 @@ export function ChatBot({ onNavigate, onBuyClick }) {
         }),
       });
 
-      if (res.ok) {
+      if (res.ok && (res.headers.get('content-type') || '').includes('application/json')) {
         const data = await res.json();
         setTimeout(() => {
           setIsAiTyping(false);
