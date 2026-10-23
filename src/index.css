@@ -35,9 +35,10 @@
   --color-text-footer: #D8CBB8;
 
   /* Typography */
-  --font-cinzel-decorative: 'Cinzel Decorative', serif;
-  --font-cinzel: var(--font-cinzel-decorative);
-  --font-card-heading: 'Aries', var(--font-cinzel-decorative), serif;
+  --font-brand-logo: 'Cinzel Decorative', serif;
+  --font-cinzel: 'Cinzel', serif;
+  --font-cinzel-decorative: 'Cinzel', serif;
+  --font-card-heading: 'Aries', 'Cinzel', serif;
   --font-cormorant: 'Cormorant Garamond', Georgia, serif;
   --font-paragraph: var(--font-cormorant), Georgia, serif;
   --font-outfit: var(--font-cormorant);
@@ -55,18 +56,18 @@ html:lang(ta) {
 }
 
 html:lang(hi) {
-  --font-cinzel-decorative: 'Noto Serif Devanagari', 'Cinzel Decorative', serif;
+  --font-cinzel-decorative: 'Noto Serif Devanagari', 'Cinzel', serif;
   --font-cinzel: 'Noto Serif Devanagari', 'Cinzel', serif;
   --font-card-heading: 'Noto Serif Devanagari', 'Cinzel', serif;
 }
 
 html:lang(ko) {
-  --font-cinzel-decorative: 'Noto Serif KR', 'Cinzel Decorative', serif;
+  --font-cinzel-decorative: 'Noto Serif KR', 'Cinzel', serif;
   --font-cinzel: 'Noto Serif KR', 'Cinzel', serif;
 }
 
 html:lang(ja) {
-  --font-cinzel-decorative: 'Noto Serif JP', 'Cinzel Decorative', serif;
+  --font-cinzel-decorative: 'Noto Serif JP', 'Cinzel', serif;
   --font-cinzel: 'Noto Serif JP', 'Cinzel', serif;
 }
 
@@ -601,107 +602,15 @@ html:lang(ja) {
   color: #F7F0E6;
 }
 
-/* Rotating word composition over the textured hero background */
+/* Floating wisdom words — full overlay on the dark hero background */
 .hero-word-stage {
-  height: 92px;
-  width: 100%;
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 12;
+  overflow: hidden;
   pointer-events: none;
 }
 
-.hero-word-set {
-  position: absolute;
-  top: -300px;
-  left: 0;
-  width: 100%;
-  height: 392px;
-}
-
-.hero-word {
-  position: absolute;
-  display: block;
-  white-space: nowrap;
-  font-family: var(--font-cormorant);
-  font-weight: 500;
-  line-height: 1;
-  text-transform: uppercase;
-  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.38);
-  animation: heroWordPopOut 700ms cubic-bezier(0.18, 0.85, 0.32, 1.2) both;
-}
-
-.hero-word-center {
-  top: 7%;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  color: #e7d9ca;
-  font-size: clamp(14px, 1.3vw, 19px);
-  letter-spacing: 0.08em;
-  animation-delay: 0ms;
-}
-
-.hero-word-left-top,
-.hero-word-right-top {
-  top: 42%;
-  font-size: clamp(19px, 2.3vw, 32px);
-  letter-spacing: 0.04em;
-}
-
-.hero-word-left-top {
-  left: 11%;
-  color: #c17b48;
-  animation-delay: 100ms;
-}
-
-.hero-word-right-top {
-  right: 11%;
-  color: #d57679;
-  animation-delay: 200ms;
-}
-
-.hero-word-left-bottom,
-.hero-word-right-bottom {
-  top: 68%;
-  font-size: clamp(38px, 5vw, 68px);
-  letter-spacing: 0.02em;
-}
-
-.hero-word-left-bottom {
-  left: 14%;
-  color: #bd8379;
-  animation-delay: 300ms;
-}
-
-.hero-word-right-bottom {
-  right: 10%;
-  color: #d0a579;
-  animation-delay: 400ms;
-}
-
-@keyframes heroWordPopOut {
-  from {
-    opacity: 0;
-    filter: blur(5px);
-    transform: scale(0.45);
-  }
-  70% {
-    opacity: 1;
-    filter: blur(0);
-    transform: scale(1.08);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
-    transform: scale(1);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-word {
-    animation: none;
-  }
-}
 
 /* Hero Section Wrapper (Static position so floating book anchors to .hero-master-container) */
 .hero-section-wrapper {
@@ -1958,7 +1867,7 @@ html:lang(ja) {
 }
 
 .footer-brand-title {
-  font-family: var(--font-cinzel-decorative);
+  font-family: var(--font-brand-logo);
   font-weight: 400;
   font-size: 32px;
   line-height: 43px;
@@ -2247,37 +2156,6 @@ html:lang(ja) {
     height: 345px;
   }
 
-  .hero-word-set {
-    top: -260px;
-    height: 352px;
-  }
-
-  .hero-word-center {
-    top: 17%;
-    font-size: 12px;
-  }
-
-  .hero-word-left-top,
-  .hero-word-right-top {
-    top: 35%;
-    font-size: clamp(12px, 3.2vw, 17px);
-  }
-
-  .hero-word-left-bottom,
-  .hero-word-right-bottom {
-    top: 60%;
-    font-size: clamp(22px, 6vw, 34px);
-  }
-
-  .hero-word-left-top,
-  .hero-word-left-bottom {
-    left: 2%;
-  }
-
-  .hero-word-right-top,
-  .hero-word-right-bottom {
-    right: 2%;
-  }
 
   .hero-bottom-content-area {
     padding-top: 165px;
@@ -2933,7 +2811,7 @@ html:lang(ja) {
 }
 
 .eighteen-sanskrit-devanagari {
-  font-family: 'Rozha One', 'Yatra One', 'Cinzel Decorative', serif;
+  font-family: 'Rozha One', 'Yatra One', 'Cinzel', serif;
   font-size: 20px;
   font-weight: 500;
   color: #53256E;
@@ -3160,7 +3038,7 @@ html:lang(ja) {
 }
 
 .speaking-hero-title {
-  font-family: 'Cinzel Decorative', var(--font-cinzel), serif;
+  font-family: var(--font-cinzel), serif;
   font-size: clamp(30px, 4.2vw, 40px);
   font-weight: 400;
   letter-spacing: 0.04em;
@@ -4513,7 +4391,7 @@ html:lang(hi) .btn-contact-submit {
 .discover-question,
 .articles-page-title,
 .legal-page-inner h1 {
-  font-family: 'Cinzel Decorative', serif;
+  font-family: var(--font-cinzel), serif;
   color: #53256e;
   font-size: clamp(28px, 4vw, 40px);
   line-height: 1.3;

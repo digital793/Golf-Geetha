@@ -26,7 +26,6 @@ function HoleRow({ hole: h, t }) {
         <p className="eighteen-card-desc">{t(h.description)}</p>
       </div>
       <div className="eighteen-card-sanskrit-col">
-        <span className="eighteen-sanskrit-devanagari">{h.devanagari}</span>
         <span className="eighteen-sanskrit-roman">{h.sanskrit}</span>
       </div>
     </div>

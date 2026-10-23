@@ -16,7 +16,7 @@ export const Modal = ({ isOpen, onClose, title, children }) => {
         {title && (
           <h3
             style={{
-              fontFamily: "'Cinzel Decorative', serif",
+              fontFamily: "'Cinzel', serif",
               fontSize: '22px',
               color: '#39194C',
               marginBottom: '1rem',

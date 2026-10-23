@@ -33,7 +33,7 @@
 }
 
 .legal-title {
-  font-family: 'Cinzel Decorative', 'Cinzel', serif;
+  font-family: 'Cinzel', serif;
   color: #39194c;
   font-size: clamp(30px, 4.5vw, 44px);
   font-weight: 700;

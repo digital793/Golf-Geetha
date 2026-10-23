@@ -39,6 +39,7 @@ const NAV = [
   { id: 'contact', label: 'Contact' },
   { id: 'submissions', label: 'Inbox' },
   { id: 'chat_users', label: 'Chatbot Users' },
+  { id: 'languages', label: '🌐 Languages' },
 ];
 
 async function api(path, options = {}) {
@@ -127,7 +128,7 @@ const INBOX_TYPES = {
   enquire: 'Session enquiry',
 };
 
-function ImageField({ label, value, onChange }) {
+function ImageField({ label, value, onChange, spec }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
 
@@ -146,7 +147,6 @@ function ImageField({ label, value, onChange }) {
       throw new Error(data?.error || 'No URL returned');
     } catch (err) {
       console.warn('Server upload failed, using Data URL fallback:', err);
-      // Reliable fallback: convert file to Base64 data URL so image works immediately in all views
       try {
         const reader = new FileReader();
         reader.onload = () => {
@@ -166,6 +166,23 @@ function ImageField({ label, value, onChange }) {
   return (
     <div className="cms-field">
       <label>{label}</label>
+      {spec && (
+        <div style={{
+          background: 'rgba(83, 37, 110, 0.07)',
+          border: '1px solid rgba(83, 37, 110, 0.2)',
+          borderRadius: '6px',
+          padding: '8px 12px',
+          marginBottom: '10px',
+          fontSize: '12px',
+          color: '#53256e',
+          lineHeight: 1.6,
+        }}>
+          <strong style={{ display: 'block', marginBottom: '2px' }}>📐 Recommended Spec</strong>
+          {spec.dimensions && <span>Size: <strong>{spec.dimensions}</strong>{spec.dpi ? ` · ${spec.dpi} DPI` : ''}</span>}
+          {spec.formats && <span style={{ display: 'block' }}>Format: <strong>{spec.formats}</strong></span>}
+          {spec.notes && <span style={{ display: 'block', opacity: 0.8 }}>{spec.notes}</span>}
+        </div>
+      )}
       {value ? (
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
           <img
@@ -231,6 +248,7 @@ function Fields({ meta, values, onChange }) {
       <ImageField
         key={field.key}
         label={field.label}
+        spec={field.spec}
         value={values[field.key] || ''}
         onChange={(value) => onChange({ ...values, [field.key]: value })}
       />
@@ -556,6 +574,8 @@ export function AdminApp() {
 
           {page === 'dashboard' && <Dashboard analytics={analytics} setDays={setDays} />}
 
+          {page === 'languages' && <LanguageSettings />}
+
           {page === 'platforms' && (
             <>
               <h1>Buy platforms</h1>
@@ -580,9 +600,14 @@ export function AdminApp() {
                       <div className="cms-field"><label>URL</label><input value={item.url} onChange={(e) => {
                         const platforms = [...draft.platforms]; platforms[index] = { ...item, url: e.target.value }; setDraft({ ...draft, platforms });
                       }} /></div>
-                      <ImageField label="Icon" value={item.icon} onChange={(icon) => {
-                        const platforms = [...draft.platforms]; platforms[index] = { ...item, icon }; setDraft({ ...draft, platforms });
-                      }} />
+                      <ImageField
+                        label="Platform Icon"
+                        spec={{ dimensions: '120 × 120 px', formats: 'PNG or SVG with transparent background', dpi: 144, notes: 'Platform store logo (Amazon, Flipkart, etc). Square with transparent bg.' }}
+                        value={item.icon}
+                        onChange={(icon) => {
+                          const platforms = [...draft.platforms]; platforms[index] = { ...item, icon }; setDraft({ ...draft, platforms });
+                        }}
+                      />
                       <label><input type="checkbox" checked={Boolean(item.is_active)} onChange={(e) => {
                         const platforms = [...draft.platforms]; platforms[index] = { ...item, is_active: e.target.checked ? 1 : 0 }; setDraft({ ...draft, platforms });
                       }} /> Active</label>
@@ -1335,5 +1360,153 @@ export function AdminApp() {
         </main>
       </div>
     </div>
+  );
+}
+
+// ─── Language catalogue ───────────────────────────────────────────────────────
+const LANGUAGE_CATALOGUE = [
+  { code: 'en', name: 'English', native: 'English', flag: '🇬🇧' },
+  { code: 'hi', name: 'Hindi', native: 'हिन्दी', flag: '🇮🇳' },
+  { code: 'ko', name: 'Korean', native: '한국어', flag: '🇰🇷' },
+  { code: 'ja', name: 'Japanese', native: '日本語', flag: '🇯🇵' },
+  { code: 'es', name: 'Spanish', native: 'Español', flag: '🇪🇸' },
+  { code: 'fr', name: 'French', native: 'Français', flag: '🇫🇷' },
+  { code: 'de', name: 'German', native: 'Deutsch', flag: '🇩🇪' },
+  { code: 'zh', name: 'Chinese (Simplified)', native: '中文', flag: '🇨🇳' },
+  { code: 'ar', name: 'Arabic', native: 'العربية', flag: '🇸🇦' },
+  { code: 'pt', name: 'Portuguese', native: 'Português', flag: '🇵🇹' },
+];
+
+const LS_LANG_KEY = 'gg_enabled_languages';
+
+function loadEnabledLangs() {
+  try {
+    const raw = window.localStorage.getItem(LS_LANG_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch { /* quiet */ }
+  return ['en']; // English always on by default
+}
+
+function saveEnabledLangs(codes) {
+  try { window.localStorage.setItem(LS_LANG_KEY, JSON.stringify(codes)); } catch { /* quiet */ }
+}
+
+function LanguageSettings() {
+  const [enabled, setEnabled] = React.useState(loadEnabledLangs);
+  const [saved, setSaved] = React.useState(false);
+
+  const toggle = (code) => {
+    if (code === 'en') return; // English is always on
+    setEnabled((prev) =>
+      prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code]
+    );
+    setSaved(false);
+  };
+
+  const handleSave = () => {
+    const final = enabled.includes('en') ? enabled : ['en', ...enabled];
+    saveEnabledLangs(final);
+    setEnabled(final);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  return (
+    <>
+      <h1>Language Settings</h1>
+      <p className="cms-lead">
+        Enable the languages that should be available on the public site.
+        <strong> English is always enabled</strong> and cannot be turned off.
+        Only enabled languages will appear in the language switcher.
+        Translations still need to be added to the i18n files for each enabled language.
+      </p>
+
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+        gap: '12px',
+        marginTop: '20px',
+      }}>
+        {LANGUAGE_CATALOGUE.map((lang) => {
+          const isEnabled = enabled.includes(lang.code);
+          const isEnglish = lang.code === 'en';
+          return (
+            <div
+              key={lang.code}
+              onClick={() => toggle(lang.code)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '14px',
+                padding: '14px 16px',
+                borderRadius: '10px',
+                border: isEnabled ? '2px solid #53256e' : '2px solid #e0d9f0',
+                background: isEnabled ? 'rgba(83,37,110,0.07)' : '#fafafa',
+                cursor: isEnglish ? 'default' : 'pointer',
+                transition: 'all 0.18s ease',
+                opacity: isEnglish ? 0.85 : 1,
+                userSelect: 'none',
+              }}
+            >
+              <span style={{ fontSize: '28px', lineHeight: 1 }}>{lang.flag}</span>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 600, fontSize: '14px', color: '#1a1a1a' }}>{lang.name}</div>
+                <div style={{ fontSize: '12px', color: '#7b5ea7' }}>{lang.native}</div>
+                {isEnglish && <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>Always on</div>}
+              </div>
+              <div style={{
+                width: '20px', height: '20px', borderRadius: '50%',
+                background: isEnabled ? '#53256e' : '#ddd',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0,
+                transition: 'background 0.18s ease',
+              }}>
+                {isEnabled && <span style={{ color: '#fff', fontSize: '12px', lineHeight: 1 }}>✓</span>}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div style={{
+        marginTop: '28px',
+        padding: '16px',
+        background: 'rgba(83,37,110,0.05)',
+        borderRadius: '8px',
+        border: '1px solid rgba(83,37,110,0.15)',
+      }}>
+        <strong style={{ display: 'block', marginBottom: '6px', color: '#53256e' }}>Currently enabled</strong>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+          {LANGUAGE_CATALOGUE.filter((l) => enabled.includes(l.code)).map((l) => (
+            <span key={l.code} style={{
+              padding: '4px 12px', borderRadius: '999px',
+              background: '#53256e', color: '#fff', fontSize: '13px',
+            }}>
+              {l.flag} {l.name} <span style={{ opacity: 0.7 }}>({l.code})</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="cms-actions" style={{ marginTop: '24px' }}>
+        <button className="cms-btn" onClick={handleSave}>Save language settings</button>
+        {saved && <span className="cms-muted" style={{ color: 'green' }}>✓ Saved</span>}
+      </div>
+
+      <div style={{
+        marginTop: '32px',
+        padding: '16px',
+        background: '#fff8e1',
+        borderRadius: '8px',
+        border: '1px solid #ffe082',
+      }}>
+        <strong style={{ color: '#795548' }}>Note:</strong>
+        <p style={{ margin: '6px 0 0', fontSize: '13px', color: '#5d4037', lineHeight: 1.6 }}>
+          Enabling a language here makes it <em>selectable</em> in the site's language switcher.
+          Actual translations must be manually added inside <code>src/i18n.jsx</code> for each language code.
+          Languages without translations will fall back to English text.
+        </p>
+      </div>
+    </>
   );
 }

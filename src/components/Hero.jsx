@@ -1,62 +1,101 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from '../i18n';
 import { useCms } from '../cms/CmsContext';
 
-export const Hero = ({ onBuyClick, onSampleClick }) => {
-  const { t } = useTranslation();
-  const { settings, sections, lists } = useCms();
-  const hero = sections.hero || {};
-  const marquee = lists.marquee || [];
-  const wordSets = [
-    {
-      center: 'INNER BATTLE',
-      leftTop: t(marquee[0]?.title || '18 HOLES'),
-      leftBottom: 'EGO',
-      rightTop: t(marquee[1]?.title || '18 CHAPTERS'),
-      rightBottom: 'DUALITY',
-    },
-    {
-      center: 'ANCIENT WISDOM',
-      leftTop: '18 HOLES',
-      leftBottom: 'FOCUS',
-      rightTop: '18 CHAPTERS',
-      rightBottom: 'PURPOSE',
-    },
-    {
-      center: 'THE INNER GAME',
-      leftTop: 'PRESENT',
-      leftBottom: 'STILLNESS',
-      rightTop: 'ONE ANCIENT MAP',
-      rightBottom: 'BALANCE',
-    },
-  ];
-  const [activeWordSet, setActiveWordSet] = useState(
-    () => Math.floor(Math.random() * wordSets.length),
-  );
+// All the wisdom words that can float randomly in the black hero bg
+const WISDOM_WORDS = [
+  'INNER BATTLE', 'EGO', 'DUALITY', 'AWARENESS', 'FOCUS',
+  'STILLNESS', 'PURPOSE', 'PRESENT', 'BALANCE', 'CLARITY',
+  'SURRENDER', 'ACTION', 'WISDOM', 'GITA', 'DEVOTION',
+  'RENUNCIATION', 'DISCIPLINE', 'COURAGE', 'TRUTH', 'SELF',
+  'THE ETERNAL', 'RESTRAINT', 'MEDITATION', 'KNOWLEDGE', 'LIBERATION',
+];
+
+function randomBetween(a, b) {
+  return a + Math.random() * (b - a);
+}
+
+function FloatingWord({ word, onDone }) {
+  const [phase, setPhase] = useState('appear'); // appear → hold → fade
+  const x = useRef(randomBetween(5, 75));
+  const y = useRef(randomBetween(8, 82));
+  const baseSize = useRef(randomBetween(24, 80));
+  const delay = useRef(randomBetween(0, 300));
 
   useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      setActiveWordSet((current) => {
-        const next = Math.floor(Math.random() * (wordSets.length - 1));
-        return next >= current ? next + 1 : next;
-      });
-    }, 5000);
+    const t1 = setTimeout(() => setPhase('hold'), delay.current + 600);
+    const t2 = setTimeout(() => setPhase('fade'), delay.current + 1600);
+    const t3 = setTimeout(() => onDone(), delay.current + 2500);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, [onDone]);
 
-    return () => window.clearInterval(intervalId);
-  }, [wordSets.length]);
+  const opacity = phase === 'appear' ? 0 : phase === 'hold' ? 1 : 0;
+  const scale = phase === 'appear' ? 1.6 : phase === 'hold' ? 1 : 0.5;
+  const blur = phase === 'fade' ? 4 : 0;
 
-  const activeWords = wordSets[activeWordSet];
+  return (
+    <span
+      style={{
+        position: 'absolute',
+        left: `${x.current}%`,
+        top: `${y.current}%`,
+        fontSize: `${baseSize.current}px`,
+        fontFamily: "'Cormorant Garamond', serif",
+        fontWeight: 500,
+        textTransform: 'uppercase',
+        letterSpacing: '0.04em',
+        color: 'rgba(247, 240, 230, 0.18)',
+        lineHeight: 1,
+        whiteSpace: 'nowrap',
+        pointerEvents: 'none',
+        userSelect: 'none',
+        transform: `scale(${scale})`,
+        opacity,
+        filter: `blur(${blur}px)`,
+        transition: `opacity ${phase === 'appear' ? 600 : 900}ms cubic-bezier(0.4,0,0.2,1), transform ${phase === 'appear' ? 600 : 900}ms cubic-bezier(0.4,0,0.2,1), filter 900ms ease`,
+        transitionDelay: `${delay.current}ms`,
+        willChange: 'opacity, transform',
+      }}
+    >
+      {word}
+    </span>
+  );
+}
+
+export const Hero = ({ onBuyClick, onSampleClick }) => {
+  const { t } = useTranslation();
+  const { settings, sections } = useCms();
+  const hero = sections.hero || {};
+  const [floaters, setFloaters] = useState([]);
+  const nextId = useRef(0);
+
+  // Spawn a new floating word every 600ms, removing done ones
+  useEffect(() => {
+    const spawnWord = () => {
+      const word = WISDOM_WORDS[Math.floor(Math.random() * WISDOM_WORDS.length)];
+      const id = nextId.current++;
+      setFloaters((prev) => [...prev.slice(-12), { id, word }]);
+    };
+    spawnWord();
+    const interval = setInterval(spawnWord, 700);
+    return () => clearInterval(interval);
+  }, []);
+
+  const removeFloater = (id) => {
+    setFloaters((prev) => prev.filter((f) => f.id !== id));
+  };
 
   return (
     <div className="hero-section-wrapper" id="book">
-      <div className="hero-word-stage">
-        <div className="hero-word-set" key={activeWordSet}>
-          <span className="hero-word hero-word-center">{t(activeWords.center)}</span>
-          <span className="hero-word hero-word-left-top">{t(activeWords.leftTop)}</span>
-          <span className="hero-word hero-word-left-bottom">{t(activeWords.leftBottom)}</span>
-          <span className="hero-word hero-word-right-top">{t(activeWords.rightTop)}</span>
-          <span className="hero-word hero-word-right-bottom">{t(activeWords.rightBottom)}</span>
-        </div>
+      {/* ── Floating ambient wisdom words ── */}
+      <div className="hero-word-stage" aria-hidden="true">
+        {floaters.map((f) => (
+          <FloatingWord
+            key={f.id}
+            word={t(f.word) || f.word}
+            onDone={() => removeFloater(f.id)}
+          />
+        ))}
       </div>
 
       <div className="hero-floating-book" onClick={onBuyClick}>
