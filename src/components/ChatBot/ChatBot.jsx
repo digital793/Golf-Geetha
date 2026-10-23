@@ -130,7 +130,7 @@ export function ChatBot({ onNavigate, onBuyClick }) {
             {
               id: 'returning-greeting',
               sender: 'bot',
-              text: `Welcome back, **${savedName}**. \ud83c\udf1f\n\nYour conversation picks up where you left off. Ask any question, or explore the five chapters of Golf Gita wisdom below.`,
+              text: `Welcome back, **${savedName}**.\n\nYour conversation picks up where you left off. Ask any question, or explore the five chapters of Golf Gita wisdom below.`,
               timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
               category: 'Golf Gita Wisdom',
               showTopicSelector: true,
