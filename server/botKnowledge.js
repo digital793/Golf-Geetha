@@ -18,6 +18,7 @@ export const DRAFT_KNOWLEDGE = {
     {
       id: 'book',
       name: 'About the Book',
+      shortName: 'About the Book',
       description: 'Explore the 18 holes of wisdom, themes of ego and balance, and where to buy.',
       qa: [
         {
@@ -68,6 +69,7 @@ export const DRAFT_KNOWLEDGE = {
     {
       id: 'gita',
       name: 'About the Bhagavad Gita',
+      shortName: 'Bhagavad Gita',
       description: 'Ancient philosophical dialogues between Krishna and Arjuna mapped to modern golf.',
       qa: [
         {
@@ -117,6 +119,7 @@ export const DRAFT_KNOWLEDGE = {
     {
       id: 'author',
       name: 'About the Author',
+      shortName: 'The Author',
       description: 'Nazeer Tajudeen — 20+ years coaching experience, Top 50 recognition, coaching philosophy.',
       qa: [
         {
@@ -168,6 +171,7 @@ export const DRAFT_KNOWLEDGE = {
     {
       id: 'technique',
       name: 'Golf Swing Problems: Technical',
+      shortName: 'Golf Technique',
       description: 'Physical ball striking, slice/hook, contact consistency, balance and distance.',
       qa: [
         {
@@ -217,6 +221,7 @@ export const DRAFT_KNOWLEDGE = {
     {
       id: 'mental',
       name: 'Golf Swing Problems: Mental',
+      shortName: 'Mental Game',
       description: 'Inner calmness, managing first-tee nerves, commitment, and bouncing back.',
       qa: [
         {

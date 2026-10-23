@@ -111,53 +111,82 @@ export function ChatBot({ onNavigate, onBuyClick }) {
     return () => clearInterval(interval);
   }, [syncKnowledge]);
 
-  // ── Load saved profile from DB on first open ──
+  // ── Load saved profile from DB or cache on first open ──
   const loadSavedProfile = useCallback(async () => {
     if (profileLoaded) return;
     setIsLoadingProfile(true);
+
+    // 1. First check local storage cache for immediate restoration
+    let cached = null;
+    try {
+      const raw = window.localStorage.getItem('gg_bot_profile_cache');
+      if (raw) cached = JSON.parse(raw);
+    } catch { /* quiet */ }
+
     try {
       const localId = getLocalId();
       const res = await fetch(`/api/bot/profile/${localId}`);
       if (res.ok) {
         const data = await res.json();
         if (data.found && data.privacyAccepted) {
-          setProfile((prev) => ({ ...prev, ...data.profile }));
-          setSelectedTopics(data.topics || []);
-          setPrivacyAccepted(true);
-          setStep(4);
-          const savedName = data.profile?.name?.trim() || 'Seeker';
-          setMessages([
-            {
-              id: 'returning-greeting',
-              sender: 'bot',
-              text: `Welcome back, **${savedName}**.\n\nYour conversation picks up where you left off. Ask any question, or explore the five chapters of Golf Gita wisdom below.`,
-              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-              category: 'Golf Gita Wisdom',
-              showTopicSelector: true,
-            },
-          ]);
-          const tops = data.topics || [];
-          if (tops.includes('technique')) setActiveCategory('technique');
-          else if (tops.includes('mental')) setActiveCategory('mental');
-          else if (tops.includes('book')) setActiveCategory('book');
-          else if (tops.includes('gita')) setActiveCategory('gita');
-          else if (tops.includes('author')) setActiveCategory('author');
+          cached = {
+            profile: data.profile,
+            topics: data.topics || [],
+            privacyAccepted: true,
+          };
         }
       }
-    } catch { /* Offline — continue with wizard */ }
+    } catch { /* offline — fallback to cached */ }
+
+    if (cached && cached.privacyAccepted && cached.profile?.name) {
+      setProfile((prev) => ({ ...prev, ...cached.profile }));
+      setSelectedTopics(cached.topics || []);
+      setPrivacyAccepted(true);
+      setStep(4);
+
+      const savedName = cached.profile.name.trim() || 'Seeker';
+      const tops = cached.topics || [];
+      const matchedCat = categories.find((c) => tops.includes(c.id)) || categories[0];
+      setActiveCategory(matchedCat.id);
+      const returnQuestions = (matchedCat.qa || []).slice(0, 6).map((qObj) => qObj.q);
+
+      setMessages([
+        {
+          id: 'returning-greeting',
+          sender: 'bot',
+          text: `Welcome back, **${savedName}**.\n\nYour conversation picks up where you left off. Here are essential questions from **${matchedCat.name}**, or ask anything in your own words:`,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          category: matchedCat.name,
+          suggestedQuestions: returnQuestions,
+          showTopicSelector: false,
+        },
+      ]);
+    }
+
     setProfileLoaded(true);
     setIsLoadingProfile(false);
-  }, [profileLoaded]);
+  }, [profileLoaded, categories]);
 
-  // ── Save profile to DB ──
+  // ── Save profile to DB and local cache ──
   const saveProfileToDb = useCallback(async (prof, topics) => {
+    // 1. Save in local cache immediately
+    try {
+      window.localStorage.setItem(
+        'gg_bot_profile_cache',
+        JSON.stringify({ profile: prof, topics: topics || [], privacyAccepted: true })
+      );
+    } catch { /* quiet */ }
+
+    // 2. Persist to server SQLite database
     try {
       await fetch('/api/bot/profile', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ localId: getLocalId(), profile: prof, topics, privacyAccepted: true }),
+        body: JSON.stringify({ localId: getLocalId(), profile: prof, topics: topics || [], privacyAccepted: true }),
       });
-    } catch { /* Quiet */ }
+    } catch (err) {
+      console.warn('Bot profile server sync error:', err);
+    }
   }, []);
 
   const handleOpenChat = () => {
@@ -197,39 +226,42 @@ export function ChatBot({ onNavigate, onBuyClick }) {
   };
 
   // Initialize Step 4: Active Chat Room
+  // NOTE: Automatically showcases the questions for the topics chosen in Step 1
   const startConversation = (prof, topics) => {
     const p = prof || profile;
-    const t = topics || selectedTopics;
-    const localHasGolf = t.includes('technique') || t.includes('mental');
+    const t = (topics && topics.length > 0) ? topics : selectedTopics;
     setStep(4);
     saveProfileToDb(p, t);
-    const firstName = p.name.trim() || 'Seeker';
+
+    // Identify the category corresponding to the topic selected in Step 1
+    const chosenCatId = t[0] || 'book';
+    const chosenCat = categories.find((c) => c.id === chosenCatId) || categories[0];
+    setActiveCategory(chosenCat.id);
+
+    // Extract questions from chosen category directly
+    const questionsToShow = (chosenCat.qa || []).slice(0, 6).map((qObj) => qObj.q);
+
+    const firstName = p.name?.trim() || 'Seeker';
     let welcomeGreeting = `Namaste, **${firstName}**. Welcome to Golf Gita.\n\n`;
-    if (localHasGolf && p.mainChallenge) {
-      welcomeGreeting +=
-        `I note that you play ${p.handedness.toLowerCase()} and are currently reflecting on: *" ${p.mainChallenge} "*.\n\n` +
-        `In Golf Gita, every curve of the ball and each moment of hesitation mirrors the inner dialogue of Arjuna on Kurukṣetra. Below you can explore all 5 chapters of wisdom, or simply ask any question.`;
-    } else {
-      welcomeGreeting +=
-        `Across the 18 holes of wisdom, we examine the connection between inner stillness, selfless action, and the modern round.\n\n` +
-        `You may explore any of the five topics below, or ask any question at any time.`;
+
+    if (p.mainChallenge) {
+      welcomeGreeting += `I note that you play ${p.handedness?.toLowerCase() || 'golf'} and are currently reflecting on: *" ${p.mainChallenge} "*.\n\n`;
     }
+
+    welcomeGreeting += `Here are the essential questions from **${chosenCat.name}**. Click any question below to explore its guidance, or ask anything in your own words:`;
+
     setMessages([
       {
         id: 'initial-greeting',
         sender: 'bot',
         text: welcomeGreeting,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        category: 'Golf Gita Wisdom',
-        showTopicSelector: true,
+        category: chosenCat.name,
+        suggestedQuestions: questionsToShow,
+        showTopicSelector: false, // NO REPEATED TOPIC SELECTOR!
       },
     ]);
-    if (t.includes('technique')) setActiveCategory('technique');
-    else if (t.includes('mental')) setActiveCategory('mental');
-    else if (t.includes('book')) setActiveCategory('book');
-    else if (t.includes('gita')) setActiveCategory('gita');
-    else if (t.includes('author')) setActiveCategory('author');
-    else setActiveCategory('book');
+
     trackEvent('bot_flow_started', { topics: t, handedness: p.handedness });
   };
 
@@ -244,6 +276,7 @@ export function ChatBot({ onNavigate, onBuyClick }) {
   const handleEndSession = async () => {
     try { await fetch(`/api/bot/profile/${getLocalId()}`, { method: 'DELETE' }); } catch { /* quiet */ }
     clearLocalId();
+    try { window.localStorage.removeItem('gg_bot_profile_cache'); } catch { /* quiet */ }
     setProfile(DEFAULT_PROFILE);
     setSelectedTopics([]);
     setPrivacyAccepted(false);
@@ -1059,7 +1092,7 @@ export function ChatBot({ onNavigate, onBuyClick }) {
                         className={`topic-tab-pill ${activeCategory === cat.id ? 'active' : ''}`}
                         onClick={() => setActiveCategory(cat.id)}
                       >
-                        {cat.shortName}
+                        {cat.shortName || cat.name}
                       </button>
                     ))}
                   </div>
