@@ -39,6 +39,74 @@ const DEFAULT_PROFILE = {
   ballFlight: '', physicalLimitations: '', mentalTroubles: '', mentalTriggers: '',
 };
 
+const FALLBACK_CATEGORIES = [
+  {
+    id: 'book',
+    name: '1. About the Book',
+    shortName: 'About the Book',
+    qa: [
+      { id: 'b1', q: 'What is Golf Gita?', a: 'Golf Gita: The Eternal Game of Celestial Wisdom explores golf through the wisdom of the Bhagavad Gita. Across 18 holes, it connects the challenges of the game with questions of ego, balance, awareness and purposeful action.' },
+      { id: 'b2', q: 'Who is the book written for?', a: 'It is written for golfers, coaches, newcomers and anyone interested in understanding themselves through the experiences of a game. Its reflections also speak to leaders and people navigating everyday pressures.' },
+      { id: 'b3', q: 'Do I need to play golf to enjoy it?', a: 'No. Golf provides the setting, but the experiences are familiar to everyone: doubt, ambition, frustration, confidence and acceptance.' },
+      { id: 'b4', q: 'What are the 18 holes of wisdom?', a: 'They are the book’s 18 chapters, arranged like a round of golf. Each explores a theme such as ego, duality, time, balance, the senses or liberation, inviting readers to recognise its influence on their game and life.' },
+      { id: 'b5', q: 'How can I apply its lessons on and off the course?', a: 'Choose one idea and practise it in a real situation. You might pause before reacting, commit fully to a decision, or review a mistake without judging your worth. Awareness becomes useful through repeated action.' },
+      { id: 'b6', q: 'Where can I buy the book?', a: 'Please contact the author for current availability, ordering options and delivery information. It is also available on Amazon India, Amazon US, Flipkart, and Kindle.', action: 'buy_modal' },
+    ],
+  },
+  {
+    id: 'gita',
+    name: '2. About the Bhagavad Gita',
+    shortName: 'Bhagavad Gita',
+    qa: [
+      { id: 'g1', q: 'What is the Bhagavad Gita?', a: 'The Bhagavad Gita is a philosophical and spiritual dialogue within the Indian epic, the Mahabharata. Its 18 chapters explore action, duty, knowledge, devotion and the nature of the Self.' },
+      { id: 'g2', q: 'Who are Krishna and Arjuna?', a: 'Arjuna is the warrior who becomes overwhelmed by doubt before the battle of Kurukṣetra. Krishna, his charioteer and divine guide, helps him examine his confusion and understand how to act with clarity.' },
+      { id: 'g3', q: 'How does its wisdom relate to golf?', a: 'Golf repeatedly asks us to choose, commit and respond to uncertain outcomes. Golf Gita draws connections between these experiences and the Gita’s teachings on disciplined action, steadiness and self-awareness.' },
+      { id: 'g4', q: 'What does it teach about ego and self-doubt?', a: 'The Gita invites us to look beyond pride, fear and the need to prove ourselves. Through Golf Gita’s lens, a poor shot becomes an experience to learn from, rather than a definition of who we are.' },
+      { id: 'g5', q: 'What does acting without attachment to results mean?', a: 'Give your preparation and action your full attention while accepting that you cannot control every outcome. In golf, choose your shot carefully and swing with commitment. Afterwards, learn from the result without clinging to it. You can care about your score without allowing it to govern your state of mind.' },
+      { id: 'g6', q: 'Do I need a spiritual background to understand Golf Gita?', a: 'No. You can approach the book with curiosity and reflect on its ideas through your own experience and beliefs.' },
+    ],
+  },
+  {
+    id: 'author',
+    name: '3. About the Author',
+    shortName: 'The Author',
+    qa: [
+      { id: 'a1', q: 'Who is Nazeer Tajudeen?', a: 'Nazeer Tajudeen is the author of Golf Gita and a golf coach with two decades of coaching experience. His background spans visual communication, advertising, event management and teaching golfers of different ages and abilities.' },
+      { id: 'a2', q: 'What inspired him to write Golf Gita?', a: 'His coaching experience revealed how closely the game reflects the person playing it. Golf Gita brings those observations into conversation with the Bhagavad Gita, exploring how our inner condition influences our choices and actions.' },
+      { id: 'a3', q: 'What is his background in golf coaching?', a: 'Nazeer discovered golf in 2000 and moved into full-time coaching in 2005. He has taught golfers aged five to 85 and has received Top 50 recognition from the World Golf Teachers Federation and U.S. Kids Golf.' },
+      { id: 'a4', q: 'What is his coaching philosophy?', a: 'His approach connects technique with awareness, confidence and enjoyment. He emphasises balance between mind, body, club and energy, helping golfers understand their game and commit to each shot with greater clarity.' },
+      { id: 'a5', q: 'How can I arrange a lesson with him?', a: 'Use the Contact the Author option and mention your location, golfing experience and what you would like help with. Ask about available lesson formats and scheduling.', action: 'contact_author' },
+      { id: 'a6', q: 'Can I invite him to speak or lead a retreat?', a: 'You can send an enquiry through Contact the Author. Include the proposed date, location, audience and theme so he can consider the request and discuss availability.', action: 'contact_author' },
+    ],
+  },
+  {
+    id: 'technique',
+    name: '4. Golf Swing Problems: Technical',
+    shortName: 'Golf Technique',
+    qa: [
+      { id: 't1', q: 'Why do I slice or hook the ball?', a: 'The curve usually comes from the relationship between the clubface and the direction the club is travelling at impact. For a right-handed golfer, a face open to the swing path encourages a slice; a face closed to it encourages a hook. The directions reverse for a left-handed golfer. Grip, alignment and off-centre contact can contribute, so start by describing where the ball begins and which way it curves.' },
+      { id: 't2', q: 'Why do I hit behind the ball or top it?', a: 'These misses often involve where the club reaches the bottom of its arc and where it contacts the ball. Changes in posture, balance or arm movement can contribute. For an iron shot from the ground, practise small swings that strike the ball before brushing the turf beyond it.' },
+      { id: 't3', q: 'Why is my ball striking inconsistent?', a: 'Inconsistent contact can come from changing setup, balance, tempo or impact location. Begin with a repeatable setup and controlled half swings. Notice where the ball strikes the clubface before trying to add speed or make several swing changes.' },
+      { id: 't4', q: 'How can I improve my balance and swing rhythm?', a: 'Make comfortable swings at a speed that lets you finish in balance and hold the finish for three seconds. Allow the backswing to complete before changing direction. If you repeatedly stumble or fall away, reduce your effort and check your setup.' },
+      { id: 't5', q: 'Why am I losing distance?', a: 'Distance depends on centred contact, club speed, launch conditions and equipment suitability. First establish whether your contact has changed. Trying to swing harder can reduce distance if it produces poorer strikes. A coach or launch monitor assessment can help identify the main cause.' },
+      { id: 't6', q: 'How can I improve my chipping and putting?', a: 'For chipping, practise landing the ball on a chosen spot and observing how far it rolls. For putting, work separately on starting direction and distance control. Use one ball occasionally and complete your normal routine to make practice more like the course.' },
+    ],
+  },
+  {
+    id: 'mental',
+    name: '5. Golf Swing Problems: Mental',
+    shortName: 'Mental Game',
+    qa: [
+      { id: 'm1', q: 'Why is my swing better in practice than on the course?', a: 'Practice often offers repeated attempts with little consequence. On the course, changing lies, targets and concerns about scoring can shift your attention. Practise with one ball, change targets frequently and use the same routine you intend to follow during a round.' },
+      { id: 'm2', q: 'How can I stop overthinking during my swing?', a: 'Give technical thinking a place during preparation, then choose one simple cue for the shot, such as “target” or “smooth.” Once you address the ball, commit to that cue. If you feel undecided, step away and restart.' },
+      { id: 'm3', q: 'How do I recover mentally after a bad shot?', a: 'Acknowledge what happened, take a comfortable breath and identify what the next shot requires. Save detailed swing analysis for later. The immediate task is to make a useful decision from your new position.' },
+      { id: 'm4', q: 'How can I manage first-tee nerves?', a: 'Arrive with enough time to warm up, choose a familiar shot and follow a routine you have practised. Let your breathing settle and aim at a clear target. You can make a committed swing while still feeling nervous.' },
+      { id: 'm5', q: 'How do I commit to a shot when I feel uncertain?', a: 'Choose a club, target and acceptable place to miss before stepping into the shot. If doubt remains, select a more comfortable option. Commitment grows when the decision matches your ability and the situation.' },
+      { id: 'm6', q: 'How can I stop a bad hole from spoiling my round?', a: 'As you leave the green, take one useful lesson from the hole and turn your attention to the next tee. Set a small goal, such as completing your routine or choosing a sensible target. The next hole deserves a fresh decision.' },
+    ],
+  },
+];
+
 export function ChatBot({ onNavigate, onBuyClick }) {
   const { settings } = useCms();
   const [isOpen, setIsOpen] = useState(false);
@@ -47,6 +115,9 @@ export function ChatBot({ onNavigate, onBuyClick }) {
   // Background knowledge crawler state (quiet, zero UI clutter)
   const [knowledge, setKnowledge] = useState(null);
   const [knowledgeEtag, setKnowledgeEtag] = useState('');
+
+  // Categories available immediately from top level
+  const categories = knowledge?.categories || FALLBACK_CATEGORIES;
 
   // Wizard flow state: 1: Topics → 2: About you → 3: Golf → 4: Chat
   const [step, setStep] = useState(1);
@@ -287,79 +358,6 @@ export function ChatBot({ onNavigate, onBuyClick }) {
     trackEvent('bot_session_ended', {});
   };
 
-  // Available categories with full questions directly from markdown
-  const categories = knowledge?.categories || [
-    {
-      id: 'book',
-      name: '1. About the Book',
-      shortName: 'The Book',
-      icon: '📖',
-      qa: [
-        { id: 'b1', q: 'What is Golf Gita?', a: 'Golf Gita: The Eternal Game of Celestial Wisdom explores golf through the wisdom of the Bhagavad Gita. Across 18 holes, it connects the challenges of the game with questions of ego, balance, awareness and purposeful action.' },
-        { id: 'b2', q: 'Who is the book written for?', a: 'It is written for golfers, coaches, newcomers and anyone interested in understanding themselves through the experiences of a game. Its reflections also speak to leaders and people navigating everyday pressures.' },
-        { id: 'b3', q: 'Do I need to play golf to enjoy it?', a: 'No. Golf provides the setting, but the experiences are familiar to everyone: doubt, ambition, frustration, confidence and acceptance.' },
-        { id: 'b4', q: 'What are the 18 holes of wisdom?', a: 'They are the book’s 18 chapters, arranged like a round of golf. Each explores a theme such as ego, duality, time, balance, the senses or liberation, inviting readers to recognise its influence on their game and life.' },
-        { id: 'b5', q: 'How can I apply its lessons on and off the course?', a: 'Choose one idea and practise it in a real situation. You might pause before reacting, commit fully to a decision, or review a mistake without judging your worth. Awareness becomes useful through repeated action.' },
-        { id: 'b6', q: 'Where can I buy the book?', a: 'Please contact the author for current availability, ordering options and delivery information. It is also available on Amazon India, Amazon US, Flipkart, and Kindle.', action: 'buy_modal' },
-      ],
-    },
-    {
-      id: 'gita',
-      name: '2. About the Bhagavad Gita',
-      shortName: 'The Bhagavad Gita',
-      icon: '🕉️',
-      qa: [
-        { id: 'g1', q: 'What is the Bhagavad Gita?', a: 'The Bhagavad Gita is a philosophical and spiritual dialogue within the Indian epic, the Mahabharata. Its 18 chapters explore action, duty, knowledge, devotion and the nature of the Self.' },
-        { id: 'g2', q: 'Who are Krishna and Arjuna?', a: 'Arjuna is the warrior who becomes overwhelmed by doubt before the battle of Kurukṣetra. Krishna, his charioteer and divine guide, helps him examine his confusion and understand how to act with clarity.' },
-        { id: 'g3', q: 'How does its wisdom relate to golf?', a: 'Golf repeatedly asks us to choose, commit and respond to uncertain outcomes. Golf Gita draws connections between these experiences and the Gita’s teachings on disciplined action, steadiness and self-awareness.' },
-        { id: 'g4', q: 'What does it teach about ego and self-doubt?', a: 'The Gita invites us to look beyond pride, fear and the need to prove ourselves. Through Golf Gita’s lens, a poor shot becomes an experience to learn from, rather than a definition of who we are.' },
-        { id: 'g5', q: 'What does acting without attachment to results mean?', a: 'Give your preparation and action your full attention while accepting that you cannot control every outcome. In golf, choose your shot carefully and swing with commitment. Afterwards, learn from the result without clinging to it. You can care about your score without allowing it to govern your state of mind.' },
-        { id: 'g6', q: 'Do I need a spiritual background to understand Golf Gita?', a: 'No. You can approach the book with curiosity and reflect on its ideas through your own experience and beliefs.' },
-      ],
-    },
-    {
-      id: 'author',
-      name: '3. About the Author',
-      shortName: 'The Author',
-      icon: '🏌️',
-      qa: [
-        { id: 'a1', q: 'Who is Nazeer Tajudeen?', a: 'Nazeer Tajudeen is the author of Golf Gita and a golf coach with two decades of coaching experience. His background spans visual communication, advertising, event management and teaching golfers of different ages and abilities.' },
-        { id: 'a2', q: 'What inspired him to write Golf Gita?', a: 'His coaching experience revealed how closely the game reflects the person playing it. Golf Gita brings those observations into conversation with the Bhagavad Gita, exploring how our inner condition influences our choices and actions.' },
-        { id: 'a3', q: 'What is his background in golf coaching?', a: 'Nazeer discovered golf in 2000 and moved into full-time coaching in 2005. He has taught golfers aged five to 85 and has received Top 50 recognition from the World Golf Teachers Federation and U.S. Kids Golf.' },
-        { id: 'a4', q: 'What is his coaching philosophy?', a: 'His approach connects technique with awareness, confidence and enjoyment. He emphasises balance between mind, body, club and energy, helping golfers understand their game and commit to each shot with greater clarity.' },
-        { id: 'a5', q: 'How can I arrange a lesson with him?', a: 'Use the Contact the Author option and mention your location, golfing experience and what you would like help with. Ask about available lesson formats and scheduling.', action: 'contact_author' },
-        { id: 'a6', q: 'Can I invite him to speak or lead a retreat?', a: 'You can send an enquiry through Contact the Author. Include the proposed date, location, audience and theme so he can consider the request and discuss availability.', action: 'contact_author' },
-      ],
-    },
-    {
-      id: 'technique',
-      name: '4. Golf Swing Problems: Technical',
-      shortName: 'Technical Swing',
-      icon: '⛳',
-      qa: [
-        { id: 't1', q: 'Why do I slice or hook the ball?', a: 'The curve usually comes from the relationship between the clubface and the direction the club is travelling at impact. For a right-handed golfer, a face open to the swing path encourages a slice; a face closed to it encourages a hook. The directions reverse for a left-handed golfer. Grip, alignment and off-centre contact can contribute, so start by describing where the ball begins and which way it curves.' },
-        { id: 't2', q: 'Why do I hit behind the ball or top it?', a: 'These misses often involve where the club reaches the bottom of its arc and where it contacts the ball. Changes in posture, balance or arm movement can contribute. For an iron shot from the ground, practise small swings that strike the ball before brushing the turf beyond it.' },
-        { id: 't3', q: 'Why is my ball striking inconsistent?', a: 'Inconsistent contact can come from changing setup, balance, tempo or impact location. Begin with a repeatable setup and controlled half swings. Notice where the ball strikes the clubface before trying to add speed or make several swing changes.' },
-        { id: 't4', q: 'How can I improve my balance and swing rhythm?', a: 'Make comfortable swings at a speed that lets you finish in balance and hold the finish for three seconds. Allow the backswing to complete before changing direction. If you repeatedly stumble or fall away, reduce your effort and check your setup.' },
-        { id: 't5', q: 'Why am I losing distance?', a: 'Distance depends on centred contact, club speed, launch conditions and equipment suitability. First establish whether your contact has changed. Trying to swing harder can reduce distance if it produces poorer strikes. A coach or launch monitor assessment can help identify the main cause.' },
-        { id: 't6', q: 'How can I improve my chipping and putting?', a: 'For chipping, practise landing the ball on a chosen spot and observing how far it rolls. For putting, work separately on starting direction and distance control. Use one ball occasionally and complete your normal routine to make practice more like the course.' },
-      ],
-    },
-    {
-      id: 'mental',
-      name: '5. Golf Swing Problems: Mental',
-      shortName: 'Mental Game',
-      icon: '🧠',
-      qa: [
-        { id: 'm1', q: 'Why is my swing better in practice than on the course?', a: 'Practice often offers repeated attempts with little consequence. On the course, changing lies, targets and concerns about scoring can shift your attention. Practise with one ball, change targets frequently and use the same routine you intend to follow during a round.' },
-        { id: 'm2', q: 'How can I stop overthinking during my swing?', a: 'Give technical thinking a place during preparation, then choose one simple cue for the shot, such as “target” or “smooth.” Once you address the ball, commit to that cue. If you feel undecided, step away and restart.' },
-        { id: 'm3', q: 'How do I recover mentally after a bad shot?', a: 'Acknowledge what happened, take a comfortable breath and identify what the next shot requires. Save detailed swing analysis for later. The immediate task is to make a useful decision from your new position.' },
-        { id: 'm4', q: 'How can I manage first-tee nerves?', a: 'Arrive with enough time to warm up, choose a familiar shot and follow a routine you have practised. Let your breathing settle and aim at a clear target. You can make a committed swing while still feeling nervous.' },
-        { id: 'm5', q: 'How do I commit to a shot when I feel uncertain?', a: 'Choose a club, target and acceptable place to miss before stepping into the shot. If doubt remains, select a more comfortable option. Commitment grows when the decision matches your ability and the situation.' },
-        { id: 'm6', q: 'How can I stop a bad hole from spoiling my round?', a: 'As you leave the green, take one useful lesson from the hole and turn your attention to the next tee. Set a small goal, such as completing your routine or choosing a sensible target. The next hole deserves a fresh decision.' },
-      ],
-    },
-  ];
 
   const currentCategoryObj = categories.find((c) => c.id === activeCategory) || categories[0];
 
