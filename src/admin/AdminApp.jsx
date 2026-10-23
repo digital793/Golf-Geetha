@@ -361,12 +361,22 @@ export function AdminApp() {
         if (data && typeof data === 'object' && data.sections) {
           setContent(data);
           setDraft(structuredClone(data));
+          try {
+            window.localStorage.setItem('gg_cms_content_override', JSON.stringify(data));
+          } catch { /* quiet */ }
         } else {
           throw new Error('Invalid content payload');
         }
       })
       .catch(() => {
-        const fallback = buildDefaultContent();
+        let fallback = buildDefaultContent();
+        try {
+          const cached = window.localStorage.getItem('gg_cms_content_override');
+          if (cached) {
+            const parsed = JSON.parse(cached);
+            if (parsed && parsed.sections) fallback = parsed;
+          }
+        } catch { /* quiet */ }
         setContent(fallback);
         setDraft(structuredClone(fallback));
       });
@@ -446,8 +456,21 @@ export function AdminApp() {
       const data = await api(path, { method: 'PUT', body: JSON.stringify(body) });
       setContent(data);
       setDraft(structuredClone(data));
+      try {
+        window.localStorage.setItem('gg_cms_content_override', JSON.stringify(data));
+        window.dispatchEvent(new CustomEvent('gg_cms_updated', { detail: data }));
+      } catch { /* quiet */ }
       saveNotice();
     } catch {
+      // Offline / static preview fallback (e.g. Vercel preview):
+      // Update draft and content in local state, and sync immediately to localStorage & CustomEvent
+      // so public pages (e.g. /author, /book, etc.) reflect it immediately!
+      const currentDraft = draft ? structuredClone(draft) : buildDefaultContent();
+      setContent(currentDraft);
+      try {
+        window.localStorage.setItem('gg_cms_content_override', JSON.stringify(currentDraft));
+        window.dispatchEvent(new CustomEvent('gg_cms_updated', { detail: currentDraft }));
+      } catch { /* quiet */ }
       saveNotice();
     }
   };
