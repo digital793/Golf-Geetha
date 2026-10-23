@@ -283,4 +283,12 @@ export function replaceTable(table, rows, insertSql, bind) {
   tx();
 }
 
+export function syncSeedContent() {
+  try {
+    const data = getContent();
+    const seedPath = path.join(__dirname, '../src/cms/seedContent.json');
+    fs.writeFileSync(seedPath, JSON.stringify(data, null, 2), 'utf8');
+  } catch { /* quiet */ }
+}
+
 export { hashPassword };

@@ -1,0 +1,922 @@
+{
+  "settings": {
+    "site_title": "Golf Gita - The Eternal Game of Celestial Wisdom | By Nazeer Tajudeen",
+    "site_description": "Golf Gita maps each hole on the course to a chapter of the Bhagavad Gita. An ancient map for the modern round.",
+    "brand_name": "Golf Gita",
+    "emblem_dark": "/images/golf_gita_emblem.png",
+    "emblem_light": "/images/golf_gita_emblem_purple.png",
+    "book_cover": "/uploads/1792566312986-d805a8629b20.png",
+    "cta_emblem": "/images/cta-logo.png",
+    "shloka_line_1": "कर्मण्येवाधिकारस्ते मा",
+    "shloka_line_2": "फलेषु कदाचन",
+    "copyright": "© 2026 Golf Gita",
+    "buy_button_label": "BUY NOW",
+    "legal_privacy": "Privacy Policy",
+    "legal_terms": "Terms of Service",
+    "legal_cookies": "Cookie Policy"
+  },
+  "platforms": [
+    {
+      "id": 4,
+      "slug": "amazon-india",
+      "name": "Amazon India",
+      "formats": "Paperback | Hardcover | Kindle",
+      "icon": "/images/amazon-icon.png",
+      "url": "https://amazon.in",
+      "sort_order": 1,
+      "is_active": 1
+    },
+    {
+      "id": 5,
+      "slug": "flipkart",
+      "name": "Flipkart",
+      "formats": "Paperback | Hardcover",
+      "icon": "/images/flipkart-icon.png",
+      "url": "https://flipkart.com",
+      "sort_order": 2,
+      "is_active": 1
+    },
+    {
+      "id": 6,
+      "slug": "amazon-us",
+      "name": "Amazon US",
+      "formats": "Paperback | Hardcover | Kindle",
+      "icon": "/images/amazon-icon.png",
+      "url": "https://amazon.com",
+      "sort_order": 3,
+      "is_active": 1
+    },
+    {
+      "id": 7,
+      "slug": "kindle",
+      "name": "Kindle",
+      "formats": "Kindle digital",
+      "icon": "/images/kindle-icon.png",
+      "url": "https://amazon.com/kindle",
+      "sort_order": 4,
+      "is_active": 1
+    }
+  ],
+  "holes": [
+    {
+      "hole": 1,
+      "par": 4,
+      "distance": "390 yds",
+      "numeral": "01",
+      "title": "DESPAIR",
+      "subtitle": "Arjuna's Crisis",
+      "sanskrit": "Vishada",
+      "devanagari": "विषाद",
+      "description": "Every round begins at the edge of self-doubt.",
+      "image": "/uploads/1792154533638-84a498b029b0.png"
+    },
+    {
+      "hole": 2,
+      "par": 5,
+      "distance": "512 yds",
+      "numeral": "02",
+      "title": "KNOWLEDGE",
+      "subtitle": "Eternal Self",
+      "sanskrit": "Jnana",
+      "devanagari": "ज्ञान",
+      "description": "What falls is never what swings the club.",
+      "image": "/uploads/1792154539586-4dd0f221506b.png"
+    },
+    {
+      "hole": 3,
+      "par": 4,
+      "distance": "410 yds",
+      "numeral": "03",
+      "title": "ACTION",
+      "subtitle": "Selfless Work",
+      "sanskrit": "Karma",
+      "devanagari": "कर्म",
+      "description": "Strike. Do not negotiate with the outcome.",
+      "image": "/uploads/1792154544864-6d2fabc01451.png"
+    },
+    {
+      "hole": 4,
+      "par": 4,
+      "distance": "375 yds",
+      "numeral": "04",
+      "title": "RENUNCIATION",
+      "subtitle": "Path of Wisdom",
+      "sanskrit": "Sannyasa",
+      "devanagari": "संन्यास",
+      "description": "Release the last shot before you take the next.",
+      "image": "/uploads/1792154550451-a02304532115.png"
+    },
+    {
+      "hole": 5,
+      "par": 3,
+      "distance": "165 yds",
+      "numeral": "05",
+      "title": "RESTRAINT",
+      "subtitle": "Karma-Sannyas",
+      "sanskrit": "Yama",
+      "devanagari": "यम",
+      "description": "The quiet swing holds more power than the forced one.",
+      "image": "/uploads/1792154558479-1c2e6d0955c2.png"
+    },
+    {
+      "hole": 6,
+      "par": 4,
+      "distance": "430 yds",
+      "numeral": "06",
+      "title": "MEDITATION",
+      "subtitle": "Self-Mastery",
+      "sanskrit": "Dhyana",
+      "devanagari": "ध्यान",
+      "description": "Stillness before the backswing. Stillness after.",
+      "image": "/uploads/1792154576344-f9eb9e8b7048.png"
+    },
+    {
+      "hole": 7,
+      "par": 3,
+      "distance": "185 yds",
+      "numeral": "07",
+      "title": "WISDOM",
+      "subtitle": "Knowledge Realized",
+      "sanskrit": "Vijnana",
+      "devanagari": "विज्ञान",
+      "description": "Understanding the course is not the same as knowing it.",
+      "image": "/uploads/1792154584981-1bd0048e70da.png"
+    },
+    {
+      "hole": 8,
+      "par": 3,
+      "distance": "195 yds",
+      "numeral": "08",
+      "title": "THE ETERNAL",
+      "subtitle": "Imperishable Brahman",
+      "sanskrit": "Akshara",
+      "devanagari": "अक्षर",
+      "description": "You are playing a game older than your name for it.",
+      "image": "/uploads/1792154606391-a56c2b0213ab.png"
+    },
+    {
+      "hole": 9,
+      "par": 4,
+      "distance": "420 yds",
+      "numeral": "09",
+      "title": "SOVEREIGNTY",
+      "subtitle": "Royal Knowledge",
+      "sanskrit": "Raja Vidya",
+      "devanagari": "राज विद्या",
+      "description": "Mastery is hidden in plain sight.",
+      "image": "/uploads/1792154620344-0884cbc871dc.png"
+    },
+    {
+      "hole": 10,
+      "par": 4,
+      "distance": "395 yds",
+      "numeral": "10",
+      "title": "MANIFESTATION",
+      "subtitle": "Divine Glories",
+      "sanskrit": "Vibhuti",
+      "devanagari": "विभूति",
+      "description": "Every hole is an expression of something vaster.",
+      "image": "/uploads/1792154632045-5d233f9be86a.png"
+    },
+    {
+      "hole": 11,
+      "par": 4,
+      "distance": "535 yds",
+      "numeral": "11",
+      "title": "REVELATION",
+      "subtitle": "Cosmic Form",
+      "sanskrit": "Vishwarupa",
+      "devanagari": "विश्वरूप",
+      "description": "At some point the game becomes the teacher.",
+      "image": "/uploads/1792154638700-cb521b477679.png"
+    },
+    {
+      "hole": 12,
+      "par": 3,
+      "distance": "415 yds",
+      "numeral": "12",
+      "title": "DEVOTION",
+      "subtitle": "Path of Love",
+      "sanskrit": "Bhakti",
+      "devanagari": "भक्ति",
+      "description": "Play for the love of the game, not its verdict.",
+      "image": "/uploads/1792154644351-4e2fea3524e6.png"
+    },
+    {
+      "hole": 13,
+      "par": 5,
+      "distance": "380 yds",
+      "numeral": "13",
+      "title": "DISCERNMENT",
+      "subtitle": "Field of Action",
+      "sanskrit": "Kshetra",
+      "devanagari": "क्षेत्र",
+      "description": "Know the course. Know the one who walks it.",
+      "image": "/uploads/1792154649865-f5fc3bc3b899.png"
+    },
+    {
+      "hole": 14,
+      "par": 4,
+      "distance": "175 yds",
+      "numeral": "14",
+      "title": "TRANSCENDENCE",
+      "subtitle": "The Three Qualities",
+      "sanskrit": "Guna",
+      "devanagari": "गुण",
+      "description": "Dullness, restlessness, clarity: you cycle through all three.",
+      "image": "/uploads/1792154656163-69e12242330a.png"
+    },
+    {
+      "hole": 15,
+      "par": 4,
+      "distance": "440 yds",
+      "numeral": "15",
+      "title": "THE WHOLE",
+      "subtitle": "Supreme Self",
+      "sanskrit": "Purushottama",
+      "devanagari": "पुरुषोत्तम",
+      "description": "The best hole you ever played dissolves into the round.",
+      "image": "/uploads/1792154662826-2a77c12f1850.png"
+    },
+    {
+      "hole": 16,
+      "par": 3,
+      "distance": "205 yds",
+      "numeral": "16",
+      "title": "INTEGRITY",
+      "subtitle": "Divine Qualities",
+      "sanskrit": "Daivi",
+      "devanagari": "दैवी",
+      "description": "The card you sign at the end is the player you are.",
+      "image": "/uploads/1792154669445-5a90617f1945.png"
+    },
+    {
+      "hole": 17,
+      "par": 4,
+      "distance": "190 yds",
+      "numeral": "17",
+      "title": "CONVICTION",
+      "subtitle": "Threefold Faith",
+      "sanskrit": "Shraddha",
+      "devanagari": "श्रद्धा",
+      "description": "Doubt in the downswing loses the hole before it is played.",
+      "image": "/uploads/1792154675205-cd53f927c0d0.png"
+    },
+    {
+      "hole": 18,
+      "par": 5,
+      "distance": "450 yds",
+      "numeral": "18",
+      "title": "LIBERATION",
+      "subtitle": "Freedom",
+      "sanskrit": "Moksha",
+      "devanagari": "मोक्ष",
+      "description": "The final hole is where you put down everything you carried.",
+      "image": "/uploads/1792154683926-da1b884282fa.png"
+    }
+  ],
+  "articles": [
+    {
+      "id": 4,
+      "title": "THE PRE-SHOT ROUTINE AS MEDITATION",
+      "description": "Why the 90 seconds before you swing is the most important practice in golf.",
+      "body": "In the ancient wisdom tradition, every physical action carries an internal counterpart. When standing on the tee box, the stillness of mind reflects Krishna’s counsel to Arjuna: release the attachment to victory or defeat, and focus purely on the devotion of the present stroke.",
+      "image": "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=600&q=80",
+      "read_time": "4 min read",
+      "sort_order": 1,
+      "is_active": 1,
+      "category": "Ego - Hole 1",
+      "hole_tag": "Hole 6"
+    },
+    {
+      "id": 5,
+      "title": "KARMA AND THE SCORECARD",
+      "description": "What the Gita actually means by action without attachment to results.",
+      "body": "In the ancient wisdom tradition, every physical action carries an internal counterpart. When standing on the tee box, the stillness of mind reflects Krishna’s counsel to Arjuna: release the attachment to victory or defeat, and focus purely on the devotion of the present stroke.",
+      "image": "https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?auto=format&fit=crop&w=600&q=80",
+      "read_time": "6 min read",
+      "sort_order": 2,
+      "is_active": 1,
+      "category": "Gita",
+      "hole_tag": "Hole 3"
+    },
+    {
+      "id": 6,
+      "title": "THE YIPS: A SPIRITUAL DIAGNOSIS",
+      "description": "Ancient psychology has a precise name for what happens on the first tee.",
+      "body": "In the ancient wisdom tradition, every physical action carries an internal counterpart. When standing on the tee box, the stillness of mind reflects Krishna’s counsel to Arjuna: release the attachment to victory or defeat, and focus purely on the devotion of the present stroke.",
+      "image": "https://images.unsplash.com/photo-1592919505780-303950717480?auto=format&fit=crop&w=600&q=80",
+      "read_time": "5 min read",
+      "sort_order": 3,
+      "is_active": 1,
+      "category": "Golf mind",
+      "hole_tag": "H1"
+    }
+  ],
+  "faqs": [
+    {
+      "id": 17,
+      "question": "Do I need to know the Bhagavad Gita to read this?",
+      "answer": "No. Each chapter introduces the teaching in plain language before showing how it plays out on the course.",
+      "sort_order": 1
+    },
+    {
+      "id": 18,
+      "question": "Is this a religious book?",
+      "answer": "No. The Gita is treated here as a text about the mind, action, and attention. Readers of any belief, or none, will find it useful.",
+      "sort_order": 2
+    },
+    {
+      "id": 19,
+      "question": "Is it available as an ebook?",
+      "answer": "Yes. Golf Gita is available on Kindle and as an ePub. See the 'Where to buy' links for options.",
+      "sort_order": 3
+    },
+    {
+      "id": 20,
+      "question": "Can I bulk-order for a club or corporate event?",
+      "answer": "Yes. Please get in touch through the Contact page and we will help with bulk and corporate orders.",
+      "sort_order": 4
+    }
+  ],
+  "gallery": [
+    {
+      "id": 1,
+      "image": "/images/golf_gita_cover.png",
+      "sort_order": 1
+    },
+    {
+      "id": 2,
+      "image": "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=400&q=80",
+      "sort_order": 2
+    },
+    {
+      "id": 3,
+      "image": "https://images.unsplash.com/photo-1592919505780-303950717480?auto=format&fit=crop&w=400&q=80",
+      "sort_order": 3
+    },
+    {
+      "id": 4,
+      "image": "https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?auto=format&fit=crop&w=400&q=80",
+      "sort_order": 4
+    }
+  ],
+  "nav": [
+    {
+      "id": 13,
+      "page_id": "book",
+      "label": "The Book",
+      "sort_order": 1
+    },
+    {
+      "id": 14,
+      "page_id": "18-holes",
+      "label": "18 Holes",
+      "sort_order": 2
+    },
+    {
+      "id": 15,
+      "page_id": "speaking",
+      "label": "Speaking & Retreats",
+      "sort_order": 3
+    },
+    {
+      "id": 16,
+      "page_id": "author",
+      "label": "Author",
+      "sort_order": 4
+    },
+    {
+      "id": 17,
+      "page_id": "articles",
+      "label": "Articles",
+      "sort_order": 5
+    }
+  ],
+  "sections": {
+    "hero": {
+      "title_line_1": "The oldest game and the oldest question",
+      "title_line_2": "share the same number.",
+      "subtitle": "Golf Gita maps each hole on the course to a chapter of the Bhagavad Gita. Not a metaphor. A manual.",
+      "cta_buy": "Where to buy",
+      "cta_sample": "Get a sample"
+    },
+    "battlefield": {
+      "title": "Where the fairway meets the Inner Battlefield",
+      "left_before": "Golf is a",
+      "left_strong": "mirror",
+      "left_after": "- patience, ego, the restless mind, reflected back.",
+      "center_number": "18",
+      "center_label": "Chapters of Bhagavad Gita",
+      "right_before": "Golf Gita maps it exactly -",
+      "right_after": ""
+    },
+    "the_turn": {
+      "kicker": "After hole 9 · Before the turn",
+      "title": "The Halfway House",
+      "image": "https://images.unsplash.com/photo-1592919505780-303950717480?auto=format&fit=crop&w=1400&q=80",
+      "quote": "Nine forces met you already. What you carry into the back nine is your choice.",
+      "badge_number": "10",
+      "badge_symbol": "☽"
+    },
+    "speaking_home": {
+      "image": "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&w=1200&q=80",
+      "kicker": "Speaking",
+      "title": "Bring the Gita to your club, course, or leadership retreat.",
+      "description": "Half-day and full-day sessions for golf clubs, corporate offsites, and wellness retreats.",
+      "cta": "Enquire about a session"
+    },
+    "newsletter": {
+      "issue": "Issue No. 1",
+      "title": "1-2-1",
+      "subtitle": "This week: the grip you haven't been ready to loosen.",
+      "privacy": "No spam. Unsubscribe anytime.",
+      "subscribe": "Subscribe",
+      "success": "Thanks for subscribing. Our 1-2-1 is on its way"
+    },
+    "book": {
+      "title": "Golf Gita",
+      "kicker": "The Eternal Game of Celestial Wisdom.",
+      "para_1": "Golf Gita blends the art of golf with the wisdom of the Bhagavad Gita, guiding readers through ego, duality and balance towards inner clarity, purposeful action and freedom beyond the scorecard.",
+      "para_2": "Golf Gita is a personal journal and guided exploration of golf’s inner game through the wisdom of the Bhagavad Gita. It is neither a technical golf manual nor a final authority on the Gita. Its 18 holes offer mirrors for ego, fear, desire, balance and awareness, not a fixed sequence of lessons. Read in order or turn to what speaks to you today. The course has numbers. The mind does not.",
+      "who_label": "Who is this for?",
+      "chapters_title": "CHAPTERS OVERVIEW",
+      "chapters_summary": "18 Chapters, 18 Experiences, 18 Lessons",
+      "faqs_title": "Ask the Caddie",
+      "description_label": "DESCRIPTION",
+      "cta_sample": "Read the preface free",
+      "seo_title": "The Book | Golf Gita",
+      "seo_description": "Golf Gita blends the art of golf with the wisdom of the Bhagavad Gita, guiding readers through ego, duality and balance towards inner clarity."
+    },
+    "eighteen": {
+      "title": "18 Holes",
+      "subtitle": "Each hole corresponds to a chapter of the Bhagavad Gita. Each chapter arrives exactly when the game needs it.",
+      "cta": "Read the book →",
+      "kicker": "The course",
+      "front_heading": "Front Nine",
+      "back_heading": "Back nine 10–18",
+      "halfway_kicker": "Halfway House",
+      "halfway_quote": "After nine days of battle, the Pandavas gather with Krishna to reassess their strategy and prepare for the nine days ahead - The Bhagavad Gita",
+      "chapter_link": "Read chapter →"
+    },
+    "speaking_page": {
+      "hero_title_1": "THE INNER GAME,",
+      "hero_title_2": "BROUGHT TO YOUR COURSE.",
+      "hero_subtitle": "Keynotes, workshops, and immersive retreats built on the Golf Gita's 18-chapter framework. For golf clubs, corporate teams, and anyone who uses the game as a place to think.",
+      "cta_enquire": "Enquire about speaking",
+      "cta_retreat": "Explore the retreat",
+      "audiences_title": "THE GAME WITHIN THE GAME, FOR EVERY AUDIENCE.",
+      "audiences_tags": "Keynotes · Talks · Workshops",
+      "retreat_kicker": "The Golf Gita Retreat",
+      "retreat_title": "A golf retreat for the mind, body and swing",
+      "form_title": "TELL US ABOUT YOUR EVENT.",
+      "form_subtitle": "We respond within two working days. No obligation, no pitch deck.",
+      "pattern_size": "79",
+      "pattern_offset_x": "40",
+      "pattern_offset_y": "45",
+      "pattern_opacity": "38",
+      "hero_kicker": "Speaking · Retreats",
+      "form_send": "Send enquiry",
+      "form_success": "Thank you. We will respond within two working days.",
+      "enquiry_placeholder": "Select one",
+      "enquiry_options": "Golf club or association; Corporate leadership; Philosophy or wellness; School or university; Retreat; Other",
+      "download_label": "Download speaker one-pager",
+      "form_note": "No prices listed. Availability and format are agreed directly.",
+      "seo_title": "Speaking & Retreats | Golf Gita"
+    },
+    "author": {
+      "name": "Nazeer Tajudeen",
+      "photo": "/uploads/1792562362950-92c816d9d9b5.png",
+      "bio_1": "Nazeer Tajudeen discovered golf in 2000 and left corporate life in 2005 to coach full-time. His journey from artist to executive to teacher brings creativity and insight to his work. Raised along the Thailand–Laos border and later in southern India, he grew up among diverse faiths and cultures that quietly shaped his outlook on life.",
+      "bio_2": "Golf Gita grew from two decades of coaching and his own struggles with the game. Through public mishits, persistence and reflection, he explored how ego, fear, expectations and awareness shape both performance and personal growth.",
+      "bio_3": "Recognized globally as a Top 50 coach by WGTF and U.S. Kids Golf in 2024, Nazeer teaches golfers aged 5 to 85. He welcomes beginners and helps struggling players regain confidence and joy.",
+      "quote": "Golf Gita grew from my own struggles with the game, and the discovery that understanding ourselves matters as much as understanding the swing",
+      "cta": "Enquire about a session",
+      "seo_title": "About the Author | Golf Gita"
+    },
+    "contact": {
+      "title": "Get in touch.",
+      "intro_before": "For speaking and retreat enquiries, the form on the",
+      "intro_link": "Speaking page",
+      "intro_after": "will get to the right person faster. This form is for everything else.",
+      "social_label": "Also here",
+      "send_button": "Send message",
+      "success_message": "Thank you. Your message has been sent.",
+      "seo_title": "Contact | Golf Gita",
+      "seo_description": "Get in touch with Golf Gita for general questions, press, and more"
+    },
+    "buy_modal": {
+      "title": "WHERE TO BUY",
+      "cta": "Buy now"
+    },
+    "sample_modal": {
+      "title": "Get Free Sample Chapters",
+      "body": "Enter your email to receive Hole 1 and Hole 2 directly to your inbox.",
+      "cta": "Send Sample PDF"
+    },
+    "home_ui": {
+      "front_nine": "The front nine",
+      "back_nine": "The Back Nine",
+      "articles_label": "From the course notes",
+      "articles_heading": "Recent articles",
+      "articles_link": "All articles →"
+    },
+    "discover": {
+      "kicker": "Discover Your Inner Game",
+      "progress": "1 of 6",
+      "question": "Where does your round usually fall apart?",
+      "next": "Next question",
+      "coming_soon": "The remaining questions are being prepared. Your round result will appear here soon.",
+      "seo_title": "Discover Your Round | Golf Gita"
+    },
+    "legal": {
+      "privacy_title": "Privacy Policy",
+      "terms_title": "Terms of Service",
+      "cookies_title": "Cookie Policy",
+      "placeholder": "This page is being prepared. If you have a question about how Golf Gita uses your information, please use the Contact page."
+    }
+  },
+  "lists": {
+    "author_stats": [
+      {
+        "id": 19,
+        "list_key": "author_stats",
+        "title": "Books written",
+        "subtitle": "",
+        "description": "",
+        "extra": "{\"number\":\"1\"}",
+        "icon": "",
+        "image": "",
+        "sort_order": 1
+      },
+      {
+        "id": 20,
+        "list_key": "author_stats",
+        "title": "Years playing golf",
+        "subtitle": "",
+        "description": "",
+        "extra": "{\"number\":\"20+\"}",
+        "icon": "",
+        "image": "",
+        "sort_order": 2
+      },
+      {
+        "id": 21,
+        "list_key": "author_stats",
+        "title": "Countries spoken in",
+        "subtitle": "",
+        "description": "",
+        "extra": "{\"number\":\"12\"}",
+        "icon": "",
+        "image": "",
+        "sort_order": 3
+      },
+      {
+        "id": 22,
+        "list_key": "author_stats",
+        "title": "Handicap",
+        "subtitle": "",
+        "description": "",
+        "extra": "{\"number\":\"14\"}",
+        "icon": "",
+        "image": "",
+        "sort_order": 4
+      }
+    ],
+    "book_formats": [
+      {
+        "id": 15,
+        "list_key": "book_formats",
+        "title": "Hardcover",
+        "subtitle": "",
+        "description": "",
+        "extra": "",
+        "icon": "",
+        "image": "",
+        "sort_order": 1
+      },
+      {
+        "id": 16,
+        "list_key": "book_formats",
+        "title": "Paperback",
+        "subtitle": "",
+        "description": "",
+        "extra": "",
+        "icon": "",
+        "image": "",
+        "sort_order": 2
+      },
+      {
+        "id": 17,
+        "list_key": "book_formats",
+        "title": "Kindle",
+        "subtitle": "",
+        "description": "",
+        "extra": "",
+        "icon": "",
+        "image": "",
+        "sort_order": 3
+      },
+      {
+        "id": 18,
+        "list_key": "book_formats",
+        "title": "ePub",
+        "subtitle": "",
+        "description": "",
+        "extra": "",
+        "icon": "",
+        "image": "",
+        "sort_order": 4
+      }
+    ],
+    "marquee": [
+      {
+        "id": 35,
+        "list_key": "marquee",
+        "title": "18 HOLES",
+        "subtitle": "",
+        "description": "",
+        "extra": "",
+        "icon": "",
+        "image": "",
+        "sort_order": 1
+      },
+      {
+        "id": 36,
+        "list_key": "marquee",
+        "title": "18 CHAPTERS",
+        "subtitle": "",
+        "description": "",
+        "extra": "",
+        "icon": "",
+        "image": "",
+        "sort_order": 2
+      }
+    ],
+    "quiz_options": [
+      {
+        "id": 46,
+        "list_key": "quiz_options",
+        "title": "The first tee — I tighten up before I start",
+        "subtitle": "",
+        "description": "",
+        "extra": "",
+        "icon": "",
+        "image": "",
+        "sort_order": 1
+      },
+      {
+        "id": 47,
+        "list_key": "quiz_options",
+        "title": "The par 5s — I try to do too much",
+        "subtitle": "",
+        "description": "",
+        "extra": "",
+        "icon": "",
+        "image": "",
+        "sort_order": 2
+      },
+      {
+        "id": 48,
+        "list_key": "quiz_options",
+        "title": "After a bad hole — I carry it forward",
+        "subtitle": "",
+        "description": "",
+        "extra": "",
+        "icon": "",
+        "image": "",
+        "sort_order": 3
+      },
+      {
+        "id": 49,
+        "list_key": "quiz_options",
+        "title": "The back nine — I lose concentration",
+        "subtitle": "",
+        "description": "",
+        "extra": "",
+        "icon": "",
+        "image": "",
+        "sort_order": 4
+      }
+    ],
+    "retreat_meta": [
+      {
+        "id": 30,
+        "list_key": "retreat_meta",
+        "title": "DURATION:",
+        "subtitle": "",
+        "description": "",
+        "extra": "{\"value\":\"Tailored to client\"}",
+        "icon": "",
+        "image": "",
+        "sort_order": 1
+      },
+      {
+        "id": 31,
+        "list_key": "retreat_meta",
+        "title": "LOCATION:",
+        "subtitle": "",
+        "description": "",
+        "extra": "{\"value\":\"Worldwide\"}",
+        "icon": "",
+        "image": "",
+        "sort_order": 2
+      },
+      {
+        "id": 32,
+        "list_key": "retreat_meta",
+        "title": "GROUP SIZE:",
+        "subtitle": "",
+        "description": "",
+        "extra": "{\"value\":\"Intimate\"}",
+        "icon": "",
+        "image": "",
+        "sort_order": 3
+      }
+    ],
+    "social": [
+      {
+        "id": 41,
+        "list_key": "social",
+        "title": "Instagram",
+        "subtitle": "",
+        "description": "",
+        "extra": "{\"url\":\"[Paste Instagram link]\",\"icon\":\"instagram\"}",
+        "icon": "",
+        "image": "",
+        "sort_order": 1
+      },
+      {
+        "id": 42,
+        "list_key": "social",
+        "title": "X (Twitter)",
+        "subtitle": "",
+        "description": "",
+        "extra": "{\"url\":\"[Paste X link]\",\"icon\":\"x\"}",
+        "icon": "",
+        "image": "",
+        "sort_order": 2
+      },
+      {
+        "id": 43,
+        "list_key": "social",
+        "title": "LinkedIn",
+        "subtitle": "",
+        "description": "",
+        "extra": "{\"url\":\"[Paste LinkedIn link]\",\"icon\":\"linkedin\"}",
+        "icon": "",
+        "image": "",
+        "sort_order": 3
+      },
+      {
+        "id": 44,
+        "list_key": "social",
+        "title": "YouTube",
+        "subtitle": "",
+        "description": "",
+        "extra": "{\"url\":\"[Paste YouTube link]\",\"icon\":\"youtube\"}",
+        "icon": "",
+        "image": "",
+        "sort_order": 4
+      },
+      {
+        "id": 45,
+        "list_key": "social",
+        "title": "WhatsApp",
+        "subtitle": "",
+        "description": "",
+        "extra": "{\"url\":\"[Paste WhatsApp link]\",\"icon\":\"whatsapp\"}",
+        "icon": "",
+        "image": "",
+        "sort_order": 5
+      }
+    ],
+    "speaking_audiences": [
+      {
+        "id": 23,
+        "list_key": "speaking_audiences",
+        "title": "GOLF CLUBS & ASSOCIATIONS",
+        "subtitle": "",
+        "description": "A session that changes how members think about the game they already love.",
+        "extra": "{\"target\":\"FOR: CLUB MEMBERS, CAPTAINS, COMMITTEES\"}",
+        "icon": "/images/speaking-golf-clubs.svg",
+        "image": "",
+        "sort_order": 1
+      },
+      {
+        "id": 24,
+        "list_key": "speaking_audiences",
+        "title": "CORPORATE LEADERSHIP",
+        "subtitle": "",
+        "description": "Performance under pressure, decision-making, and the inner game of business.",
+        "extra": "{\"target\":\"FOR: LEADERSHIP TEAMS, OFFSITES, BOARD RETREATS\"}",
+        "icon": "/images/speaking-corporate-bars.svg",
+        "image": "",
+        "sort_order": 2
+      },
+      {
+        "id": 25,
+        "list_key": "speaking_audiences",
+        "title": "PHILOSOPHY & WELLNESS",
+        "subtitle": "",
+        "description": "The Gita as a living text, explored through the lens of sport and practice.",
+        "extra": "{\"target\":\"FOR: YOGA STUDIOS, WELLNESS RETREATS, LEARNING CENTRES\"}",
+        "icon": "/images/speaking-philosophy-wellness.svg",
+        "image": "",
+        "sort_order": 3
+      },
+      {
+        "id": 26,
+        "list_key": "speaking_audiences",
+        "title": "SCHOOLS & UNIVERSITIES",
+        "subtitle": "",
+        "description": "Ancient wisdom framed for a generation navigating performance and identity.",
+        "extra": "{\"target\":\"FOR: STUDENTS, FACULTY, SPORTS ACADEMIES\"}",
+        "icon": "/images/speaking-schools-universities.svg",
+        "image": "",
+        "sort_order": 4
+      }
+    ],
+    "speaking_steps": [
+      {
+        "id": 27,
+        "list_key": "speaking_steps",
+        "title": "THE CLASSROOM",
+        "subtitle": "",
+        "description": "The Bhagavad Gita's 18 chapters mapped to the structure of a round. Each teaching placed where it arrives on the course.",
+        "extra": "{\"numeral\":\"01\",\"sanskrit\":\"१\"}",
+        "icon": "",
+        "image": "",
+        "sort_order": 1
+      },
+      {
+        "id": 28,
+        "list_key": "speaking_steps",
+        "title": "THE COURSE",
+        "subtitle": "",
+        "description": "Walk the holes. Apply what was heard. The game becomes the practice, not an illustration of it.",
+        "extra": "{\"numeral\":\"02\",\"sanskrit\":\"२\"}",
+        "icon": "",
+        "image": "",
+        "sort_order": 2
+      },
+      {
+        "id": 29,
+        "list_key": "speaking_steps",
+        "title": "THE INTEGRATION",
+        "subtitle": "",
+        "description": "Reflection, group conversation, and a personal framework to carry back into the next round - and beyond it.",
+        "extra": "{\"numeral\":\"03\",\"sanskrit\":\"३\"}",
+        "icon": "",
+        "image": "",
+        "sort_order": 3
+      }
+    ],
+    "who_for": [
+      {
+        "id": 37,
+        "list_key": "who_for",
+        "title": "Experienced Golfers seeking wisdom beyond the scorecard",
+        "subtitle": "",
+        "description": "",
+        "extra": "",
+        "icon": "",
+        "image": "",
+        "sort_order": 1
+      },
+      {
+        "id": 38,
+        "list_key": "who_for",
+        "title": "Golf Coaches guiding both the swing and the mind",
+        "subtitle": "",
+        "description": "",
+        "extra": "",
+        "icon": "",
+        "image": "",
+        "sort_order": 2
+      },
+      {
+        "id": 39,
+        "list_key": "who_for",
+        "title": "Those new to golf discovering the game and themselves",
+        "subtitle": "",
+        "description": "",
+        "extra": "",
+        "icon": "",
+        "image": "",
+        "sort_order": 3
+      },
+      {
+        "id": 40,
+        "list_key": "who_for",
+        "title": "Leaders exploring balance, awareness and purposeful action",
+        "subtitle": "",
+        "description": "",
+        "extra": "",
+        "icon": "",
+        "image": "",
+        "sort_order": 4
+      }
+    ]
+  }
+}

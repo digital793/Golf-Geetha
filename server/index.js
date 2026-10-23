@@ -7,7 +7,7 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import multer from 'multer';
-import { db, getContent, verifyPassword } from './db.js';
+import { db, getContent, verifyPassword, syncSeedContent } from './db.js';
 import {
   startBackgroundCrawler,
   getKnowledgeBundle,
@@ -310,6 +310,13 @@ app.post('/api/admin/upload', requireAdmin, (req, res) => {
       return res.status(400).json({ error: err.message || 'File upload failed' });
     }
     if (!req.file) return res.status(400).json({ error: 'No file received' });
+    try {
+      const pubDir = path.join(__dirname, '../public/uploads');
+      fs.mkdirSync(pubDir, { recursive: true });
+      fs.copyFileSync(req.file.path, path.join(pubDir, req.file.filename));
+    } catch (copyErr) {
+      console.warn('Could not mirror upload to public/uploads:', copyErr);
+    }
     res.json({ url: `/uploads/${req.file.filename}` });
   });
 });

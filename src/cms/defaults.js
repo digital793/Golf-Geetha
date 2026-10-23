@@ -1,4 +1,5 @@
 import { frontNineData, backNineData, recentArticles } from '../data/golfGitaData.js';
+import seedContent from './seedContent.json';
 
 export const holesDefault = [...frontNineData, ...backNineData];
 
@@ -465,6 +466,9 @@ export const fieldMeta = {
 };
 
 export function buildDefaultContent() {
+  if (seedContent && seedContent.sections) {
+    return structuredClone(seedContent);
+  }
   return {
     settings: { ...settingsDefault },
     platforms: platformsDefault.map((item, index) => ({ ...item, id: index + 1 })),
