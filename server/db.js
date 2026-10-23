@@ -156,6 +156,15 @@ function migrate() {
       payload TEXT NOT NULL,
       created_at TEXT NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS chat_profiles (
+      local_id TEXT PRIMARY KEY,
+      profile_json TEXT NOT NULL DEFAULT '{}',
+      topics_json TEXT NOT NULL DEFAULT '[]',
+      privacy_accepted INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
   `);
 
   const addColumn = (sql) => {

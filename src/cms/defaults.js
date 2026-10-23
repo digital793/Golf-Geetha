@@ -39,24 +39,6 @@ export const platformsDefault = [
     sort_order: 4,
     is_active: 1,
   },
-  {
-    slug: 'bookshop',
-    name: 'Bookshop.org',
-    formats: 'Paperback',
-    icon: '/images/amazon-icon.png',
-    url: 'https://bookshop.org',
-    sort_order: 5,
-    is_active: 1,
-  },
-  {
-    slug: 'notion',
-    name: 'Notion',
-    formats: 'Digital',
-    icon: '/images/amazon-icon.png',
-    url: 'https://notion.so',
-    sort_order: 6,
-    is_active: 1,
-  },
 ];
 
 export const navDefault = [

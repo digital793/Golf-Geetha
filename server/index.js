@@ -8,6 +8,13 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import multer from 'multer';
 import { db, getContent, verifyPassword } from './db.js';
+import {
+  startBackgroundCrawler,
+  getKnowledgeBundle,
+  answerBotQuery,
+  triggerBackgroundSync,
+  crawlAndIndexSite,
+} from './botKnowledge.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT || 4000);
@@ -21,7 +28,7 @@ const storage = multer.diskStorage({
     cb(null, `${Date.now()}-${crypto.randomBytes(6).toString('hex')}${ext}`);
   },
 });
-const upload = multer({ storage, limits: { fileSize: 8 * 1024 * 1024 } });
+const upload = multer({ storage, limits: { fileSize: 32 * 1024 * 1024 } });
 
 const app = express();
 app.use(cors({ origin: true, credentials: true }));
@@ -43,6 +50,79 @@ function requireAdmin(req, res, next) {
 
 app.get('/api/content', (_req, res) => {
   res.json(getContent());
+});
+
+// ── GOLF GITA CELESTIAL BOT & BACKGROUND SYNC ENDPOINTS ──
+app.get('/api/bot/knowledge', (req, res) => {
+  const bundle = getKnowledgeBundle();
+  const clientEtag = req.headers['if-none-match'];
+
+  if (clientEtag && clientEtag === bundle.etag) {
+    return res.status(304).end();
+  }
+
+  res.setHeader('ETag', bundle.etag);
+  res.setHeader('Cache-Control', 'public, max-age=60');
+  res.json(bundle);
+});
+
+app.post('/api/bot/ask', (req, res) => {
+  const { query, userContext, history } = req.body || {};
+  if (!query || typeof query !== 'string') {
+    return res.status(400).json({ error: 'Missing query' });
+  }
+  const answer = answerBotQuery({ query, userContext: userContext || {}, history: history || [] });
+  res.json(answer);
+});
+
+// ── CHAT PROFILE (persistent user memory) ──────────────────────────────────
+// localId = stable string stored in the user's localStorage (NOT a session)
+app.get('/api/bot/profile/:localId', (req, res) => {
+  const { localId } = req.params;
+  if (!localId) return res.status(400).json({ error: 'Missing localId' });
+  const row = db.prepare('SELECT * FROM chat_profiles WHERE local_id = ?').get(localId);
+  if (!row) return res.json({ found: false });
+  res.json({
+    found: true,
+    profile: JSON.parse(row.profile_json || '{}'),
+    topics: JSON.parse(row.topics_json || '[]'),
+    privacyAccepted: !!row.privacy_accepted,
+  });
+});
+
+app.post('/api/bot/profile', (req, res) => {
+  const { localId, profile, topics, privacyAccepted } = req.body || {};
+  if (!localId) return res.status(400).json({ error: 'Missing localId' });
+  const stamp = nowIso();
+  db.prepare(`
+    INSERT INTO chat_profiles (local_id, profile_json, topics_json, privacy_accepted, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?)
+    ON CONFLICT(local_id) DO UPDATE SET
+      profile_json = excluded.profile_json,
+      topics_json = excluded.topics_json,
+      privacy_accepted = excluded.privacy_accepted,
+      updated_at = excluded.updated_at
+  `).run(
+    localId,
+    JSON.stringify(profile || {}),
+    JSON.stringify(topics || []),
+    privacyAccepted ? 1 : 0,
+    stamp,
+    stamp,
+  );
+  res.json({ ok: true });
+});
+
+app.delete('/api/bot/profile/:localId', (req, res) => {
+  const { localId } = req.params;
+  if (!localId) return res.status(400).json({ error: 'Missing localId' });
+  db.prepare('DELETE FROM chat_profiles WHERE local_id = ?').run(localId);
+  res.json({ ok: true });
+});
+
+app.post('/api/bot/crawl', (req, res) => {
+  const refreshed = crawlAndIndexSite();
+  res.json({ ok: true, meta: refreshed.meta });
 });
 
 app.post('/api/track/pageview', (req, res) => {
@@ -204,9 +284,34 @@ app.get('/api/admin/submissions', requireAdmin, (_req, res) => {
   res.json(db.prepare('SELECT * FROM form_submissions ORDER BY id DESC LIMIT 200').all());
 });
 
-app.post('/api/admin/upload', requireAdmin, upload.single('file'), (req, res) => {
-  if (!req.file) return res.status(400).json({ error: 'No file' });
-  res.json({ url: `/uploads/${req.file.filename}` });
+app.get('/api/admin/chat-profiles', requireAdmin, (_req, res) => {
+  const rows = db.prepare('SELECT * FROM chat_profiles ORDER BY updated_at DESC LIMIT 200').all();
+  const parsed = rows.map((r) => ({
+    local_id: r.local_id,
+    profile: JSON.parse(r.profile_json || '{}'),
+    topics: JSON.parse(r.topics_json || '[]'),
+    privacy_accepted: !!r.privacy_accepted,
+    created_at: r.created_at,
+    updated_at: r.updated_at,
+  }));
+  res.json(parsed);
+});
+
+app.delete('/api/admin/chat-profiles/:localId', requireAdmin, (req, res) => {
+  const { localId } = req.params;
+  db.prepare('DELETE FROM chat_profiles WHERE local_id = ?').run(localId);
+  res.json({ ok: true });
+});
+
+app.post('/api/admin/upload', requireAdmin, (req, res) => {
+  upload.single('file')(req, res, (err) => {
+    if (err) {
+      console.error('Upload error:', err);
+      return res.status(400).json({ error: err.message || 'File upload failed' });
+    }
+    if (!req.file) return res.status(400).json({ error: 'No file received' });
+    res.json({ url: `/uploads/${req.file.filename}` });
+  });
 });
 
 function saveSettings(settings) {
@@ -239,11 +344,13 @@ function saveSections(sections) {
 
 app.put('/api/admin/settings', requireAdmin, (req, res) => {
   saveSettings(req.body || {});
+  triggerBackgroundSync();
   res.json(getContent());
 });
 
 app.put('/api/admin/sections/:section', requireAdmin, (req, res) => {
   saveSections({ [req.params.section]: req.body || {} });
+  triggerBackgroundSync();
   res.json(getContent());
 });
 
@@ -266,6 +373,7 @@ app.put('/api/admin/platforms', requireAdmin, (req, res) => {
     }));
   });
   tx();
+  triggerBackgroundSync();
   res.json(getContent());
 });
 
@@ -293,6 +401,7 @@ app.put('/api/admin/holes', requireAdmin, (req, res) => {
     }
   });
   tx();
+  triggerBackgroundSync();
   res.json(getContent());
 });
 
@@ -324,6 +433,7 @@ app.put('/api/admin/articles', requireAdmin, (req, res) => {
       is_active: row.is_active === 0 ? 0 : 1,
     }),
   );
+  triggerBackgroundSync();
   res.json(getContent());
 });
 
@@ -335,6 +445,7 @@ app.put('/api/admin/faqs', requireAdmin, (req, res) => {
     rows,
     (row, index) => ({ question: row.question || '', answer: row.answer || '', sort_order: index + 1 }),
   );
+  triggerBackgroundSync();
   res.json(getContent());
 });
 
@@ -381,6 +492,7 @@ app.put('/api/admin/lists/:key', requireAdmin, (req, res) => {
     }));
   });
   tx();
+  triggerBackgroundSync();
   res.json(getContent());
 });
 
@@ -393,6 +505,8 @@ server.on('error', (error) => {
   console.error(error);
   process.exit(1);
 });
-server.listen(PORT, '127.0.0.1', () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`Golf Gita CMS API running on http://localhost:${PORT}`);
+  // Launch background crawler (runs periodically in the background without UI blocking)
+  startBackgroundCrawler(300000);
 });

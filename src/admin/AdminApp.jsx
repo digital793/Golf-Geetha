@@ -38,6 +38,7 @@ const NAV = [
   { id: 'articles', label: 'Articles' },
   { id: 'contact', label: 'Contact' },
   { id: 'submissions', label: 'Inbox' },
+  { id: 'chat_users', label: 'Chatbot Users' },
 ];
 
 async function api(path, options = {}) {
@@ -124,25 +125,69 @@ const INBOX_TYPES = {
 
 function ImageField({ label, value, onChange }) {
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState(null);
+
   const upload = async (file) => {
     if (!file) return;
     setBusy(true);
+    setError(null);
     try {
       const body = new FormData();
       body.append('file', file);
       const data = await api('/api/admin/upload', { method: 'POST', body });
-      onChange(data.url);
+      if (data?.url) {
+        onChange(data.url);
+        return;
+      }
+      throw new Error(data?.error || 'No URL returned');
+    } catch (err) {
+      console.warn('Server upload failed, using Data URL fallback:', err);
+      // Reliable fallback: convert file to Base64 data URL so image works immediately in all views
+      try {
+        const reader = new FileReader();
+        reader.onload = () => {
+          if (typeof reader.result === 'string') {
+            onChange(reader.result);
+          }
+        };
+        reader.readAsDataURL(file);
+      } catch (readErr) {
+        setError(err.message || 'Upload failed');
+      }
     } finally {
       setBusy(false);
     }
   };
+
   return (
     <div className="cms-field">
       <label>{label}</label>
-      {value ? <img src={value} alt="" className="cms-thumb" /> : null}
-      <input value={value || ''} onChange={(e) => onChange(e.target.value)} placeholder="Image URL or upload" />
+      {value ? (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+          <img
+            src={value}
+            alt=""
+            className="cms-thumb"
+            style={{ maxWidth: '80px', maxHeight: '80px', objectFit: 'cover', borderRadius: '4px' }}
+          />
+          <button
+            type="button"
+            className="cms-btn danger"
+            style={{ padding: '4px 10px', fontSize: '12px' }}
+            onClick={() => onChange('')}
+          >
+            Clear image
+          </button>
+        </div>
+      ) : null}
+      <input
+        value={value || ''}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="Image URL or choose a file below"
+      />
       <input type="file" accept="image/*" onChange={(e) => upload(e.target.files?.[0])} />
-      {busy ? <span className="cms-muted">Uploading…</span> : null}
+      {busy ? <span className="cms-muted" style={{ color: '#53256E' }}>Uploading…</span> : null}
+      {error ? <span className="cms-muted" style={{ color: '#d9534f' }}>{error}</span> : null}
     </div>
   );
 }
@@ -281,6 +326,7 @@ export function AdminApp() {
   const [analytics, setAnalytics] = useState(null);
   const [days, setDays] = useState(30);
   const [submissions, setSubmissions] = useState([]);
+  const [chatUsers, setChatUsers] = useState([]);
   const [homeTab, setHomeTab] = useState('hero');
   const [speakingTab, setSpeakingTab] = useState('copy');
   const [openHole, setOpenHole] = useState(1);
@@ -310,6 +356,11 @@ export function AdminApp() {
   useEffect(() => {
     if (!authed || page !== 'submissions') return;
     api('/api/admin/submissions').then(setSubmissions).catch(() => {});
+  }, [authed, page]);
+
+  useEffect(() => {
+    if (!authed || page !== 'chat_users') return;
+    api('/api/admin/chat-profiles').then(setChatUsers).catch(() => {});
   }, [authed, page]);
 
   useLayoutEffect(() => {
@@ -617,11 +668,55 @@ export function AdminApp() {
                   </div>
                   <h3>Gallery</h3>
                   {(draft.gallery || []).map((item, index) => (
-                    <ImageField key={item.id || index} label={`Image ${index + 1}`} value={item.image} onChange={(image) => {
-                      const gallery = [...draft.gallery]; gallery[index] = { ...item, image }; setDraft({ ...draft, gallery });
-                    }} />
+                    <div key={item.id || index} style={{ marginBottom: '16px', position: 'relative' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <strong style={{ fontSize: '13px', textTransform: 'uppercase', color: '#53256E' }}>
+                          Image {index + 1}
+                        </strong>
+                        {draft.gallery.length > 1 && (
+                          <button
+                            type="button"
+                            className="cms-btn danger"
+                            style={{ padding: '2px 8px', fontSize: '11px' }}
+                            onClick={() => {
+                              const gallery = draft.gallery.filter((_, i) => i !== index);
+                              setDraft({ ...draft, gallery });
+                            }}
+                          >
+                            Remove
+                          </button>
+                        )}
+                      </div>
+                      <ImageField
+                        label=""
+                        value={item.image}
+                        onChange={(image) => {
+                          const gallery = [...draft.gallery];
+                          gallery[index] = { ...item, image };
+                          setDraft({ ...draft, gallery });
+                        }}
+                      />
+                    </div>
                   ))}
-                  <button className="cms-btn secondary" onClick={() => persist('/api/admin/gallery', draft.gallery)}>Save gallery</button>
+                  <div className="cms-actions" style={{ marginTop: '12px', marginBottom: '24px' }}>
+                    <button
+                      type="button"
+                      className="cms-btn secondary"
+                      onClick={() => {
+                        const gallery = [...(draft.gallery || []), { image: '', sort_order: (draft.gallery?.length || 0) + 1 }];
+                        setDraft({ ...draft, gallery });
+                      }}
+                    >
+                      + Add image slot
+                    </button>
+                    <button
+                      type="button"
+                      className="cms-btn"
+                      onClick={() => persist('/api/admin/gallery', draft.gallery)}
+                    >
+                      Save gallery
+                    </button>
+                  </div>
                   <h3>Who is this for?</h3>
                   {(draft.lists.who_for || []).map((item, index) => (
                     <div className="cms-field" key={item.id || index}>
@@ -992,6 +1087,144 @@ export function AdminApp() {
                   </div>
                 );
               })()}
+            </>
+          )}
+
+          {page === 'chat_users' && (
+            <>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <h1 style={{ margin: 0 }}>Chatbot Users</h1>
+                <span className="cms-pill" style={{ background: '#39194c', color: '#ffd89a', fontWeight: 'bold' }}>
+                  {chatUsers.length} {chatUsers.length === 1 ? 'Stored User' : 'Stored Users'}
+                </span>
+              </div>
+              <p className="cms-lead">
+                Persistent visitor profiles stored in the SQLite database to recall users across conversations. Visitors can end their session manually from the chat bot, or admins can delete records below.
+              </p>
+
+              {!chatUsers.length ? (
+                <div className="cms-empty">No chatbot user profiles stored in the database yet.</div>
+              ) : (
+                <div className="cms-inbox-grid">
+                  {chatUsers.map((item) => {
+                    const prof = item.profile || {};
+                    const topics = item.topics || [];
+                    const displayName = prof.name || 'Anonymous Reader';
+                    return (
+                      <article className="cms-inbox-card" key={item.local_id} style={{ borderTop: '3px solid #53256e' }}>
+                        <header className="cms-inbox-head">
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <strong style={{ fontSize: '16px', color: '#39194c' }}>{displayName}</strong>
+                            <span
+                              className="cms-pill"
+                              style={{
+                                background: item.privacy_accepted ? 'rgba(34, 139, 34, 0.15)' : 'rgba(200, 50, 50, 0.15)',
+                                color: item.privacy_accepted ? '#1b6b1b' : '#b22222',
+                                fontSize: '11px',
+                              }}
+                            >
+                              {item.privacy_accepted ? '✓ Privacy Consent Accepted' : 'No Consent'}
+                            </span>
+                          </div>
+                          <time style={{ fontSize: '12px', color: '#888' }}>
+                            {new Date(item.updated_at).toLocaleString([], {
+                              dateStyle: 'medium',
+                              timeStyle: 'short',
+                            })}
+                          </time>
+                        </header>
+
+                        <dl className="cms-inbox-fields">
+                          {prof.age && (
+                            <div className="cms-inbox-row">
+                              <dt>Age</dt>
+                              <dd>{prof.age}</dd>
+                            </div>
+                          )}
+                          {prof.gender && (
+                            <div className="cms-inbox-row">
+                              <dt>Gender</dt>
+                              <dd>{prof.gender}</dd>
+                            </div>
+                          )}
+                          {(prof.city || prof.country) && (
+                            <div className="cms-inbox-row">
+                              <dt>Location</dt>
+                              <dd>{[prof.city, prof.country].filter(Boolean).join(', ')}</dd>
+                            </div>
+                          )}
+                          {prof.handicap && (
+                            <div className="cms-inbox-row">
+                              <dt>Handicap</dt>
+                              <dd>{prof.handicap}</dd>
+                            </div>
+                          )}
+                          {prof.yearsPlaying && (
+                            <div className="cms-inbox-row">
+                              <dt>Experience</dt>
+                              <dd>{prof.yearsPlaying}</dd>
+                            </div>
+                          )}
+                          {prof.dominantHand && (
+                            <div className="cms-inbox-row">
+                              <dt>Dominant Hand</dt>
+                              <dd>{prof.dominantHand}</dd>
+                            </div>
+                          )}
+                          {prof.homeCourse && (
+                            <div className="cms-inbox-row">
+                              <dt>Home Course</dt>
+                              <dd>{prof.homeCourse}</dd>
+                            </div>
+                          )}
+                          {topics.length > 0 && (
+                            <div className="cms-inbox-row">
+                              <dt>Topics</dt>
+                              <dd style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                                {topics.map((t) => (
+                                  <span
+                                    key={t}
+                                    style={{
+                                      fontSize: '11px',
+                                      background: '#f0eaf4',
+                                      color: '#53256e',
+                                      padding: '2px 8px',
+                                      borderRadius: '4px',
+                                      textTransform: 'capitalize',
+                                    }}
+                                  >
+                                    {t}
+                                  </span>
+                                ))}
+                              </dd>
+                            </div>
+                          )}
+                        </dl>
+
+                        <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid #f0f0f0', display: 'flex', justifyContent: 'flex-end' }}>
+                          <button
+                            type="button"
+                            className="cms-btn danger"
+                            style={{ padding: '6px 12px', fontSize: '12px' }}
+                            onClick={async () => {
+                              if (window.confirm(`Delete stored profile for "${displayName}"?`)) {
+                                try {
+                                  await api(`/api/admin/chat-profiles/${encodeURIComponent(item.local_id)}`, { method: 'DELETE' });
+                                  setChatUsers((prev) => prev.filter((u) => u.local_id !== item.local_id));
+                                } catch (err) {
+                                  alert('Failed to delete user: ' + err.message);
+                                }
+                              }
+                            }}
+                          >
+                            Delete User Record
+                          </button>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              )}
             </>
           )}
         </main>

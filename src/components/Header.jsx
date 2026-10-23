@@ -186,13 +186,6 @@ export const Header = ({
         )}
       </div>
 
-      {/* Sanskrit Shloka 2-Line Heading (Only on dark hero home page) */}
-      {!isLight && (
-        <div className="shloka-heading-watermark">
-          <h1 className="sanskrit-line-1">{settings.shloka_line_1}</h1>
-          <h2 className="sanskrit-line-2">{settings.shloka_line_2}</h2>
-        </div>
-      )}
     </header>
   );
 };

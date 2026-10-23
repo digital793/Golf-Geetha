@@ -1,0 +1,212 @@
+/* ── LEGAL PAGE / PRIVACY POLICY STYLES ── */
+.legal-page-root {
+  background: #fdfbf7;
+  color: #1a1917;
+  min-height: 80vh;
+  padding: 60px 20px 100px;
+}
+
+.legal-page-container {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.legal-header-block {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(83, 37, 110, 0.12);
+}
+
+.legal-badge {
+  display: inline-block;
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #53256e;
+  background: rgba(83, 37, 110, 0.08);
+  padding: 4px 14px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+.legal-title {
+  font-family: 'Cinzel Decorative', 'Cinzel', serif;
+  color: #39194c;
+  font-size: clamp(30px, 4.5vw, 44px);
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 12px;
+}
+
+.legal-subtitle {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 18px;
+  color: #63576e;
+  margin: 0 0 16px;
+  font-style: italic;
+}
+
+.legal-effective-date {
+  font-size: 13px;
+  color: #8c8297;
+  letter-spacing: 0.04em;
+}
+
+/* Tab Navigation */
+.legal-nav-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.legal-tab-btn {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 6px;
+  border: 1px solid rgba(83, 37, 110, 0.2);
+  background: #ffffff;
+  color: #39194c;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.legal-tab-btn:hover {
+  background: rgba(83, 37, 110, 0.05);
+  border-color: #53256e;
+}
+
+.legal-tab-btn.is-active {
+  background: #39194c;
+  color: #ffd89a;
+  border-color: #39194c;
+  box-shadow: 0 4px 14px rgba(57, 25, 76, 0.15);
+}
+
+/* Card highlight box */
+.legal-callout-card {
+  background: linear-gradient(135deg, rgba(83, 37, 110, 0.04) 0%, rgba(212, 175, 55, 0.06) 100%);
+  border-left: 4px solid #53256e;
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin: 28px 0;
+}
+
+.legal-callout-title {
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #39194c;
+  margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legal-callout-text {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #332b3a;
+  margin: 0;
+}
+
+/* Document Body */
+.legal-doc-content {
+  background: #ffffff;
+  border: 1px solid rgba(83, 37, 110, 0.1);
+  border-radius: 12px;
+  padding: 40px 48px;
+  box-shadow: 0 10px 30px rgba(57, 25, 76, 0.04);
+}
+
+.legal-section {
+  margin-bottom: 36px;
+}
+
+.legal-section:last-child {
+  margin-bottom: 0;
+}
+
+.legal-section-heading {
+  font-family: 'Cinzel', serif;
+  color: #39194c;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 14px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  border-bottom: 1px dashed rgba(83, 37, 110, 0.15);
+  padding-bottom: 8px;
+}
+
+.legal-section-num {
+  font-size: 14px;
+  color: #9c7aa6;
+  font-weight: 600;
+}
+
+.legal-paragraph {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #2e2833;
+  margin: 0 0 14px;
+}
+
+.legal-list {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', serif;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #2e2833;
+  padding-left: 24px;
+  margin: 0 0 16px;
+}
+
+.legal-list li {
+  margin-bottom: 8px;
+}
+
+.legal-list strong {
+  color: #39194c;
+}
+
+.legal-contact-box {
+  background: #f8f5f0;
+  border: 1px solid rgba(83, 37, 110, 0.12);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-top: 14px;
+  font-size: 15px;
+  color: #332b3a;
+  line-height: 1.6;
+}
+
+.legal-contact-box a {
+  color: #53256e;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .legal-doc-content {
+    padding: 24px 20px;
+  }
+  .legal-title {
+    font-size: 26px;
+  }
+  .legal-section-heading {
+    font-size: 18px;
+  }
+  .legal-paragraph,
+  .legal-list {
+    font-size: 16px;
+  }
+}

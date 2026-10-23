@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { useTranslation } from '../i18n';
 import { useCms } from '../cms/CmsContext';
+import { TheTurn } from './TheTurn';
 
 function HoleRow({ hole: h, t }) {
   return (
@@ -71,12 +72,7 @@ export const EighteenHolesPage = ({ onBuyClick, onNavigate }) => {
         </div>
       </section>
 
-      <section className="eighteen-halfway">
-        <p className="eighteen-halfway-kicker">{t(page.halfway_kicker || 'Halfway House')}</p>
-        <blockquote className="eighteen-halfway-quote">
-          {t(page.halfway_quote)}
-        </blockquote>
-      </section>
+      <TheTurn />
 
       <section className="eighteen-section-group">
         <div className="eighteen-section-inner">

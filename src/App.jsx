@@ -17,6 +17,7 @@ import { LegalPage } from './components/LegalPage';
 import { WhereToBuyModal } from './components/WhereToBuyModal';
 import { Footer } from './components/Footer';
 import { Modal } from './components/Modal';
+import { ChatBot } from './components/ChatBot/ChatBot';
 import { useTranslation } from './i18n';
 import { useCms } from './cms/CmsContext';
 import { submitForm, trackEvent, trackPageView } from './cms/tracking';
@@ -230,7 +231,7 @@ export function App() {
             onNavigate={handleNavigate}
             theme="light"
           />
-          <LegalPage kind={currentPage} />
+          <LegalPage kind={currentPage} onNavigate={handleNavigate} />
           <Footer onNavigate={handleNavigate} />
         </div>
       ) : currentPage === 'author' ? (
@@ -319,6 +320,9 @@ export function App() {
         onClose={() => setIsBuyModalOpen(false)}
         page={currentPage}
       />
+
+      {/* ── GOLF GITA CELESTIAL AI CHATBOT ── */}
+      <ChatBot onNavigate={handleNavigate} onBuyClick={openBuyModal} />
     </div>
   );
 }
