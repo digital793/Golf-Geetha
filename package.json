@@ -8,6 +8,7 @@
     "dev:cms": "node server/dev.mjs",
     "dev:vite": "vite",
     "server": "node server/index.js",
+    "start": "node server/index.js",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"

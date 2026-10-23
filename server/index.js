@@ -496,6 +496,18 @@ app.put('/api/admin/lists/:key', requireAdmin, (req, res) => {
   res.json(getContent());
 });
 
+// Serve production build if dist folder exists (for Hostinger production deployment)
+const distDir = path.join(__dirname, '../dist');
+if (fs.existsSync(distDir)) {
+  app.use(express.static(distDir));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+      return next();
+    }
+    res.sendFile(path.join(distDir, 'index.html'));
+  });
+}
+
 const server = http.createServer(app);
 server.on('error', (error) => {
   if (error.code === 'EADDRINUSE') {
