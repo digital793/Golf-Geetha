@@ -3,8 +3,8 @@
     "site_title": "Golf Gita - The Eternal Game of Celestial Wisdom | By Nazeer Tajudeen",
     "site_description": "Golf Gita maps each hole on the course to a chapter of the Bhagavad Gita. An ancient map for the modern round.",
     "brand_name": "Golf Gita",
-    "emblem_dark": "/images/golf_gita_emblem.png",
-    "emblem_light": "/images/golf_gita_emblem_purple.png",
+    "emblem_dark": "/images/golf_gita_emblem_white.svg",
+    "emblem_light": "/images/golf_gita_emblem_purple.svg",
     "book_cover": "/uploads/1792566312986-d805a8629b20.png",
     "cta_emblem": "/images/cta-logo.png",
     "shloka_line_1": "कर्मण्येवाधिकारस्ते मा",
@@ -17,7 +17,7 @@
   },
   "platforms": [
     {
-      "id": 4,
+      "id": 10,
       "slug": "amazon-india",
       "name": "Amazon India",
       "formats": "Paperback | Hardcover | Kindle",
@@ -27,7 +27,7 @@
       "is_active": 1
     },
     {
-      "id": 5,
+      "id": 11,
       "slug": "flipkart",
       "name": "Flipkart",
       "formats": "Paperback | Hardcover",
@@ -37,23 +37,13 @@
       "is_active": 1
     },
     {
-      "id": 6,
-      "slug": "amazon-us",
-      "name": "Amazon US",
-      "formats": "Paperback | Hardcover | Kindle",
-      "icon": "/images/amazon-icon.png",
-      "url": "https://amazon.com",
-      "sort_order": 3,
-      "is_active": 1
-    },
-    {
-      "id": 7,
+      "id": 12,
       "slug": "kindle",
       "name": "Kindle",
       "formats": "Kindle digital",
       "icon": "/images/kindle-icon.png",
       "url": "https://amazon.com/kindle",
-      "sort_order": 4,
+      "sort_order": 3,
       "is_active": 1
     }
   ],

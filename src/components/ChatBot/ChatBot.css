@@ -62,35 +62,40 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Launcher Button */
+/* Launcher Button with 3D Golf Ball & Outer Glow Shadow */
 .celestial-launcher-btn {
   position: relative;
-  width: 62px;
-  height: 62px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #2a221b 0%, #141311 85%);
-  border: 1.5px solid rgba(246, 184, 52, 0.6);
+  background: transparent;
+  border: none;
+  padding: 0;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.7), 0 0 24px rgba(246, 184, 52, 0.3);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.65))
+          drop-shadow(0 0 16px rgba(168, 85, 247, 0.45))
+          drop-shadow(0 0 30px rgba(246, 184, 52, 0.35));
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
   outline: none;
 }
 
 .celestial-launcher-btn:hover {
-  transform: scale(1.06);
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.8), 0 0 35px rgba(246, 184, 52, 0.5);
-  border-color: #ffd89a;
+  transform: scale(1.08) translateY(-2px);
+  filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.8))
+          drop-shadow(0 0 24px rgba(192, 132, 252, 0.85))
+          drop-shadow(0 0 45px rgba(246, 184, 52, 0.6));
 }
 
 .celestial-launcher-btn.is-active {
   transform: scale(0.96);
-  border-color: #f6b834;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.7))
+          drop-shadow(0 0 18px rgba(246, 184, 52, 0.7));
 }
 
-/* Subtle Golden Orbital Ring */
+/* Subtle Golden Orbital Ring around Ball */
 .orbital-ring {
   position: absolute;
   inset: -6px;
@@ -102,31 +107,32 @@
 
 .orbital-glow {
   position: absolute;
-  inset: -3px;
+  inset: -4px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(246, 184, 52, 0.2) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.25) 0%, rgba(246, 184, 52, 0.15) 50%, transparent 75%);
   animation: celestialGlowPulse 3.5s ease-in-out infinite;
   pointer-events: none;
 }
 
-.launcher-emblem-wrapper {
-  width: 36px;
-  height: 36px;
+.launcher-ball-wrapper {
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.celestial-launcher-btn:hover .launcher-emblem-wrapper {
-  transform: rotate(12deg) scale(1.05);
+.celestial-launcher-btn:hover .launcher-ball-wrapper {
+  transform: rotate(8deg) scale(1.04);
 }
 
-.launcher-sun-icon {
+.launcher-ball-img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 0 6px rgba(246, 184, 52, 0.6));
+  display: block;
+  pointer-events: none;
 }
 
 /* ── 2. MAIN CHATBOT WINDOW ── */
@@ -170,21 +176,21 @@
 }
 
 .header-emblem-ring {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: radial-gradient(circle, #332717 0%, #171512 100%);
-  border: 1px solid rgba(246, 184, 52, 0.45);
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 10px rgba(246, 184, 52, 0.25);
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 10px rgba(168, 85, 247, 0.45));
   flex-shrink: 0;
 }
 
+.header-ball-emblem,
 .header-sun-emblem {
-  width: 24px;
-  height: 24px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 

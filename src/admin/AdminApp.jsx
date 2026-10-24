@@ -525,6 +525,11 @@ export function AdminApp() {
             }
           }}
         >
+          <img
+            src="/images/golf_gita_emblem_gold_purple.svg"
+            alt="Golf Gita"
+            style={{ width: '64px', height: '64px', margin: '0 auto 16px', display: 'block', objectFit: 'contain', filter: 'drop-shadow(0 0 16px rgba(246, 184, 52, 0.4))' }}
+          />
           <h1>Golf Gita CMS</h1>
           <p>Sign in to manage content, images, icons, and traffic.</p>
           {error ? <p className="cms-error">{error}</p> : null}
@@ -545,7 +550,14 @@ export function AdminApp() {
     <div className="cms-root">
       <div className="cms-shell">
         <aside className="cms-sidebar">
-          <div className="cms-brand">Golf Gita CMS</div>
+          <div className="cms-brand" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <img
+              src="/images/golf_gita_emblem_gold_purple.svg"
+              alt="Golf Gita"
+              style={{ width: '28px', height: '28px', objectFit: 'contain' }}
+            />
+            <span>Golf Gita CMS</span>
+          </div>
           {NAV.map((item) => (
             <button
               key={item.id}

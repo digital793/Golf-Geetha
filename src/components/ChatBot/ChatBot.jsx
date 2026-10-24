@@ -640,14 +640,11 @@ export function ChatBot({ onNavigate, onBuyClick }) {
           <span className="orbital-ring" aria-hidden="true" />
           <span className="orbital-glow" aria-hidden="true" />
 
-          <div className="launcher-emblem-wrapper">
+          <div className="launcher-ball-wrapper">
             <img
-              src="/favicon.svg"
-              alt="Golf Gita Sun Emblem"
-              className="launcher-sun-icon"
-              onError={(e) => {
-                if (settings?.emblem_light) e.currentTarget.src = settings.emblem_light;
-              }}
+              src="/images/golf-ball.png"
+              alt="Golf Gita Celestial Guide"
+              className="launcher-ball-img"
             />
           </div>
         </button>
@@ -665,7 +662,7 @@ export function ChatBot({ onNavigate, onBuyClick }) {
           <div className="chatbot-header">
             <div className="header-brand">
               <div className="header-emblem-ring">
-                <img src="/favicon.svg" alt="Golf Gita Emblem" className="header-sun-emblem" />
+                <img src="/images/golf-ball.png" alt="Golf Gita" className="header-ball-emblem" />
               </div>
               <div className="header-titles">
                 <div className="header-main-title">GOLF GITA</div>
