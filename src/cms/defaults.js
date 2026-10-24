@@ -1,5 +1,5 @@
 import { frontNineData, backNineData, recentArticles } from '../data/golfGitaData.js';
-import seedContent from './seedContent.json';
+import seedContent from './seedContent.json' with { type: 'json' };
 
 export const holesDefault = [...frontNineData, ...backNineData];
 

@@ -507,7 +507,7 @@ app.put('/api/admin/lists/:key', requireAdmin, (req, res) => {
 const distDir = path.join(__dirname, '../dist');
 if (fs.existsSync(distDir)) {
   app.use(express.static(distDir));
-  app.get('*', (req, res, next) => {
+  app.get('{*splat}', (req, res, next) => {
     if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
       return next();
     }
